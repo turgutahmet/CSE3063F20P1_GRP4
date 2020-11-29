@@ -2,21 +2,21 @@ import java.time.LocalDate;
 
 public class LabelledInstance extends Instance {
 
-    private User whoLabelled;
+    private UserInfo whoLabelled;
     private ClassLabel label ;
     private LocalDate date;
 
-    LabelledInstance(User user , ClassLabel classLabel , LocalDate localDate ){
-        this.whoLabelled = user;
+    LabelledInstance(UserInfo userInfo , ClassLabel classLabel , LocalDate localDate ){
+        this.whoLabelled = userInfo;
         this.label = classLabel;
         this.date = localDate;
     }
 
-    public User getWhoLabelled() {
+    public UserInfo getWhoLabelled() {
         return whoLabelled;
     }
 
-    public void setWhoLabelled(User whoLabelled) {
+    public void setWhoLabelled(UserInfo whoLabelled) {
         this.whoLabelled = whoLabelled;
     }
 
