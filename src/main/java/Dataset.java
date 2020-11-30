@@ -1,15 +1,16 @@
 import com.fasterxml.jackson.annotation.*;
 
+import java.util.ArrayList;
+
 public class Dataset {
     //Define basic Dataset variable
     private int datasetID;
     private String datasetName;
     private int maximumNumberOfLabelsPerInstance;
-    private ClassLabel[] classLabels;
-    private Instance[] instances;
+    private ArrayList<ClassLabel> classLabels;
+    private ArrayList<Instance> instances;
 
     //Json property: The feature in which variables in json file which variables we should assign in our model.
-
 
     //Variables getter setter methods
     public int getDatasetID() { return datasetID; }
@@ -24,11 +25,19 @@ public class Dataset {
     @JsonProperty("maximum number of labels per instance")
     public void setMaximumNumberOfLabelsPerInstance(int value) { this.maximumNumberOfLabelsPerInstance = value; }
 
-    public ClassLabel[] getClassLabels() { return classLabels; }
-    @JsonProperty("class labels")
-    public void setClassLabels(ClassLabel[] value) { this.classLabels = value; }
+    public ArrayList<ClassLabel> getClassLabels() {
+        return classLabels;
+    }
+     @JsonProperty("class labels")
+    public void setClassLabels(ArrayList<ClassLabel> classLabels) {
+        this.classLabels = classLabels;
+    }
 
-    public Instance[] getInstances() { return instances; }
+    public ArrayList<Instance> getInstances() {
+        return instances;
+    }
     @JsonProperty("instances")
-    public void setInstances(Instance[] value) { this.instances = value; }
+    public void setInstances(ArrayList<Instance> instances) {
+        this.instances = instances;
+    }
 }

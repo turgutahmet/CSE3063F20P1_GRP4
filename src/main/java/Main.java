@@ -9,12 +9,12 @@ public class Main {
 		//create dataset object for keep input's information.
 		Dataset data = (Dataset) read("src/input-1.json",new Dataset());
 
-		//Testing data set -> System.out.println(data.getInstances()[0].getInstance());
+		//Testing data set ->System.out.println(data.getInstances().get(0).getInstance());
 
 		//create user object for keep user's information.
 		User user = (User) read("src/users-1.json",new User());
 
-		//Testing user set -> System.out.println(user.getUsers()[0].getUserName());
+		//Testing user set -> System.out.println(user.getUsers().get(0).getUserName());
 	}
 
 	public static Object read(String fileName,Object object){
