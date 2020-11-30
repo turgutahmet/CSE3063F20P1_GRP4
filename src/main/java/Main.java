@@ -10,12 +10,12 @@ public class Main {
 	public static void main(String[] args) {
 
 		//create dataset object for keep input's information.
-		Dataset data = (Dataset) read("src/input-1.json",new Dataset());
+		Dataset data = (Dataset) read("src/input-2.json",new Dataset());
 
 		//Testing data set ->System.out.println(data.getInstances().get(0).getInstance());
 
 		//create user object for keep user's information.
-		User user = (User) read("src/users-1.json",new User());
+		User user = (User) read("src/users-2.json",new User());
 
 		//Testing user set -> System.out.println(user.getUsers().get(0).getUserName());
 
@@ -35,7 +35,7 @@ public class Main {
 		LabellingMechanism randomLabelling = new RandomLabelling();
 
 		//Random Labelling Simulation
-		ArrayList<Instance> labbelledInstances = new ArrayList<>();
+		ArrayList<Instance> labelledInstances = new ArrayList<>();
 		//Iterate all users
 		for (UserInfo userInfo : users) {
 			//Check the user's type
@@ -47,7 +47,10 @@ public class Main {
 					int numberOfLabel = scan.nextInt();
 
 					//Get available instances for labeling
-					ArrayList<Instance> availableInstances = instances;
+					ArrayList<Instance> availableInstances = new ArrayList<>();
+					for (Instance instance : instances) {
+						availableInstances.add(instance);
+					}
 					//Remove instances which has reached maximum number of label per instance
 					for (Instance availableInstance : availableInstances) {
 						if (availableInstance.getLabelPairs().size() > maxLabelPerInstance) {
@@ -68,7 +71,7 @@ public class Main {
 						Instance labelledInstance = userInfo.labelInstance(randomInstance, classLabels, randomLabelling);
 
 						// add this instance to labelledInstances list
-						labbelledInstances.add(labelledInstance);
+						labelledInstances.add(labelledInstance);
 
 						//Remove labelled instance from availableInstances list (A user can label an instance once.)
 						availableInstances.remove(randomInstance);
@@ -78,7 +81,7 @@ public class Main {
 		}
 
 		//Print all labelled instances
-		for (Instance instance : labbelledInstances) {
+		for (Instance instance : labelledInstances) {
 			System.out.println(instance.isHasLabeled());
 			for (LabelledInstance labelPair : instance.getLabelPairs()) {
 				System.out.println("Instance: " + labelPair.getInstance());
