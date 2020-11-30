@@ -6,7 +6,9 @@ public class LabelledInstance extends Instance {
     private ClassLabel label ;
     private LocalDate date;
 
-    LabelledInstance(UserInfo userInfo , ClassLabel classLabel , LocalDate localDate ){
+    LabelledInstance(int id, String instance, UserInfo userInfo , ClassLabel classLabel , LocalDate localDate) {
+        this.setID(id);
+        this.setInstance(instance);
         this.whoLabelled = userInfo;
         this.label = classLabel;
         this.date = localDate;

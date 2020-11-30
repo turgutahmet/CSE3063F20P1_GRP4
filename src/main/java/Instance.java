@@ -10,12 +10,14 @@ public class Instance {
     private boolean hasLabeled = false;
     private ArrayList<LabelledInstance> labelPairs = new ArrayList<LabelledInstance>();
 
-    public void addLabel(UserInfo userInfo,ClassLabel classLabel){
-        if(hasLabeled==false){
-            hasLabeled=true;
+    public Instance addLabel(UserInfo userInfo, ClassLabel classLabel){
+        if(hasLabeled == false){
+            hasLabeled = true;
         }
-        LabelledInstance labelledInstance = new LabelledInstance(userInfo,classLabel, LocalDate.now());
+        LabelledInstance labelledInstance = new LabelledInstance(id, instance, userInfo, classLabel, LocalDate.now());
+        labelledInstance.setInstance(this.instance);
         labelPairs.add(labelledInstance);
+        return this;
     }
     //Json property: The feature in which variables in json file which variables we should assign in our model.
 
