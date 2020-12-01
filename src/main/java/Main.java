@@ -38,7 +38,6 @@ public class Main {
 		LabellingMechanism randomLabelling = new RandomLabelling();
 
 		//Random Labelling Simulation
-		ArrayList<Instance> labelledInstances = new ArrayList<>();
 		//Iterate all users
 		for (UserInfo userInfo : users) {
 			//Check the user's type
@@ -49,6 +48,12 @@ public class Main {
 					System.out.print("Please enter how many instances " + userInfo.getUserName() + " will label:\t");
 					int numberOfLabel = scan.nextInt();
 
+					//Copy all classLabels to availableLabels
+					ArrayList<ClassLabel> availableLabels = new ArrayList<>();
+					for (ClassLabel classLabel : classLabels) {
+						availableLabels.add(classLabel);
+					}
+
 					for (int i = 0; i < numberOfLabel; i++) {
 						//Get available instances for labelling
 						ArrayList<Instance> availableInstances = new ArrayList<>();
@@ -58,21 +63,22 @@ public class Main {
 							}
 						}
 
+						//If there is no available instance to labeled break
+						if (availableInstances.isEmpty()) {
+							break;
+						}
+
 						//Select a random instance from available instances
 						Instance randomInstance = availableInstances.get((int)(Math.random() * availableInstances.size()));
 
 						//Get available class labels for that instance
-						ArrayList<ClassLabel> availableLabels = new ArrayList<>();
-						for (ClassLabel classLabel : classLabels) {
-							availableLabels.add(classLabel);
-						}
 						for (LabelledInstance labelPair : randomInstance.getLabelPairs()) {
 							if (labelPair.getWhoLabelled() == userInfo) {
 								availableLabels.remove(labelPair.getLabel());
 							}
 						}
 
-						userInfo.labelInstance(randomInstance, classLabels, randomLabelling);
+						userInfo.labelInstance(randomInstance, availableLabels, randomLabelling);
 					}
 					break;
 			}
