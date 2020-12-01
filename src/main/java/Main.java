@@ -2,7 +2,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.parser.JSONParser;
 
 import java.io.FileReader;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -30,6 +29,10 @@ public class Main {
 
 		//Get maximum number of label per instance attribute
 		int maxLabelPerInstance = data.getMaximumNumberOfLabelsPerInstance();
+		//Assign maxLabelPerInstance to all instances
+		for (Instance instance : instances) {
+			instance.setMaxNumberOfLabel(maxLabelPerInstance);
+		}
 
 		//Create labelling mechanisms
 		LabellingMechanism randomLabelling = new RandomLabelling();
@@ -46,48 +49,45 @@ public class Main {
 					System.out.print("Please enter how many instances " + userInfo.getUserName() + " will label:\t");
 					int numberOfLabel = scan.nextInt();
 
-					//Get available instances for labeling
-					ArrayList<Instance> availableInstances = new ArrayList<>();
-					for (Instance instance : instances) {
-						availableInstances.add(instance);
-					}
-					//Remove instances which has reached maximum number of label per instance
-					for (Instance availableInstance : availableInstances) {
-						if (availableInstance.getLabelPairs().size() > maxLabelPerInstance) {
-							availableInstances.remove(availableInstance);
-						}
-					}
-
 					for (int i = 0; i < numberOfLabel; i++) {
-						//If there is no available instance to be labelled break this for loop
-						if (availableInstances.isEmpty()) {
-							break;
+						//Get available instances for labelling
+						ArrayList<Instance> availableInstances = new ArrayList<>();
+						for (Instance instance : instances) {
+							if (instance.isCanLabeled()) {
+								availableInstances.add(instance);
+							}
 						}
 
 						//Select a random instance from available instances
 						Instance randomInstance = availableInstances.get((int)(Math.random() * availableInstances.size()));
 
-						//Label this instance with randomLabelling mechanism
-						Instance labelledInstance = userInfo.labelInstance(randomInstance, classLabels, randomLabelling);
+						//Get available class labels for that instance
+						ArrayList<ClassLabel> availableLabels = new ArrayList<>();
+						for (ClassLabel classLabel : classLabels) {
+							availableLabels.add(classLabel);
+						}
+						for (LabelledInstance labelPair : randomInstance.getLabelPairs()) {
+							if (labelPair.getWhoLabelled() == userInfo) {
+								availableLabels.remove(labelPair.getLabel());
+							}
+						}
 
-						// add this instance to labelledInstances list
-						labelledInstances.add(labelledInstance);
-
-						//Remove labelled instance from availableInstances list (A user can label an instance once.)
-						availableInstances.remove(randomInstance);
+						userInfo.labelInstance(randomInstance, classLabels, randomLabelling);
 					}
-
+					break;
 			}
 		}
 
 		//Print all labelled instances
-		for (Instance instance : labelledInstances) {
-			System.out.println(instance.isHasLabeled());
-			for (LabelledInstance labelPair : instance.getLabelPairs()) {
-				System.out.println("Instance: " + labelPair.getInstance());
-				System.out.println("Who labelled: " + labelPair.getWhoLabelled().getUserName());
-				System.out.println("Label: " + labelPair.getLabel().getLabelText());
-				System.out.println("Date: " + labelPair.getDate());
+		for (Instance instance : instances) {
+			if (!instance.getLabelPairs().isEmpty()) {
+				for (LabelledInstance labelPair : instance.getLabelPairs()) {
+					System.out.println("Who labeled it?: " + labelPair.getWhoLabelled().getUserName());
+					System.out.println("Label: " + labelPair.getLabel().getLabelText());
+					System.out.println("Date: " + labelPair.getDate());
+					System.out.println("Instance: " + instance.getInstance());
+					System.out.println();
+				}
 			}
 		}
 	}

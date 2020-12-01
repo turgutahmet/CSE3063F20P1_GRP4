@@ -7,16 +7,17 @@ public class Instance {
     //Define basic Instance variable
     private int id;
     private String instance;
-    private boolean hasLabeled = false;
+    private boolean canLabeled = true;
+    private int maxNumberOfLabel;
     private ArrayList<LabelledInstance> labelPairs = new ArrayList<LabelledInstance>();
 
     public Instance addLabel(UserInfo userInfo, ClassLabel classLabel){
-        if(hasLabeled == false){
-            hasLabeled = true;
-        }
         LabelledInstance labelledInstance = new LabelledInstance(id, instance, userInfo, classLabel, LocalDate.now());
         labelledInstance.setInstance(this.instance);
         labelPairs.add(labelledInstance);
+        if (maxNumberOfLabel == labelPairs.size()) {
+            canLabeled = false;
+        }
         return this;
     }
     //Json property: The feature in which variables in json file which variables we should assign in our model.
@@ -32,12 +33,20 @@ public class Instance {
     @JsonProperty("instance")
     public void setInstance(String value) { this.instance = value; }
 
-    public boolean isHasLabeled() {
-        return hasLabeled;
+    public boolean isCanLabeled() {
+        return canLabeled;
     }
 
-    public void setHasLabeled(boolean hasLabeled) {
-        this.hasLabeled = hasLabeled;
+    public void setCanLabeled(boolean canLabeled) {
+        this.canLabeled = canLabeled;
+    }
+
+    public int getMaxNumberOfLabel() {
+        return maxNumberOfLabel;
+    }
+
+    public void setMaxNumberOfLabel(int maxNumberOfLabel) {
+        this.maxNumberOfLabel = maxNumberOfLabel;
     }
 
     public ArrayList<LabelledInstance> getLabelPairs() {
