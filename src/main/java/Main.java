@@ -11,13 +11,15 @@ public class Main {
 	public static void main(String[] args) {
 
 		//create dataset object for keep input's information.
-		Dataset data = (Dataset) read("src/input-2.json",new Dataset());
+		Dataset data = (Dataset) read("src/input-1.json",new Dataset());
 
 		//Testing data set ->System.out.println(data.getInstances().get(0).getInstance());
 
 		//create user object for keep user's information.
-		User user = (User) read("src/users-2.json",new User());
+		User user = (User) read("src/users-1.json",new User());
+		//create logger object for log records
 		Logger logger = Logger.getLogger(User.class.getName());
+		//set logger configurations
 		PropertyConfigurator.configure("log4j.properties");
 
 		//Testing user set -> System.out.println(user.getUsers().get(0).getUserName());
@@ -25,6 +27,7 @@ public class Main {
 		//Get all users in the system
 		ArrayList<UserInfo> users = user.getUserInfos();
 		for (UserInfo userInfo : users) {
+			//print user log records check log.txt
 			logger.info("user: created "+userInfo.getUserName()+" as "+userInfo.getUserType());
 		}
 
@@ -61,7 +64,7 @@ public class Main {
 						availableLabels.add(classLabel);
 					}
 
-					for (int i = 0; i < numberOfLabel; i++) {
+					for (int i = 0; i < numberOfLabel; i++) {	
 						//Get available instances for labelling
 						ArrayList<Instance> availableInstances = new ArrayList<>();
 						for (Instance instance : instances) {
@@ -92,14 +95,21 @@ public class Main {
 		}
 
 		//Print all labelled instances
+		logger = Logger.getLogger(LabelledInstance.class.getName());
 		for (Instance instance : instances) {
 			if (!instance.getLabelPairs().isEmpty()) {
 				for (LabelledInstance labelPair : instance.getLabelPairs()) {
-					System.out.println("Who labeled it?: " + labelPair.getWhoLabelled().getUserName());
-					System.out.println("Label: " + labelPair.getLabel().getLabelText());
-					System.out.println("Date: " + labelPair.getDate());
-					System.out.println("Instance: " + instance.getInstance());
-					System.out.println();
+					//Text is separated for log recording.
+					String userIdText = "user id:" + labelPair.getWhoLabelled().getUserID() +" ";
+					String userNameText = labelPair.getWhoLabelled().getUserName() + " ";
+					String labelledInstanceIdText = "labelled instance id:" + instance.getID() + " ";
+					String withClassText= "with class label " +labelPair.getLabel().getLabelID() + " :";
+					String labelText = labelPair.getLabel().getLabelText() + " ";
+					String getInstanceText = "instance :" + instance.getInstance();
+					//Print log records check log.txt
+					logger.info(userIdText + userNameText + labelledInstanceIdText + withClassText + labelText + getInstanceText);
+
+
 				}
 			}
 		}
