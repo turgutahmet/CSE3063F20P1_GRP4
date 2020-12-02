@@ -1,4 +1,6 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 import org.json.simple.parser.JSONParser;
 
 import java.io.FileReader;
@@ -15,11 +17,16 @@ public class Main {
 
 		//create user object for keep user's information.
 		User user = (User) read("src/users-2.json",new User());
+		Logger logger = Logger.getLogger(User.class.getName());
+		PropertyConfigurator.configure("log4j.properties");
 
 		//Testing user set -> System.out.println(user.getUsers().get(0).getUserName());
 
 		//Get all users in the system
 		ArrayList<UserInfo> users = user.getUserInfos();
+		for (UserInfo userInfo : users) {
+			logger.info("user: created "+userInfo.getUserName()+" as "+userInfo.getUserType());
+		}
 
 		//Get all labels in the system
 		ArrayList<ClassLabel> classLabels = data.getClassLabels();
