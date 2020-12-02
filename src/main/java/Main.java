@@ -88,7 +88,7 @@ public class Main {
 							}
 						}
 
-						userInfo.labelInstance(randomInstance, availableLabels, randomLabelling);
+						randomLabelling.labelInstanceWithUser(userInfo, randomInstance, classLabels);
 					}
 					break;
 			}

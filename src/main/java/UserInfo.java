@@ -8,12 +8,6 @@ public class UserInfo {
     private String userName;
     private String userType;
 
-    public Instance labelInstance(Instance instance, ArrayList<ClassLabel> classLabels, LabellingMechanism labellingMechanism){
-        ClassLabel classLabel= labellingMechanism.labelInstanceWithUser(this, instance, classLabels);
-        Instance labelledInstance = instance.addLabel(this, classLabel);
-        return labelledInstance;
-    }
-
     //Json property: The feature in which variables in json file which variables we should assign in our model.
 
     //Variables getter setter methods
