@@ -136,7 +136,7 @@ public class Main {
 		}
 		jsonObj.put("class label assignments", cla);
 		jsonObj.put("users", user);
-		mapper.writeValue(new File("output.json"), jsonObj);
+		mapper.writerWithDefaultPrettyPrinter().writeValue(new File("output.json"), jsonObj);
 	}
 
 	public static Object read(String fileName,Object object){
