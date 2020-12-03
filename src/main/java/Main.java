@@ -1,18 +1,29 @@
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Scanner;
 
 public class Main {
-	public static void main(String[] args) {
-
+	public static void main(String[] args) throws IOException {
+		ArrayList<JSONObject> cla = new ArrayList<>();
+		ArrayList<JSONObject> instancesList = new ArrayList<>();
+		ObjectMapper mapper = new ObjectMapper();
+		LinkedHashMap jsonObj = new LinkedHashMap();
 		//create dataset object for keep input's information.
 		Dataset data = (Dataset) read("src/input-1.json",new Dataset());
-
+		jsonObj.put("dataset id", data.getDatasetID());
+		jsonObj.put("dataset name", data.getDatasetName());
+		jsonObj.put("maximum number of labels per instance", data.getMaximumNumberOfLabelsPerInstance());
+		jsonObj.put("class labels", data.getClassLabels());
 		//Testing data set ->System.out.println(data.getInstances().get(0).getInstance());
 
 		//create user object for keep user's information.
@@ -42,7 +53,12 @@ public class Main {
 		//Assign maxLabelPerInstance to all instances
 		for (Instance instance : instances) {
 			instance.setMaxNumberOfLabel(maxLabelPerInstance);
+			JSONObject jsonObj1 = new JSONObject();
+			jsonObj1.put("id", instance.getID());
+			jsonObj1.put("instance", instance.getInstance());
+			instancesList.add(jsonObj1);
 		}
+		jsonObj.put("instances", instancesList);
 
 		//Create labelling mechanisms
 		LabellingMechanism randomLabelling = new RandomLabelling();
@@ -108,11 +124,19 @@ public class Main {
 					String getInstanceText = "instance :" + instance.getInstance();
 					//Print log records check log.txt
 					logger.info(userIdText + userNameText + labelledInstanceIdText + withClassText + labelText + getInstanceText);
-
-
+					JSONObject jsonObj1 = new JSONObject();
+					jsonObj1.put("instance id", instance.getID());
+					jsonObj1.put("class label ids",
+							labelPair.getLabel().getLabelID());
+					jsonObj1.put("user id", labelPair.getWhoLabelled().getUserID());
+					jsonObj1.put("datetime", labelPair.getDate()+"");
+					cla.add(jsonObj1);
 				}
 			}
 		}
+		jsonObj.put("class label assignments", cla);
+		jsonObj.put("users", user);
+		mapper.writeValue(new File("output.json"), jsonObj);
 	}
 
 	public static Object read(String fileName,Object object){
