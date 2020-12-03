@@ -1,12 +1,13 @@
-import java.time.LocalDate;
+
+import java.time.LocalDateTime;
 
 public class LabelledInstance extends Instance {
 
     private UserInfo whoLabelled;
     private ClassLabel label ;
-    private LocalDate date;
+    private LocalDateTime date;
 
-    LabelledInstance(int id, String instance, UserInfo userInfo , ClassLabel classLabel , LocalDate localDate) {
+    LabelledInstance(int id, String instance, UserInfo userInfo , ClassLabel classLabel , LocalDateTime localDate) {
         this.setID(id);
         this.setInstance(instance);
         this.whoLabelled = userInfo;
@@ -30,11 +31,11 @@ public class LabelledInstance extends Instance {
         this.label = label;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

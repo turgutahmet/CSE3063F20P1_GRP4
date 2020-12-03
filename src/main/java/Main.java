@@ -8,6 +8,7 @@ import org.json.simple.parser.JSONParser;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Scanner;
@@ -124,12 +125,13 @@ public class Main {
 					String getInstanceText = "instance :" + instance.getInstance();
 					//Print log records check log.txt
 					logger.info(userIdText + userNameText + labelledInstanceIdText + withClassText + labelText + getInstanceText);
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 					JSONObject jsonObj1 = new JSONObject();
 					jsonObj1.put("instance id", instance.getID());
 					jsonObj1.put("class label ids",
 							labelPair.getLabel().getLabelID());
 					jsonObj1.put("user id", labelPair.getWhoLabelled().getUserID());
-					jsonObj1.put("datetime", labelPair.getDate()+"");
+					jsonObj1.put("datetime", labelPair.getDate().format(formatter)+"");
 					cla.add(jsonObj1);
 				}
 			}

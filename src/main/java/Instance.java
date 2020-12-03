@@ -1,6 +1,5 @@
 import com.fasterxml.jackson.annotation.*;
-
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Instance {
@@ -12,7 +11,7 @@ public class Instance {
     private ArrayList<LabelledInstance> labelPairs = new ArrayList<LabelledInstance>();
 
     public Instance addLabel(UserInfo userInfo, ClassLabel classLabel){
-        LabelledInstance labelledInstance = new LabelledInstance(id, instance, userInfo, classLabel, LocalDate.now());
+        LabelledInstance labelledInstance = new LabelledInstance(id, instance, userInfo, classLabel, LocalDateTime.now());
         labelledInstance.setInstance(this.instance);
         labelPairs.add(labelledInstance);
         if (maxNumberOfLabel == labelPairs.size()) {
