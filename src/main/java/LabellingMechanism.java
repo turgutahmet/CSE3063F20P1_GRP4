@@ -3,7 +3,7 @@ public abstract class LabellingMechanism {
 
     private String labellingMechanismType;
 
-    public abstract Instance labelInstanceWithUser( UserInfo userInfo, Instance instance, ArrayList<ClassLabel> classLabel);
+    public abstract void labelInstanceWithUser( UserInfo userInfo, Instance instance, ArrayList<ClassLabel> classLabel);
 
     public String getLabellingMechanismType() {
         return labellingMechanismType;
