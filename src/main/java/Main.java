@@ -93,7 +93,7 @@ public class Main {
 						//Select a random instance from available instances
 						Instance randomInstance = availableInstances.get((int) (Math.random() * availableInstances.size()));
 
-						randomLabelling.labelInstanceWithUser(userInfo, randomInstance, classLabels);
+						randomLabelling.labelInstanceWithUser(userInfo, randomInstance, classLabels,logger);
 
 						availableInstances.remove(randomInstance);
 					}
@@ -116,7 +116,6 @@ public class Main {
 		}
 
 		/*Print all labelled instances
-		logger = Logger.getLogger(LabelledInstance.class.getName());
 		for (Instance instance : instances) {
 			if (!instance.getLabelPairs().isEmpty()) {
 				for (LabelledInstance labelPair : instance.getLabelPairs()) {

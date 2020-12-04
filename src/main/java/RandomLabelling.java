@@ -1,8 +1,10 @@
 import java.lang.Math;
 import java.util.*;
+import org.apache.log4j.Logger;
+
 public class RandomLabelling extends LabellingMechanism {
     @Override
-    public void labelInstanceWithUser(UserInfo userInfo, Instance instance, ArrayList<ClassLabel> classLabels) {
+    public void labelInstanceWithUser(UserInfo userInfo, Instance instance, ArrayList<ClassLabel> classLabels, Logger logger) {
 
         int howManyLabels = (int) (Math.random() * classLabels.size()) + 1;
         ArrayList<ClassLabel> labelArray = new ArrayList<>();
@@ -21,6 +23,6 @@ public class RandomLabelling extends LabellingMechanism {
 
         }
 
-        instance.addLabel(userInfo, labelArray);
+        instance.addLabel(userInfo, labelArray,logger);
     }
 }

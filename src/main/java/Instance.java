@@ -1,6 +1,7 @@
 import com.fasterxml.jackson.annotation.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import org.apache.log4j.Logger;
 
 public class Instance {
     //Define basic Instance variable
@@ -10,8 +11,8 @@ public class Instance {
     private int maxNumberOfLabel;
     private ArrayList<LabelledInstance> userLabels = new ArrayList<LabelledInstance>();
 
-    public void addLabel(UserInfo userInfo, ArrayList<ClassLabel> classLabels){
-        LabelledInstance labelledInstance = new LabelledInstance(id, instance, userInfo, classLabels, LocalDateTime.now());
+    public void addLabel(UserInfo userInfo, ArrayList<ClassLabel> classLabels, Logger logger){
+        LabelledInstance labelledInstance = new LabelledInstance(id, instance, userInfo, classLabels, LocalDateTime.now(),logger);
         labelledInstance.setInstance(this.instance);
         userLabels.add(labelledInstance);
         userInfo.addLabelledInstance(labelledInstance);
