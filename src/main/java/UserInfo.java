@@ -1,5 +1,7 @@
 import com.fasterxml.jackson.annotation.*;
 
+import java.util.ArrayList;
+
 public class UserInfo {
     //Define basic UserInfo variable
     private int userID;
