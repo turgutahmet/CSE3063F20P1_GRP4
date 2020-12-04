@@ -7,6 +7,10 @@ public class RandomLabelling extends LabellingMechanism {
     public void labelInstanceWithUser(UserInfo userInfo, Instance instance, ArrayList<ClassLabel> classLabels, Logger logger) {
 
         int howManyLabels = (int) (Math.random() * classLabels.size()) + 1;
+
+        if(howManyLabels > instance.getMaxNumberOfLabel())
+            howManyLabels = (int) (Math.random() * instance.getMaxNumberOfLabel()) + 1;
+
         ArrayList<ClassLabel> labelArray = new ArrayList<>();
         ArrayList<ClassLabel> availableLabels = new ArrayList<>();
         for (ClassLabel label : classLabels) {
