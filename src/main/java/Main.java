@@ -102,6 +102,19 @@ public class Main {
 
 		}
 
+		for (Instance instance : instances) {
+			for (LabelledInstance labelPair : instance.getLabelPairs()) {
+				System.out.println("instance id: " + labelPair.getID());
+				System.out.println("who labeled: " + labelPair.getWhoLabelled().getUserID());
+				System.out.print("labels: ");
+				for (ClassLabel label : labelPair.getLabels()) {
+					System.out.print(label.getLabelID() + " ");
+				}
+				System.out.println();
+				System.out.println();
+			}
+		}
+
 		/*Print all labelled instances
 		logger = Logger.getLogger(LabelledInstance.class.getName());
 		for (Instance instance : instances) {
