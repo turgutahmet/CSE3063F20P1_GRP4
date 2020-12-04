@@ -20,7 +20,7 @@ public class Main {
 		ObjectMapper mapper = new ObjectMapper();
 		LinkedHashMap jsonObj = new LinkedHashMap();
 		//create dataset object for keep input's information.
-		Dataset data = (Dataset) read("src/input-1.json",new Dataset());
+		Dataset data = (Dataset) read("src/input-2.json", new Dataset());
 		jsonObj.put("dataset id", data.getDatasetID());
 		jsonObj.put("dataset name", data.getDatasetName());
 		jsonObj.put("maximum number of labels per instance", data.getMaximumNumberOfLabelsPerInstance());
@@ -28,7 +28,7 @@ public class Main {
 		//Testing data set ->System.out.println(data.getInstances().get(0).getInstance());
 
 		//create user object for keep user's information.
-		User user = (User) read("src/users-1.json",new User());
+		User user = (User) read("src/users-2.json", new User());
 		//create logger object for log records
 		Logger logger = Logger.getLogger(User.class.getName());
 		//set logger configurations
@@ -40,7 +40,7 @@ public class Main {
 		ArrayList<UserInfo> users = user.getUserInfos();
 		for (UserInfo userInfo : users) {
 			//print user log records check log.txt
-			logger.info("user: created "+userInfo.getUserName()+" as "+userInfo.getUserType());
+			logger.info("user: created " + userInfo.getUserName() + " as " + userInfo.getUserType());
 		}
 
 		//Get all labels in the system
@@ -75,20 +75,15 @@ public class Main {
 					System.out.print("Please enter how many instances " + userInfo.getUserName() + " will label:\t");
 					int numberOfLabel = scan.nextInt();
 
-					//Copy all classLabels to availableLabels
-					ArrayList<ClassLabel> availableLabels = new ArrayList<>();
-					for (ClassLabel classLabel : classLabels) {
-						availableLabels.add(classLabel);
+					//Get available instances for labelling
+					ArrayList<Instance> availableInstances = new ArrayList<>();
+					for (Instance instance : instances) {
+						if (instance.isCanLabeled()) {
+							availableInstances.add(instance);
+						}
 					}
 
-					for (int i = 0; i < numberOfLabel; i++) {	
-						//Get available instances for labelling
-						ArrayList<Instance> availableInstances = new ArrayList<>();
-						for (Instance instance : instances) {
-							if (instance.isCanLabeled()) {
-								availableInstances.add(instance);
-							}
-						}
+					for (int i = 0; i < numberOfLabel; i++) {
 
 						//If there is no available instance to labeled break
 						if (availableInstances.isEmpty()) {
@@ -96,22 +91,18 @@ public class Main {
 						}
 
 						//Select a random instance from available instances
-						Instance randomInstance = availableInstances.get((int)(Math.random() * availableInstances.size()));
-
-						//Get available class labels for that instance
-						for (LabelledInstance labelPair : randomInstance.getLabelPairs()) {
-							if (labelPair.getWhoLabelled() == userInfo) {
-								availableLabels.remove(labelPair.getLabel());
-							}
-						}
+						Instance randomInstance = availableInstances.get((int) (Math.random() * availableInstances.size()));
 
 						randomLabelling.labelInstanceWithUser(userInfo, randomInstance, classLabels);
+
+						availableInstances.remove(randomInstance);
 					}
 					break;
 			}
+
 		}
 
-		//Print all labelled instances
+		/*Print all labelled instances
 		logger = Logger.getLogger(LabelledInstance.class.getName());
 		for (Instance instance : instances) {
 			if (!instance.getLabelPairs().isEmpty()) {
@@ -139,9 +130,13 @@ public class Main {
 		jsonObj.put("class label assignments", cla);
 		jsonObj.put("users", user);
 		mapper.writerWithDefaultPrettyPrinter().writeValue(new File("output.json"), jsonObj);
+
+
+
+	}*/
 	}
 
-	public static Object read(String fileName,Object object){
+	public static Object read(String fileName, Object object) {
 
 		//Create JsonParser object for read json file
 		JSONParser jsonParser = new JSONParser();
