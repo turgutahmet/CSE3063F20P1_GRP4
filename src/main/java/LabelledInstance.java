@@ -1,17 +1,17 @@
-
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class LabelledInstance extends Instance {
 
     private UserInfo whoLabelled;
-    private ClassLabel label ;
+    private ArrayList<ClassLabel> labels = new ArrayList<ClassLabel>();
     private LocalDateTime date;
 
-    LabelledInstance(int id, String instance, UserInfo userInfo , ClassLabel classLabel , LocalDateTime localDate) {
+    LabelledInstance(int id, String instance, UserInfo userInfo , ArrayList<ClassLabel> classLabels , LocalDateTime localDate) {
         this.setID(id);
         this.setInstance(instance);
         this.whoLabelled = userInfo;
-        this.label = classLabel;
+        this.labels = classLabels;
         this.date = localDate;
     }
 
@@ -23,12 +23,12 @@ public class LabelledInstance extends Instance {
         this.whoLabelled = whoLabelled;
     }
 
-    public ClassLabel getLabel() {
-        return label;
+    public ArrayList<ClassLabel> getLabels() {
+        return labels;
     }
 
-    public void setLabel(ClassLabel label) {
-        this.label = label;
+    public void setLabels(ArrayList<ClassLabel> label) {
+        this.labels = label;
     }
 
     public LocalDateTime getDate() {

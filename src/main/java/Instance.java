@@ -8,16 +8,16 @@ public class Instance {
     private String instance;
     private boolean canLabeled = true;
     private int maxNumberOfLabel;
-    private ArrayList<LabelledInstance> labelPairs = new ArrayList<LabelledInstance>();
+    private ArrayList<LabelledInstance> userLabels = new ArrayList<LabelledInstance>();
 
-    public Instance addLabel(UserInfo userInfo, ClassLabel classLabel){
-        LabelledInstance labelledInstance = new LabelledInstance(id, instance, userInfo, classLabel, LocalDateTime.now());
+    public void addLabel(UserInfo userInfo, ArrayList<ClassLabel> classLabels){
+        LabelledInstance labelledInstance = new LabelledInstance(id, instance, userInfo, classLabels, LocalDateTime.now());
         labelledInstance.setInstance(this.instance);
-        labelPairs.add(labelledInstance);
-        if (maxNumberOfLabel == labelPairs.size()) {
+        userLabels.add(labelledInstance);
+        userInfo.addLabelledInstance(labelledInstance);
+        if (maxNumberOfLabel == userLabels.size()) {
             canLabeled = false;
         }
-        return this;
     }
     //Json property: The feature in which variables in json file which variables we should assign in our model.
 
@@ -49,10 +49,10 @@ public class Instance {
     }
 
     public ArrayList<LabelledInstance> getLabelPairs() {
-        return labelPairs;
+        return userLabels;
     }
 
     public void setLabelPairs(ArrayList<LabelledInstance> labelPairs) {
-        this.labelPairs = labelPairs;
+        this.userLabels = labelPairs;
     }
 }
