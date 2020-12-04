@@ -8,7 +8,7 @@ public class RandomLabelling extends LabellingMechanism {
 
         int howManyLabels = (int) (Math.random() * classLabels.size()) + 1;
 
-        if(howManyLabels > instance.getMaxNumberOfLabel())
+        if(howManyLabels > instance.getAmountOfLabels())
             howManyLabels = (int) (Math.random() * instance.getMaxNumberOfLabel()) + 1;
 
         ArrayList<ClassLabel> labelArray = new ArrayList<>();
@@ -26,7 +26,10 @@ public class RandomLabelling extends LabellingMechanism {
             availableLabels.remove(availableLabels.get(random_index));
 
         }
-
+        //TODO: copy instance object and check amount of labels
+        //TODO: if amount of labels is less than max number of labels save changes
+        //TODO: if amount of labels is greater than max number of labels rollback labeling process and re-calculate howManyLabels
+        //TODO: if amount of labels is equal to max number of labels save changes
         Collections.sort(labelArray , Comparator.comparing(ClassLabel::getLabelID));
         instance.addLabel(userInfo, labelArray,logger);
     }

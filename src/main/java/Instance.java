@@ -9,6 +9,7 @@ public class Instance {
     private String instance;
     private boolean canLabeled = true;
     private int maxNumberOfLabel;
+    private int amountOfLabels;
     private ArrayList<LabelledInstance> userLabels = new ArrayList<LabelledInstance>();
 
     public void addLabel(UserInfo userInfo, ArrayList<ClassLabel> classLabels, Logger logger){
@@ -16,7 +17,13 @@ public class Instance {
         labelledInstance.setInstance(this.instance);
         userLabels.add(labelledInstance);
         userInfo.addLabelledInstance(labelledInstance);
-        if (maxNumberOfLabel == userLabels.size()) {
+        //control max number of label
+        amountOfLabels = 0;
+        for (LabelledInstance userLabel : userLabels) {
+            amountOfLabels += userLabel.getLabels().size();
+            amountOfLabels = amountOfLabels;
+        }
+        if (maxNumberOfLabel == amountOfLabels) {
             canLabeled = false;
         }
     }
@@ -55,5 +62,13 @@ public class Instance {
 
     public void setLabelPairs(ArrayList<LabelledInstance> labelPairs) {
         this.userLabels = labelPairs;
+    }
+
+    public int getAmountOfLabels() {
+        return amountOfLabels;
+    }
+
+    public void setAmountOfLabels(int amountOfLabels) {
+        this.amountOfLabels = amountOfLabels;
     }
 }
