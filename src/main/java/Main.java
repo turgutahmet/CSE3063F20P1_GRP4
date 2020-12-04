@@ -15,8 +15,8 @@ import java.util.Scanner;
 
 public class Main {
 	public static void main(String[] args) throws IOException {
-		ArrayList<JSONObject> cla = new ArrayList<>();
-		ArrayList<JSONObject> instancesList = new ArrayList<>();
+		ArrayList<LinkedHashMap> cla = new ArrayList<>();
+		ArrayList<LinkedHashMap> instancesList = new ArrayList<>();
 		ObjectMapper mapper = new ObjectMapper();
 		LinkedHashMap jsonObj = new LinkedHashMap();
 		//create dataset object for keep input's information.
@@ -54,7 +54,7 @@ public class Main {
 		//Assign maxLabelPerInstance to all instances
 		for (Instance instance : instances) {
 			instance.setMaxNumberOfLabel(maxLabelPerInstance);
-			JSONObject jsonObj1 = new JSONObject();
+			LinkedHashMap jsonObj1 = new LinkedHashMap();
 			jsonObj1.put("id", instance.getID());
 			jsonObj1.put("instance", instance.getInstance());
 			instancesList.add(jsonObj1);
@@ -107,46 +107,39 @@ public class Main {
 				System.out.println("instance id: " + labelPair.getID());
 				System.out.println("who labeled: " + labelPair.getWhoLabelled().getUserID());
 				System.out.print("labels: ");
+				ArrayList<Integer> list = new ArrayList<Integer>();
 				for (ClassLabel label : labelPair.getLabels()) {
 					System.out.print(label.getLabelID() + " ");
+					list.add(label.getLabelID());
 				}
 				System.out.println();
 				System.out.println();
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+				LinkedHashMap jsonObj1 = new LinkedHashMap();
+				jsonObj1.put("instance id", labelPair.getID());
+				jsonObj1.put("class label ids", list);
+				jsonObj1.put("user id", labelPair.getWhoLabelled().getUserID());
+				jsonObj1.put("datetime", labelPair.getDate().format(formatter)+"");
+				cla.add(jsonObj1);
 			}
 		}
 
-		/*Print all labelled instances
-		for (Instance instance : instances) {
-			if (!instance.getLabelPairs().isEmpty()) {
-				for (LabelledInstance labelPair : instance.getLabelPairs()) {
-					//Text is separated for log recording.
-					String userIdText = "user id:" + labelPair.getWhoLabelled().getUserID() +" ";
-					String userNameText = labelPair.getWhoLabelled().getUserName() + " ";
-					String labelledInstanceIdText = "labelled instance id:" + instance.getID() + " ";
-					String withClassText= "with class label " +labelPair.getLabel().getLabelID() + " :";
-					String labelText = labelPair.getLabel().getLabelText() + " ";
-					String getInstanceText = "instance :" + instance.getInstance();
-					//Print log records check log.txt
-					logger.info(userIdText + userNameText + labelledInstanceIdText + withClassText + labelText + getInstanceText);
-					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-					JSONObject jsonObj1 = new JSONObject();
-					jsonObj1.put("instance id", instance.getID());
-					jsonObj1.put("class label ids",
-							labelPair.getLabel().getLabelID());
-					jsonObj1.put("user id", labelPair.getWhoLabelled().getUserID());
-					jsonObj1.put("datetime", labelPair.getDate().format(formatter)+"");
-					cla.add(jsonObj1);
-				}
-			}
-		}
+
 		jsonObj.put("class label assignments", cla);
-		jsonObj.put("users", user);
+		ArrayList<LinkedHashMap> usersList = new ArrayList<LinkedHashMap>();
+		for (UserInfo userInfo : users) {
+			LinkedHashMap jsonObj1 = new LinkedHashMap();
+			jsonObj1.put("user id", userInfo.getUserID());
+			jsonObj1.put("user name", userInfo.getUserName());
+			usersList.add(jsonObj1);
+		}
+		jsonObj.put("users", usersList);
 		mapper.writerWithDefaultPrettyPrinter().writeValue(new File("output.json"), jsonObj);
 
 
 
-	}*/
 	}
+
 
 	public static Object read(String fileName, Object object) {
 
