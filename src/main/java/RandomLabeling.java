@@ -2,7 +2,11 @@ import java.lang.Math;
 import java.util.*;
 import org.apache.log4j.Logger;
 
-public class RandomLabelling extends LabellingMechanism {
+public class RandomLabeling extends LabelingMechanism {
+    public RandomLabeling() {
+        this.setLabelingMechanismType("Random Labeling");
+    }
+
     @Override
     public void labelInstanceWithUser(UserInfo userInfo, Instance instance, ArrayList<ClassLabel> classLabels, Logger logger) {
         //Randomly getting the number of how many labeling going to happen on instance.

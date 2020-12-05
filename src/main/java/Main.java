@@ -63,7 +63,7 @@ public class Main {
 		jsonObj.put("instances", instancesList);
 
 		//Create labelling mechanisms
-		LabellingMechanism randomLabelling = new RandomLabelling();
+		LabelingMechanism randomLabelling = new RandomLabeling();
 
 		//Random Labelling Simulation
 		//Iterate all users
