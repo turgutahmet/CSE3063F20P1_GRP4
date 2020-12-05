@@ -13,8 +13,10 @@ public class Instance {
     private ArrayList<LabeledInstance> userLabels = new ArrayList<LabeledInstance>();
 
     public void addLabel(UserInfo userInfo, ArrayList<ClassLabel> classLabels, Logger logger){
+        //create new labeledInstance
         LabeledInstance labeledInstance = new LabeledInstance(id, instance, userInfo, classLabels, LocalDateTime.now(),logger);
         labeledInstance.setInstance(this.instance);
+        // add the labeledInstance to userLabels and userInfo
         userLabels.add(labeledInstance);
         userInfo.addLabeledInstance(labeledInstance);
         //control max number of label
