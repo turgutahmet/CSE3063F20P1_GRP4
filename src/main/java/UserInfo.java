@@ -7,11 +7,11 @@ public class UserInfo {
     private int userID;
     private String userName;
     private String userType;
-    private ArrayList<LabelledInstance> labelledInstances = new ArrayList<>() ;
+    private ArrayList<LabeledInstance> labeledInstances = new ArrayList<>() ;
     //Json property: The feature in which variables in json file which variables we should assign in our model.
 
-    public void addLabelledInstance (LabelledInstance labelledInstance){
-        labelledInstances.add(labelledInstance);
+    public void addLabeledInstance (LabeledInstance labeledInstance){
+        labeledInstances.add(labeledInstance);
     }
     //Variables getter setter methods
     public int getUserID() {
@@ -30,12 +30,12 @@ public class UserInfo {
         this.userName = userName;
     }
 
-    public ArrayList<LabelledInstance> getLabelledInstaces() {
-        return labelledInstances;
+    public ArrayList<LabeledInstance> getLabeledInstances() {
+        return labeledInstances;
     }
 
-    public void setLabelledInstaces(ArrayList<LabelledInstance> labelledInstaces) {
-        this.labelledInstances = labelledInstaces;
+    public void setLabeledInstances(ArrayList<LabeledInstance> labelledInstances) {
+        this.labeledInstances = labelledInstances;
     }
 
     public String getUserType() {

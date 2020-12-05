@@ -8,7 +8,7 @@ public class RandomLabelling extends LabellingMechanism {
 
         int howManyLabels = (int) (Math.random() * instance.getMaxNumberOfLabel()) + 1;
 
-        int filledLabes = 0;
+        int filledLabels = 0;
         ArrayList<ClassLabel> labelArray = new ArrayList<>();
         ArrayList<ClassLabel> availableLabels = new ArrayList<>();
         for (ClassLabel label : classLabels) {
@@ -16,11 +16,11 @@ public class RandomLabelling extends LabellingMechanism {
         }
 
         for (int i = 0 ; i<instance.getLabelPairs().size(); i++) {
-            filledLabes += instance.getLabelPairs().get(i).getLabels().size();
+            filledLabels += instance.getLabelPairs().get(i).getLabels().size();
         }
 
         for (int i = 0; i < howManyLabels; i++) {
-            if(filledLabes == instance.getMaxNumberOfLabel())
+            if(filledLabels == instance.getMaxNumberOfLabel())
                 if(i == 0)
                     return;
                 else
@@ -31,12 +31,12 @@ public class RandomLabelling extends LabellingMechanism {
             labelArray.add(availableLabels.get(random_index));
 
             availableLabels.remove(availableLabels.get(random_index));
-            filledLabes++;
+            filledLabels++;
 
         }
 
         Collections.sort(labelArray , Comparator.comparing(ClassLabel::getLabelID));
         instance.addLabel(userInfo, labelArray,logger);
-        System.out.println(filledLabes);
+        System.out.println(filledLabels);
     }
 }

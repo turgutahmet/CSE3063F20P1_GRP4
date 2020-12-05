@@ -2,34 +2,34 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import org.apache.log4j.Logger;
 
-public class LabelledInstance extends Instance {
+public class LabeledInstance extends Instance {
 
-    private UserInfo whoLabelled;
+    private UserInfo whoLabeled;
     private ArrayList<ClassLabel> labels = new ArrayList<ClassLabel>();
     private LocalDateTime date;
 
-    LabelledInstance(int id, String instance, UserInfo userInfo , ArrayList<ClassLabel> classLabels , LocalDateTime localDate, Logger logger) {
+    LabeledInstance(int id, String instance, UserInfo userInfo , ArrayList<ClassLabel> classLabels , LocalDateTime localDate, Logger logger) {
         this.setID(id);
         this.setInstance(instance);
-        this.whoLabelled = userInfo;
+        this.whoLabeled = userInfo;
         this.labels = classLabels;
         this.date = localDate;
         //Logger class initialize
         logger = Logger.getLogger(this.getClass().getName());
         //Print log check
         for (ClassLabel label : labels) {
-            logger.info("user id:" + whoLabelled.getUserID() +" "+ whoLabelled.getUserName() + " "+ "labelled instance id:" + this.getID() + " "
+            logger.info("user id:" + whoLabeled.getUserID() +" "+ whoLabeled.getUserName() + " "+ "labeled instance id:" + this.getID() + " "
                     + "with class label " + label.getLabelID() + " :"+  label.getLabelText() + " "+ "instance :" + this.getInstance());
         }
 
     }
 
-    public UserInfo getWhoLabelled() {
-        return whoLabelled;
+    public UserInfo getWhoLabeled() {
+        return whoLabeled;
     }
 
     public void setWhoLabelled(UserInfo whoLabelled) {
-        this.whoLabelled = whoLabelled;
+        this.whoLabeled = whoLabelled;
     }
 
     public ArrayList<ClassLabel> getLabels() {

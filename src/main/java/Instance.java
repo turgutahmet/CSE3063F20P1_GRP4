@@ -10,16 +10,16 @@ public class Instance {
     private boolean canLabeled = true;
     private int maxNumberOfLabel;
     private int amountOfLabels;
-    private ArrayList<LabelledInstance> userLabels = new ArrayList<LabelledInstance>();
+    private ArrayList<LabeledInstance> userLabels = new ArrayList<LabeledInstance>();
 
     public void addLabel(UserInfo userInfo, ArrayList<ClassLabel> classLabels, Logger logger){
-        LabelledInstance labelledInstance = new LabelledInstance(id, instance, userInfo, classLabels, LocalDateTime.now(),logger);
-        labelledInstance.setInstance(this.instance);
-        userLabels.add(labelledInstance);
-        userInfo.addLabelledInstance(labelledInstance);
+        LabeledInstance labeledInstance = new LabeledInstance(id, instance, userInfo, classLabels, LocalDateTime.now(),logger);
+        labeledInstance.setInstance(this.instance);
+        userLabels.add(labeledInstance);
+        userInfo.addLabeledInstance(labeledInstance);
         //control max number of label
         amountOfLabels = 0;
-        for (LabelledInstance userLabel : userLabels) {
+        for (LabeledInstance userLabel : userLabels) {
             amountOfLabels += userLabel.getLabels().size();
             amountOfLabels = amountOfLabels;
         }
@@ -56,11 +56,11 @@ public class Instance {
         this.maxNumberOfLabel = maxNumberOfLabel;
     }
 
-    public ArrayList<LabelledInstance> getLabelPairs() {
+    public ArrayList<LabeledInstance> getLabelPairs() {
         return userLabels;
     }
 
-    public void setLabelPairs(ArrayList<LabelledInstance> labelPairs) {
+    public void setLabelPairs(ArrayList<LabeledInstance> labelPairs) {
         this.userLabels = labelPairs;
     }
 

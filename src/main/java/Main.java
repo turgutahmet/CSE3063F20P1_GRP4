@@ -1,8 +1,6 @@
-import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.File;
@@ -15,10 +13,11 @@ import java.util.Scanner;
 
 public class Main {
 	public static void main(String[] args) throws IOException {
-		ArrayList<LinkedHashMap> cla = new ArrayList<>();
+		ArrayList<LinkedHashMap> classLabelList = new ArrayList<>();
 		ArrayList<LinkedHashMap> instancesList = new ArrayList<>();
 		ObjectMapper mapper = new ObjectMapper();
 		LinkedHashMap jsonObj = new LinkedHashMap();
+
 		//create dataset object for keep input's information.
 		Dataset data = (Dataset) read("src/input-2.json", new Dataset());
 		jsonObj.put("dataset id", data.getDatasetID());
@@ -103,29 +102,29 @@ public class Main {
 		}
 
 		for (Instance instance : instances) {
-			for (LabelledInstance labelPair : instance.getLabelPairs()) {
+			for (LabeledInstance labelPair : instance.getLabelPairs()) {
 				System.out.println("instance id: " + labelPair.getID());
-				System.out.println("who labeled: " + labelPair.getWhoLabelled().getUserID());
+				System.out.println("who labeled: " + labelPair.getWhoLabeled().getUserID());
 				System.out.print("labels: ");
-				ArrayList<Integer> list = new ArrayList<Integer>();
+				ArrayList<Integer> listOfLabel = new ArrayList<Integer>();
 				for (ClassLabel label : labelPair.getLabels()) {
 					System.out.print(label.getLabelID() + " ");
-					list.add(label.getLabelID());
+					listOfLabel.add(label.getLabelID());
 				}
 				System.out.println();
 				System.out.println();
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 				LinkedHashMap jsonObj1 = new LinkedHashMap();
 				jsonObj1.put("instance id", labelPair.getID());
-				jsonObj1.put("class label ids", list);
-				jsonObj1.put("user id", labelPair.getWhoLabelled().getUserID());
+				jsonObj1.put("class label ids", listOfLabel);
+				jsonObj1.put("user id", labelPair.getWhoLabeled().getUserID());
 				jsonObj1.put("datetime", labelPair.getDate().format(formatter)+"");
-				cla.add(jsonObj1);
+				classLabelList.add(jsonObj1);
 			}
 		}
 
 
-		jsonObj.put("class label assignments", cla);
+		jsonObj.put("class label assignments", classLabelList);
 		ArrayList<LinkedHashMap> usersList = new ArrayList<LinkedHashMap>();
 		for (UserInfo userInfo : users) {
 			LinkedHashMap jsonObj1 = new LinkedHashMap();
