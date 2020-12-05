@@ -11,7 +11,5 @@ public abstract class LabellingMechanism {
         return labellingMechanismType;
     }
 
-    public void setLabellingMechanismType(String labellingMechanismType) {
-        this.labellingMechanismType = labellingMechanismType;
-    }
+    public void setLabellingMechanismType(String labellingMechanismType) { this.labellingMechanismType = labellingMechanismType; }
 }

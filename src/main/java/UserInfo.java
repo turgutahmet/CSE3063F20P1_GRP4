@@ -34,9 +34,7 @@ public class UserInfo {
         return labeledInstances;
     }
 
-    public void setLabeledInstances(ArrayList<LabeledInstance> labelledInstances) {
-        this.labeledInstances = labelledInstances;
-    }
+    public void setLabeledInstances(ArrayList<LabeledInstance> labelledInstances) { this.labeledInstances = labelledInstances; }
 
     public String getUserType() {
         return userType;

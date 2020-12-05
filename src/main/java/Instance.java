@@ -21,7 +21,6 @@ public class Instance {
         amountOfLabels = 0;
         for (LabeledInstance userLabel : userLabels) {
             amountOfLabels += userLabel.getLabels().size();
-            amountOfLabels = amountOfLabels;
         }
         if (maxNumberOfLabel == amountOfLabels) {
             canLabeled = false;
@@ -34,9 +33,7 @@ public class Instance {
     @JsonProperty("id")
     public void setID(int value) { this.id = value; }
 
-    public String getInstance() {
-
-        return instance; }
+    public String getInstance() { return instance; }
     @JsonProperty("instance")
     public void setInstance(String value) { this.instance = value; }
 
