@@ -24,7 +24,6 @@ public class Main {
 		jsonObj.put("dataset name", data.getDatasetName());
 		jsonObj.put("maximum number of labels per instance", data.getMaximumNumberOfLabelsPerInstance());
 		jsonObj.put("class labels", data.getClassLabels());
-		//Testing data set ->System.out.println(data.getInstances().get(0).getInstance());
 
 		//create user object for keep user's information.
 		User user = (User) read("src/users-2.json", new User());
@@ -32,8 +31,6 @@ public class Main {
 		Logger logger = Logger.getLogger(User.class.getName());
 		//set logger configurations
 		PropertyConfigurator.configure("log4j.properties");
-
-		//Testing user set -> System.out.println(user.getUsers().get(0).getUserName());
 
 		//Get all users in the system
 		ArrayList<UserInfo> users = user.getUserInfos();
@@ -88,7 +85,6 @@ public class Main {
 						if (availableInstances.isEmpty()) {
 							break;
 						}
-
 						//Select a random instance from available instances
 						Instance randomInstance = availableInstances.get((int) (Math.random() * availableInstances.size()));
 
@@ -103,16 +99,10 @@ public class Main {
 
 		for (Instance instance : instances) {
 			for (LabeledInstance labelPair : instance.getLabelPairs()) {
-				System.out.println("instance id: " + labelPair.getID());
-				System.out.println("who labeled: " + labelPair.getWhoLabeled().getUserID());
-				System.out.print("labels: ");
 				ArrayList<Integer> listOfLabel = new ArrayList<Integer>();
 				for (ClassLabel label : labelPair.getLabels()) {
-					System.out.print(label.getLabelID() + " ");
 					listOfLabel.add(label.getLabelID());
 				}
-				System.out.println();
-				System.out.println();
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 				LinkedHashMap jsonObj1 = new LinkedHashMap();
 				jsonObj1.put("instance id", labelPair.getID());
@@ -134,9 +124,6 @@ public class Main {
 		}
 		jsonObj.put("users", usersList);
 		mapper.writerWithDefaultPrettyPrinter().writeValue(new File("output.json"), jsonObj);
-
-
-
 	}
 
 

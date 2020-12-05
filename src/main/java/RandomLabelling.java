@@ -37,6 +37,5 @@ public class RandomLabelling extends LabellingMechanism {
 
         Collections.sort(labelArray , Comparator.comparing(ClassLabel::getLabelID));
         instance.addLabel(userInfo, labelArray,logger);
-        System.out.println(filledLabels);
     }
 }
