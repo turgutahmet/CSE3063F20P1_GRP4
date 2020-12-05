@@ -13,13 +13,17 @@ import java.util.Scanner;
 
 public class Main {
 	public static void main(String[] args) throws IOException {
+		//Creating arraylists of classLabel and instance output format.
 		ArrayList<LinkedHashMap> classLabelList = new ArrayList<>();
 		ArrayList<LinkedHashMap> instancesList = new ArrayList<>();
+		//Creating mapper object for writing json file.
 		ObjectMapper mapper = new ObjectMapper();
+		//Creating LinkedHashMap object named jsonObj to help giving output in desired way.
 		LinkedHashMap jsonObj = new LinkedHashMap();
 
 		//create dataset object for keep input's information.
 		Dataset data = (Dataset) read("src/input-2.json", new Dataset());
+		//Putting the needed variables in jsonObj.
 		jsonObj.put("dataset id", data.getDatasetID());
 		jsonObj.put("dataset name", data.getDatasetName());
 		jsonObj.put("maximum number of labels per instance", data.getMaximumNumberOfLabelsPerInstance());
@@ -50,6 +54,7 @@ public class Main {
 		//Assign maxLabelPerInstance to all instances
 		for (Instance instance : instances) {
 			instance.setMaxNumberOfLabel(maxLabelPerInstance);
+			//Created another object and put variables in it to give output in desired way.
 			LinkedHashMap jsonObj1 = new LinkedHashMap();
 			jsonObj1.put("id", instance.getID());
 			jsonObj1.put("instance", instance.getInstance());
@@ -87,22 +92,23 @@ public class Main {
 						}
 						//Select a random instance from available instances
 						Instance randomInstance = availableInstances.get((int) (Math.random() * availableInstances.size()));
-
+						//Calling the labelInstanceWithUser method to make labeling.
 						randomLabelling.labelInstanceWithUser(userInfo, randomInstance, classLabels,logger);
-
+						//Deleting the labeled instance from abailableInstances array.
 						availableInstances.remove(randomInstance);
 					}
 					break;
 			}
 
 		}
-
+		//Getting the labelId list for output.
 		for (Instance instance : instances) {
 			for (LabeledInstance labelPair : instance.getLabelPairs()) {
 				ArrayList<Integer> listOfLabel = new ArrayList<Integer>();
 				for (ClassLabel label : labelPair.getLabels()) {
 					listOfLabel.add(label.getLabelID());
 				}
+				//Putting the desired variables in output object.
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 				LinkedHashMap jsonObj1 = new LinkedHashMap();
 				jsonObj1.put("instance id", labelPair.getID());
@@ -113,7 +119,7 @@ public class Main {
 			}
 		}
 
-
+		//Getting users variables in output object.
 		jsonObj.put("class label assignments", classLabelList);
 		ArrayList<LinkedHashMap> usersList = new ArrayList<LinkedHashMap>();
 		for (UserInfo userInfo : users) {
@@ -124,6 +130,7 @@ public class Main {
 			usersList.add(jsonObj1);
 		}
 		jsonObj.put("users", usersList);
+		//Writing the output in json file.
 		mapper.writerWithDefaultPrettyPrinter().writeValue(new File("output.json"), jsonObj);
 	}
 

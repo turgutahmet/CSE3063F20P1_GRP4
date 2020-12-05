@@ -3,11 +3,11 @@ import java.util.ArrayList;
 import org.apache.log4j.Logger;
 
 public class LabeledInstance extends Instance {
-
+    //Variables of the LabeledInstance class.
     private UserInfo whoLabeled;
     private ArrayList<ClassLabel> labels = new ArrayList<ClassLabel>();
     private LocalDateTime date;
-
+    //LabeledInstance constructor with logger.
     LabeledInstance(int id, String instance, UserInfo userInfo , ArrayList<ClassLabel> classLabels , LocalDateTime localDate, Logger logger) {
         this.setID(id);
         this.setInstance(instance);
@@ -23,7 +23,7 @@ public class LabeledInstance extends Instance {
         }
 
     }
-
+    //Get&set methods.
     public UserInfo getWhoLabeled() {
         return whoLabeled;
     }
