@@ -120,6 +120,7 @@ public class Main {
 			LinkedHashMap jsonObj1 = new LinkedHashMap();
 			jsonObj1.put("user id", userInfo.getUserID());
 			jsonObj1.put("user name", userInfo.getUserName());
+			jsonObj1.put("user type", userInfo.getUserType());
 			usersList.add(jsonObj1);
 		}
 		jsonObj.put("users", usersList);
