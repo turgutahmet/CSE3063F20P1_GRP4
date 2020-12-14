@@ -30,7 +30,7 @@ public class Main {
 		jsonObj.put("class labels", data.getClassLabels());
 
 		//create user object for keep user's information.
-		User user = (User) read("src/users-2.json", new User());
+		User user = (User) read("src/config.json", new User());
 		//create logger object for log records
 		Logger logger = Logger.getLogger(User.class.getName());
 		//set logger configurations
