@@ -65,6 +65,9 @@ public class Main {
 		//Create labelling mechanisms
 		LabelingMechanism randomLabelling = new RandomLabeling();
 
+		//Get consistency check probability
+		double consistencyCheckProbability = user.getConsistencyCheckProbability();
+
 		//Random Labelling Simulation
 		//Iterate all users
 		for (UserInfo userInfo : users) {
@@ -76,26 +79,36 @@ public class Main {
 					System.out.print("Please enter how many instances " + userInfo.getUserName() + " will label:\t");
 					int numberOfLabel = scan.nextInt();
 
-					//Get available instances for labelling
-					ArrayList<Instance> availableInstances = new ArrayList<>();
+					//Get not labeled instances by that user
+					ArrayList<Instance> notLabeledInstances = new ArrayList<>();
 					for (Instance instance : instances) {
 						if (instance.isCanLabeled()) {
-							availableInstances.add(instance);
+							notLabeledInstances.add(instance);
 						}
 					}
 
-					for (int i = 0; i < numberOfLabel; i++) {
+					ArrayList<Instance> previouslyLabeledInstances = new ArrayList<>();
 
-						//If there is no available instance to labeled break
-						if (availableInstances.isEmpty()) {
-							break;
+					for (int i = 0; i < numberOfLabel; i++) {
+						Instance randomInstance;
+
+						if (previouslyLabeledInstances.isEmpty()) { //If that user not label an instance before select a random instance from the notLabeledInstances array
+							randomInstance = notLabeledInstances.get((int) (Math.random() * notLabeledInstances.size()));
+						} else {
+							//According to consistency check probability select a random instance from previouslyLabeledInstance array or notLabeledInstances array
+							int upperLimit = (int) consistencyCheckProbability * 100;
+							int dice = (int) (Math.random() * 100);
+							if (dice < upperLimit) {
+								randomInstance = previouslyLabeledInstances.get((int) (Math.random() * previouslyLabeledInstances.size()));
+							} else {
+								//If selected instance not labeled before by that user, remove that instance form notLabeledInstances array and add that into previouslyLabeledInstances array
+								randomInstance = notLabeledInstances.get((int) (Math.random() * notLabeledInstances.size()));
+								notLabeledInstances.remove(randomInstance);
+								previouslyLabeledInstances.add(randomInstance);
+							}
 						}
-						//Select a random instance from available instances
-						Instance randomInstance = availableInstances.get((int) (Math.random() * availableInstances.size()));
-						//Calling the labelInstanceWithUser method to make labeling.
-						randomLabelling.labelInstanceWithUser(userInfo, randomInstance, classLabels,logger);
-						//Deleting the labeled instance from abailableInstances array.
-						availableInstances.remove(randomInstance);
+
+						randomLabelling.labelInstanceWithUser(userInfo, randomInstance, classLabels, logger);
 					}
 					break;
 			}
