@@ -21,26 +21,36 @@ public class Main {
 		//Creating LinkedHashMap object named jsonObj to help giving output in desired way.
 		LinkedHashMap jsonObj = new LinkedHashMap();
 
+		//create config object for keep config's information.
+		Config config = (Config) read("src/config.json", new Config());
+		String datasetFilePathName = "";
+		int currentDatasetID = config.getCurrentDatasetID();
+		ArrayList<DatasetInfo> datasetsInfo = config.getDatasetInfos();
+
+		for (DatasetInfo datasetInfo : datasetsInfo) {
+			if (currentDatasetID==datasetInfo.getDatasetID()){
+				datasetFilePathName=datasetInfo.getDatasetFilePath();
+				break;
+			}
+		}
 		//create dataset object for keep input's information.
-		Dataset data = (Dataset) read("src/input-2.json", new Dataset());
+		Dataset data = (Dataset) read(datasetFilePathName, new Dataset());
 		//Putting the needed variables in jsonObj.
 		jsonObj.put("dataset id", data.getDatasetID());
 		jsonObj.put("dataset name", data.getDatasetName());
 		jsonObj.put("maximum number of labels per instance", data.getMaximumNumberOfLabelsPerInstance());
 		jsonObj.put("class labels", data.getClassLabels());
 
-		//create user object for keep user's information.
-		User user = (User) read("src/config.json", new User());
 		//create logger object for log records
-		Logger logger = Logger.getLogger(User.class.getName());
+		Logger logger = Logger.getLogger(Config.class.getName());
 		//set logger configurations
 		PropertyConfigurator.configure("log4j.properties");
 
 		//Get all users in the system
-		ArrayList<UserInfo> users = user.getUserInfos();
+		ArrayList<UserInfo> users = config.getUserInfos();
 		for (UserInfo userInfo : users) {
-			//print user log records check log.txt
-			logger.info("user: created " + userInfo.getUserName() + " as " + userInfo.getUserType());
+			//print config log records check log.txt
+			logger.info("config: created " + userInfo.getUserName() + " as " + userInfo.getUserType());
 		}
 
 		//Get all labels in the system
@@ -72,15 +82,15 @@ public class Main {
 			//Get consistency check probability
 			double consistencyCheckProbability = userInfo.getConsistencyCheckProbability();
 
-			//Check the user's type
+			//Check the config's type
 			switch (userInfo.getUserType()) {
 				case "RandomBot":
-					//Get how many instances this user will label
+					//Get how many instances this config will label
 					Scanner scan = new Scanner(System.in);
 					System.out.print("Please enter how many instances " + userInfo.getUserName() + " will label:\t");
 					int numberOfLabel = scan.nextInt();
 
-					//Get not labeled instances by that user
+					//Get not labeled instances by that config
 					ArrayList<Instance> notLabeledInstances = new ArrayList<>();
 					for (Instance instance : instances) {
 						if (instance.isCanLabeled()) {
@@ -93,7 +103,7 @@ public class Main {
 					for (int i = 0; i < numberOfLabel; i++) {
 						Instance randomInstance;
 
-						if (previouslyLabeledInstances.isEmpty()) { //If that user not label an instance before select a random instance from the notLabeledInstances array
+						if (previouslyLabeledInstances.isEmpty()) { //If that config not label an instance before select a random instance from the notLabeledInstances array
 							randomInstance = notLabeledInstances.get((int) (Math.random() * notLabeledInstances.size()));
 						} else {
 							//According to consistency check probability select a random instance from previouslyLabeledInstance array or notLabeledInstances array
@@ -102,7 +112,7 @@ public class Main {
 							if (dice < upperLimit) {
 								randomInstance = previouslyLabeledInstances.get((int) (Math.random() * previouslyLabeledInstances.size()));
 							} else {
-								//If selected instance not labeled before by that user, remove that instance form notLabeledInstances array and add that into previouslyLabeledInstances array
+								//If selected instance not labeled before by that config, remove that instance form notLabeledInstances array and add that into previouslyLabeledInstances array
 								randomInstance = notLabeledInstances.get((int) (Math.random() * notLabeledInstances.size()));
 								notLabeledInstances.remove(randomInstance);
 								previouslyLabeledInstances.add(randomInstance);
@@ -127,7 +137,7 @@ public class Main {
 				LinkedHashMap jsonObj1 = new LinkedHashMap();
 				jsonObj1.put("instance id", labelPair.getID());
 				jsonObj1.put("class label ids", listOfLabel);
-				jsonObj1.put("user id", labelPair.getWhoLabeled().getUserID());
+				jsonObj1.put("config id", labelPair.getWhoLabeled().getUserID());
 				jsonObj1.put("datetime", labelPair.getDate().format(formatter)+"");
 				classLabelList.add(jsonObj1);
 			}
@@ -138,9 +148,9 @@ public class Main {
 		ArrayList<LinkedHashMap> usersList = new ArrayList<LinkedHashMap>();
 		for (UserInfo userInfo : users) {
 			LinkedHashMap jsonObj1 = new LinkedHashMap();
-			jsonObj1.put("user id", userInfo.getUserID());
-			jsonObj1.put("user name", userInfo.getUserName());
-			jsonObj1.put("user type", userInfo.getUserType());
+			jsonObj1.put("config id", userInfo.getUserID());
+			jsonObj1.put("config name", userInfo.getUserName());
+			jsonObj1.put("config type", userInfo.getUserType());
 			usersList.add(jsonObj1);
 		}
 		jsonObj.put("users", usersList);
