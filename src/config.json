@@ -1,8 +1,13 @@
 {
-"ConsistencyCheckProbability":0.1,
 "users":[
-{"user id":1,"user name":"RandomLabelingMechanism1","user type":"RandomBot"},
-{"user id":2,"user name":"RandomLabelingMechanism2","user type":"RandomBot"},
-{"user id":3,"user name":"MachineLearningLabelingMechanism","user type":"MachineLearningBot"}
+{"user id":1,"user name":"RandomLabelingMechanism1","user type":"RandomBot","ConsistencyCheckProbability":0.1},
+{"user id":2,"user name":"RandomLabelingMechanism2","user type":"RandomBot","ConsistencyCheckProbability":0.1},
+{"user id":3,"user name":"RandomLabelingMechanism3","user type":"RandomBot","ConsistencyCheckProbability":0.1},
+{"user id":4,"user name":"RandomLabelingMechanism4","user type":"RandomBot","ConsistencyCheckProbability":0.1},
+{"user id":5,"user name":"RandomLabelingMechanism5","user type":"RandomBot","ConsistencyCheckProbability":0.1},
+{"user id":6,"user name":"RandomLabelingMechanism6","user type":"RandomBot","ConsistencyCheckProbability":0.1},
+{"user id":7,"user name":"RandomLabelingMechanism7","user type":"RandomBot","ConsistencyCheckProbability":0.1},
+{"user id":8,"user name":"RandomLabelingMechanism8","user type":"RandomBot","ConsistencyCheckProbability":0.1},
+{"user id":9,"user name":"MachineLearningLabelingMechanism","user type":"MachineLearningBot","ConsistencyCheckProbability":0.1}
 ]
 }
