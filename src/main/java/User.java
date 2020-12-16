@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class User {
     //Define basic User variable
     private ArrayList<UserInfo> userInfos;
-    private Double consistencyCheckProbability;
 
     //Json property: The feature in which variables in json file which variables we should assign in our model.
 
@@ -18,7 +17,4 @@ public class User {
         this.userInfos = userInfos;
     }
 
-    public Double getConsistencyCheckProbability() { return consistencyCheckProbability; }
-    @JsonProperty("ConsistencyCheckProbability")
-    public void setConsistencyCheckProbability(Double consistencyCheckProbability) { this.consistencyCheckProbability = consistencyCheckProbability; }
 }

@@ -65,12 +65,13 @@ public class Main {
 		//Create labelling mechanisms
 		LabelingMechanism randomLabelling = new RandomLabeling();
 
-		//Get consistency check probability
-		double consistencyCheckProbability = user.getConsistencyCheckProbability();
-
 		//Random Labelling Simulation
 		//Iterate all users
 		for (UserInfo userInfo : users) {
+
+			//Get consistency check probability
+			double consistencyCheckProbability = userInfo.getConsistencyCheckProbability();
+
 			//Check the user's type
 			switch (userInfo.getUserType()) {
 				case "RandomBot":
