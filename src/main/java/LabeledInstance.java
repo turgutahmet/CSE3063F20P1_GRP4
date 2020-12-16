@@ -1,35 +1,45 @@
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
 import org.apache.log4j.Logger;
 
 public class LabeledInstance extends Instance {
     //Variables of the LabeledInstance class.
-    private UserInfo whoLabeled;
+    private ArrayList<UserInfo> whoLabeled = new ArrayList<UserInfo>();
     private ArrayList<ClassLabel> labels = new ArrayList<ClassLabel>();
     private LocalDateTime date;
+
     //LabeledInstance constructor with logger.
-    LabeledInstance(int id, String instance, UserInfo userInfo , ArrayList<ClassLabel> classLabels , LocalDateTime localDate, Logger logger) {
+    LabeledInstance(int id, String instance, UserInfo userInfo , ClassLabel classLabel , LocalDateTime localDate, Logger logger) {
         this.setID(id);
         this.setInstance(instance);
-        this.whoLabeled = userInfo;
-        this.labels = classLabels;
+        this.whoLabeled.add(userInfo);
+        this.labels.add(classLabel);
         this.date = localDate;
         //Logger class initialize
         logger = Logger.getLogger(this.getClass().getName());
         //Print log check
         for (ClassLabel label : labels) {
-            logger.info("user id:" + whoLabeled.getUserID() +" "+ whoLabeled.getUserName() + " "+ "labeled instance id:" + this.getID() + " "
+            logger.info("user id:" + whoLabeled.get(0).getUserID() +" "+ whoLabeled.get(0).getUserName() + " "+ "labeled instance id:" + this.getID() + " "
                     + "with class label " + label.getLabelID() + " :"+  label.getLabelText() + " "+ "instance :" + this.getInstance());
         }
 
     }
+
+    public void updateLabel (UserInfo userInfo, ClassLabel classLabel, Logger logger){
+        this.whoLabeled.add(userInfo);
+        this.labels.add(classLabel);
+    }
     //Get&set methods.
-    public UserInfo getWhoLabeled() {
+
+    public ArrayList<UserInfo> getWhoLabeled() {
         return whoLabeled;
     }
 
-    public void setWhoLabelled(UserInfo whoLabelled) {
-        this.whoLabeled = whoLabelled;
+    public void setWhoLabeled(ArrayList<UserInfo> whoLabeled) {
+        this.whoLabeled = whoLabeled;
     }
 
     public ArrayList<ClassLabel> getLabels() {
