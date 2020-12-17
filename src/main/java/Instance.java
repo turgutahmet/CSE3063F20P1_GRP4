@@ -28,6 +28,7 @@ public class Instance {
         }
         else{
             labeledInstance.updateLabel(label,logger);
+            labeledInstance.updateFinalLabel();
         }
         userInfo.addLabeledInstance(labeledInstance);
         //control max number of label
