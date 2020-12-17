@@ -12,6 +12,12 @@ public class UserInfo {
     //Json property: The feature in which variables in json file which variables we should assign in our model.
 
     public void addLabeledInstance (LabeledInstance labeledInstance){
+        for (LabeledInstance instance : labeledInstances) {
+            if(instance.getID() == labeledInstance.getID()){
+                instance = labeledInstance;
+                return;
+            }
+        }
         labeledInstances.add(labeledInstance);
     }
     //Variables getter setter methods
