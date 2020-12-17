@@ -6,7 +6,7 @@ public class Label {
 
     public Label (ClassLabel label ){
         this.classLabel = label;
-        this.count = 0;
+        this.count = 1;
     }
 
     public void incrementCount(){
