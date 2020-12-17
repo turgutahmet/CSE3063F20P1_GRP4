@@ -20,11 +20,15 @@ public class RandomLabeling extends LabelingMechanism {
         for (int i = 0 ; i<instance.getLabelPairs().size(); i++) {
             filledLabels += instance.getLabelPairs().get(i).getLabels().size();
         }
-            if(filledLabels == instance.getMaxNumberOfLabel())
-                    return;
-            //Randomly labeling the instance and incrementing the number of filled labels.
-            int random_index = (int) (Math.random() * availableLabels.size());
-            Label label = new Label(availableLabels.get(random_index));
+
+        if(filledLabels == instance.getMaxNumberOfLabel()) {
+            instance.setCanLabeled(false);
+            return;
+        }
+
+        //Randomly labeling the instance and incrementing the number of filled labels.
+        int random_index = (int) (Math.random() * availableLabels.size());
+        Label label = new Label(availableLabels.get(random_index));
         instance.addLabel(userInfo,label,logger);
     }
 }
