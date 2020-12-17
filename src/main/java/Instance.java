@@ -31,14 +31,6 @@ public class Instance {
             labeledInstance.updateFinalLabel();
         }
         userInfo.addLabeledInstance(labeledInstance);
-        //control max number of label
-        amountOfLabels = 0;
-        for (LabeledInstance userLabel : userLabels) {
-            amountOfLabels += userLabel.getLabels().size();
-        }
-        if (maxNumberOfLabel == amountOfLabels) {
-            canLabeled = false;
-        }
     }
     //Json property: The feature in which variables in json file which variables we should assign in our model.
 
