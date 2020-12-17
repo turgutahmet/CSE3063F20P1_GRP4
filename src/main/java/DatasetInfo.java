@@ -1,9 +1,12 @@
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
+
 public class DatasetInfo {
     private int datasetID;
     private String datasetName;
     private String datasetFilePath;
+    private ArrayList<Integer> assignUserID;
 
     public int getDatasetID() {
         return datasetID;
@@ -27,5 +30,13 @@ public class DatasetInfo {
     @JsonProperty("dataset file path")
     public void setDatasetFilePath(String datasetFilePath) {
         this.datasetFilePath = datasetFilePath;
+    }
+
+    public ArrayList<Integer> getAssignUserID() {
+        return assignUserID;
+    }
+    @JsonProperty("assign users")
+    public void setAssignUserID(ArrayList<Integer> assignUserID) {
+        this.assignUserID = assignUserID;
     }
 }

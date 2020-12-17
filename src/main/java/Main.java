@@ -23,18 +23,17 @@ public class Main {
 
 		//create config object for keep config's information.
 		Config config = (Config) read("src/config.json", new Config());
-		String datasetFilePathName = "";
 		int currentDatasetID = config.getCurrentDatasetID();
 		ArrayList<DatasetInfo> datasetsInfo = config.getDatasetInfos();
-
+		DatasetInfo currentdatasetInfo = new DatasetInfo();
 		for (DatasetInfo datasetInfo : datasetsInfo) {
 			if (currentDatasetID==datasetInfo.getDatasetID()){
-				datasetFilePathName=datasetInfo.getDatasetFilePath();
+				currentdatasetInfo=datasetInfo;
 				break;
 			}
 		}
 		//create dataset object for keep input's information.
-		Dataset data = (Dataset) read(datasetFilePathName, new Dataset());
+		Dataset data = (Dataset) read(currentdatasetInfo.getDatasetFilePath(), new Dataset());
 		//Putting the needed variables in jsonObj.
 		jsonObj.put("dataset id", data.getDatasetID());
 		jsonObj.put("dataset name", data.getDatasetName());
@@ -47,10 +46,14 @@ public class Main {
 		PropertyConfigurator.configure("log4j.properties");
 
 		//Get all users in the system
-		ArrayList<UserInfo> users = config.getUserInfos();
-		for (UserInfo userInfo : users) {
+		ArrayList<UserInfo> allUsers = config.getUserInfos();
+		ArrayList<UserInfo> currentUser = new ArrayList<>();
+		for (UserInfo userInfo : allUsers) {
 			//print config log records check log.txt
-			logger.info("config: created " + userInfo.getUserName() + " as " + userInfo.getUserType());
+			if (currentdatasetInfo.getAssignUserID().contains(userInfo.getUserID())){
+				logger.info("config: created " + userInfo.getUserName() + " as " + userInfo.getUserType());
+				currentUser.add(userInfo);
+			}
 		}
 
 		//Get all labels in the system
@@ -77,11 +80,10 @@ public class Main {
 
 		//Random Labelling Simulation
 		//Iterate all users
-		for (UserInfo userInfo : users) {
+		for (UserInfo userInfo : currentUser) {
 
 			//Get consistency check probability
 			double consistencyCheckProbability = userInfo.getConsistencyCheckProbability();
-
 			//Check the config's type
 			switch (userInfo.getUserType()) {
 				case "RandomBot":
@@ -137,7 +139,7 @@ public class Main {
 				LinkedHashMap jsonObj1 = new LinkedHashMap();
 				jsonObj1.put("instance id", labelPair.getID());
 				jsonObj1.put("class label ids", listOfLabel);
-				jsonObj1.put("config id", labelPair.getWhoLabeled().getUserID());
+				//jsonObj1.put("config id", labelPair.getWhoLabeled().getUserID());
 				jsonObj1.put("datetime", labelPair.getDate().format(formatter)+"");
 				classLabelList.add(jsonObj1);
 			}
@@ -146,7 +148,7 @@ public class Main {
 		//Getting users variables in output object.
 		jsonObj.put("class label assignments", classLabelList);
 		ArrayList<LinkedHashMap> usersList = new ArrayList<LinkedHashMap>();
-		for (UserInfo userInfo : users) {
+		for (UserInfo userInfo : currentUser) {
 			LinkedHashMap jsonObj1 = new LinkedHashMap();
 			jsonObj1.put("config id", userInfo.getUserID());
 			jsonObj1.put("config name", userInfo.getUserName());

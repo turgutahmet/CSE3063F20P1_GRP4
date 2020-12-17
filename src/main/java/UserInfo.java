@@ -8,7 +8,6 @@ public class UserInfo {
     private String userName;
     private String userType;
     private Double consistencyCheckProbability;
-    private ArrayList<Integer> assignDatasets;
     private ArrayList<LabeledInstance> labeledInstances = new ArrayList<>() ;
     //Json property: The feature in which variables in json file which variables we should assign in our model.
 
@@ -49,12 +48,4 @@ public class UserInfo {
     public Double getConsistencyCheckProbability() { return consistencyCheckProbability; }
     @JsonProperty("ConsistencyCheckProbability")
     public void setConsistencyCheckProbability(Double consistencyCheckProbability) { this.consistencyCheckProbability = consistencyCheckProbability; }
-
-    public ArrayList<Integer> getAssignDatasets() {
-        return assignDatasets;
-    }
-    @JsonProperty("datasets")
-    public void setAssignDatasets(ArrayList<Integer> assignDatasets) {
-        this.assignDatasets = assignDatasets;
-    }
 }
