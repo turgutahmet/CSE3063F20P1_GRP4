@@ -12,23 +12,22 @@ public class Instance {
     private int amountOfLabels;
     private ArrayList<LabeledInstance> userLabels = new ArrayList<LabeledInstance>();
 
-    public void addLabel(UserInfo userInfo, ClassLabel classLabel, Logger logger){
+    public void addLabel(UserInfo userInfo, Label label, Logger logger){
         boolean exist = false;
         //create new labeledInstance
         LabeledInstance labeledInstance = null;
-        for(LabeledInstance userLabel : userLabels ) {
-            if(userLabel.getID() == classLabel.getLabelID()) {
+        for (LabeledInstance userLabel : userLabels) {
+            if(userLabel.getWhoLabeled() == userInfo ){
                 exist = true;
-                labeledInstance = userLabel;
+                labeledInstance = userLabel ;
+                break;
             }
         }
-        if(!exist) {
-            labeledInstance = new LabeledInstance(id, instance, userInfo, classLabel, LocalDateTime.now(),logger);
-            labeledInstance.setInstance(this.instance);
-            userLabels.add(labeledInstance);
+        if(!exist){
+            labeledInstance = new LabeledInstance(this.id,this.instance,userInfo,label,LocalDateTime.now(),logger);
         }
-        else {
-            labeledInstance.updateLabel(userInfo,classLabel,logger);
+        else{
+            labeledInstance.updateLabel(label,logger);
         }
         userInfo.addLabeledInstance(labeledInstance);
         //control max number of label

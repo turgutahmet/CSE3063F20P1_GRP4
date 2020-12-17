@@ -24,6 +24,7 @@ public class RandomLabeling extends LabelingMechanism {
                     return;
             //Randomly labeling the instance and incrementing the number of filled labels.
             int random_index = (int) (Math.random() * availableLabels.size());
-        instance.addLabel(userInfo, availableLabels.get(random_index),logger);
+            Label label = new Label(availableLabels.get(random_index));
+        instance.addLabel(userInfo,label,logger);
     }
 }

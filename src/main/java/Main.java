@@ -131,8 +131,8 @@ public class Main {
 		for (Instance instance : instances) {
 			for (LabeledInstance labelPair : instance.getLabelPairs()) {
 				ArrayList<Integer> listOfLabel = new ArrayList<Integer>();
-				for (ClassLabel label : labelPair.getLabels()) {
-					listOfLabel.add(label.getLabelID());
+				for (Label label : labelPair.getLabels()) {
+					listOfLabel.add(label.getLabel().getLabelID());
 				}
 				//Putting the desired variables in output object.
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
