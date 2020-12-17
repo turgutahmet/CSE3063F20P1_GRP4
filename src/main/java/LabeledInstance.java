@@ -11,7 +11,7 @@ public class LabeledInstance extends Instance {
     private UserInfo whoLabeled ;
     private ArrayList<Label> labels = new ArrayList<Label>();
     private LocalDateTime date;
-    private Label finalLabel;
+
 
     //LabeledInstance constructor with logger.
     LabeledInstance(int id, String instance, UserInfo userInfo , Label newLabel , LocalDateTime localDate, Logger logger) {
@@ -40,32 +40,9 @@ public class LabeledInstance extends Instance {
        }
        labels.add(label);
     }
-   public void updateFinalLabel(){
 
-            if (isAllEqual()){
-                //choose random label as final label
-                int random_index = (int) (Math.random() * labels.size());
-                this.finalLabel=labels.get(random_index);
-            }
-            else{
-                //choose the label with the largest count
-                for (Label l : labels){
-                    if( l.getCount()>finalLabel.getCount()){
-                        this.finalLabel=l;}}
-            }
-   }
-    //check if all equal
-   private boolean isAllEqual(){
-       for (Label i :labels ){
-           if (labels.get(0).getCount()!=i.getCount()){
-                return false;
-           }}
-       return true;
-       }
     //Get&set methods.
-    public Label getFinalLabel(){
-        return finalLabel;
-    }
+
 
     public UserInfo getWhoLabeled() {
         return whoLabeled;
