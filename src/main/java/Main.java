@@ -88,9 +88,8 @@ public class Main {
 			switch (userInfo.getUserType()) {
 				case "RandomBot":
 					//Get how many instances this config will label
-					Scanner scan = new Scanner(System.in);
-					System.out.print("Please enter how many instances " + userInfo.getUserName() + " will label:\t");
-					int numberOfLabel = scan.nextInt();
+					int numberOfLabel = (int) (Math.random() * (instances.size()+1));
+
 
 					//Get not labeled instances by that config
 					ArrayList<Instance> notLabeledInstances = new ArrayList<>();
