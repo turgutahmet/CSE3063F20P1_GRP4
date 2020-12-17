@@ -106,6 +106,8 @@ public class Main {
 
 						if (previouslyLabeledInstances.isEmpty()) { //If that config not label an instance before select a random instance from the notLabeledInstances array
 							randomInstance = notLabeledInstances.get((int) (Math.random() * notLabeledInstances.size()));
+							notLabeledInstances.remove(randomInstance);
+							previouslyLabeledInstances.add(randomInstance);
 						} else {
 							//According to consistency check probability select a random instance from previouslyLabeledInstance array or notLabeledInstances array
 							int upperLimit = (int) consistencyCheckProbability * 100;

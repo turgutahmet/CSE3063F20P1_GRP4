@@ -30,6 +30,7 @@ public class Instance {
             labeledInstance.updateLabel(label,logger);
             labeledInstance.updateFinalLabel();
         }
+        userLabels.add(labeledInstance);
         userInfo.addLabeledInstance(labeledInstance);
     }
     //Json property: The feature in which variables in json file which variables we should assign in our model.
