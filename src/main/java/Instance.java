@@ -6,13 +6,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Instance {
-    //Define basic Instance variable
-    private int id;
-    private String instance;
-    private boolean canLabeled = true;
-    private int maxNumberOfLabel;
-    private ArrayList<LabeledInstance> userLabels = new ArrayList<>();
-    private ArrayList<ClassLabel> allLabels = new ArrayList<>();
+    //Instance properties.
+    private int id; //Unique id of that instance.
+    private String instance; //Instance text.
+    private boolean canLabeled = true; //Is that instance can be labeled?
+    private int maxNumberOfLabel; //Maximum number of label can be assigned to that instance.
+    private final ArrayList<LabeledInstance> userLabels = new ArrayList<>(); //LabeledInstances records.
+    private final ArrayList<ClassLabel> allLabels = new ArrayList<>(); //All assigned unique labels.
+    private InstancePerformanceMetrics instancePerformanceMetrics; //Instance performance metrics.
 
     //Create new LabeledInstance object and return it to labeling mechanism.
     public LabeledInstance createLabeledInstance(UserInfo userInfo) {
