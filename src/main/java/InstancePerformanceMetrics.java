@@ -23,6 +23,7 @@ public class InstancePerformanceMetrics {
     public InstancePerformanceMetrics() {
         this.allLabelAssignments = new ArrayList<>();
     }
+
     //Adds new label assignment into allLabelAssignments list.
     public void addNewLabelAssignment(String username, String label, int labelID, int userID) {
         allLabelAssignments.add(new LabelAssignment(username, label, labelID, userID));
@@ -31,6 +32,37 @@ public class InstancePerformanceMetrics {
     //Updates total number of label assignments.
     public void updateTotalNumberOfLabelAssignments() {
         totalNumberOfLabelAssignments = allLabelAssignments.size();
+    }
+
+    //Updates number of unique label assignments.
+    public void updateNumberOfUniqueLabelAssignments(int labelsSize) {
+        int[] labelAssignmentsTable = getLabelAssignmentTable(labelsSize);
+
+        //Count number of unique label assignments.
+        int count = 0;
+        for (int i : labelAssignmentsTable) {
+            if (i > 0) {
+                count++;
+            }
+        }
+
+        numberOfUniqueLabelAssignments = count;
+    }
+
+    //Generates label assignments table.
+    private int[] getLabelAssignmentTable(int labelsSize) {
+        //Create label assignments table and set all indexes to zero.
+        int[] labelAssignmentsTable = new int[labelsSize];
+        for (int i : labelAssignmentsTable) {
+            i = 0;
+        }
+
+        //Iterate all label assignments and fill the table.
+        for (LabelAssignment labelAssignment : allLabelAssignments) {
+            int labelID = labelAssignment.getLabelID();
+            labelAssignmentsTable[labelID - 1]++;
+        }
+        return labelAssignmentsTable;
     }
 
 }
