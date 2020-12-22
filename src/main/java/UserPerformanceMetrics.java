@@ -1,0 +1,85 @@
+import java.util.ArrayList;
+
+public class UserPerformanceMetrics {
+    private int numberOfDataset; //User's number of assigned datasets.
+    private float[] datasetsCompletenessPercentage; //Datasets' completeness percentages.
+    private int totalNumberOfInstanceLabelled; //Total number of instances labeled.
+    private int totalNumberOfUniqueInstance; //Total number of unique instances labeled.
+    private float consistencyPercentage; //User's consistency percentage.
+    private ArrayList<Float> times; //All labeling processes' finishing time.
+    private float avgTime; //Average time of all labeling processes'.
+    private float stdTime; //Standard dev. of all labeling processes'.
+
+    //UserPerformanceMetrics constructors.
+    public UserPerformanceMetrics(int numberOfDatasets) {
+        this.numberOfDataset = numberOfDatasets;
+        this.datasetsCompletenessPercentage = new float[numberOfDatasets];
+        this.times = new ArrayList<>();
+        this.totalNumberOfInstanceLabelled = 0;
+        this.totalNumberOfUniqueInstance = 0;
+        this.consistencyPercentage = 0;
+        this.avgTime = 0;
+        this.stdTime = 0;
+    }
+    //UserPerformanceMetrics default constructors.
+    public UserPerformanceMetrics(){
+
+    }
+
+
+    //Getter methods.
+    public int getNumberOfDataset() {
+        return numberOfDataset;
+    }
+    public int getTotalNumberOfInstanceLabelled() {
+        return totalNumberOfInstanceLabelled;
+    }
+    public int getTotalNumberOfUniqueInstance() {
+        return totalNumberOfUniqueInstance;
+    }
+    public float getConsistencyPercentage() {return consistencyPercentage; }
+    public float getAvgTime() {
+        return avgTime;
+    }
+    public float getStdTime() {
+        return stdTime;
+    }
+    public ArrayList<Float> getTimes() {
+        return times;
+    }
+
+    public void setNumberOfDataset(int numberOfDataset) {
+        this.numberOfDataset = numberOfDataset;
+    }
+
+    public float[] getDatasetsCompletenessPercentage() {
+        return datasetsCompletenessPercentage;
+    }
+    public void setDatasetsCompletenessPercentage(float[] datasetsCompletenessPercentage) {
+        this.datasetsCompletenessPercentage = datasetsCompletenessPercentage;
+    }
+
+    public void setTotalNumberOfInstanceLabelled(int totalNumberOfInstanceLabelled) {
+        this.totalNumberOfInstanceLabelled = totalNumberOfInstanceLabelled;
+    }
+
+    public void setTotalNumberOfUniqueInstance(int totalNumberOfUniqueInstance) {
+        this.totalNumberOfUniqueInstance = totalNumberOfUniqueInstance;
+    }
+
+    public void setConsistencyPercentage(float consistencyPercentage) {
+        this.consistencyPercentage = consistencyPercentage;
+    }
+
+    public void setAvgTime(float avgTime) {
+        this.avgTime = avgTime;
+    }
+
+    public void setStdTime(float stdTime) {
+        this.stdTime = stdTime;
+    }
+
+    public void setTimes(ArrayList<Float> times) {
+        this.times = times;
+    }
+}
