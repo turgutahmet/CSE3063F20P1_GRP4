@@ -23,4 +23,14 @@ public class InstancePerformanceMetrics {
     public InstancePerformanceMetrics() {
         this.allLabelAssignments = new ArrayList<>();
     }
+    //Adds new label assignment into allLabelAssignments list.
+    public void addNewLabelAssignment(String username, String label, int labelID, int userID) {
+        allLabelAssignments.add(new LabelAssignment(username, label, labelID, userID));
+    }
+
+    //Updates total number of label assignments.
+    public void updateTotalNumberOfLabelAssignments() {
+        totalNumberOfLabelAssignments = allLabelAssignments.size();
+    }
+
 }
