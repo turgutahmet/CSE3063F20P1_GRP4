@@ -1,9 +1,8 @@
 import com.fasterxml.jackson.annotation.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.*;
+
 import org.apache.log4j.Logger;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Instance {
     //Instance properties.
@@ -49,6 +48,23 @@ public class Instance {
         }
         return null;
     }
+    //Add new Label object into allLabels list.
+    private void addLabel(ClassLabel label) {
+        allLabels.add(label);
+        removeDuplicates(allLabels);
+    }
+
+    //If there is duplicate in allLabels list remove duplicate entries.
+    private void removeDuplicates(ArrayList<ClassLabel> list) {
+        // Create a new LinkedHashSet
+        Set<ClassLabel> set = new LinkedHashSet<>(list);
+        // Clear the list
+        list.clear();
+        // add the elements of set
+        // with no duplicates to the list
+        list.addAll(set);
+    }
+
 
     //Json property: The feature in which variables in json file which variables we should assign in our model.
 
