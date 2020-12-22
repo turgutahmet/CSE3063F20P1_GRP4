@@ -64,5 +64,54 @@ public class InstancePerformanceMetrics {
         }
         return labelAssignmentsTable;
     }
+    //Updates number of unique users who are labeled that instance.
+    public void updateNumberOfUniqueUsers(int usersSize) {
+        int[] usersTable = new int[usersSize];
+        for (int i : usersTable) {
+            i = 0;
+        }
 
+        for (LabelAssignment labelAssignment : allLabelAssignments) {
+            usersTable[labelAssignment.getUserID() - 1]++;
+        }
+
+        int count = 0;
+        for (int i : usersTable) {
+            if (i > 0) {
+                count++;
+            }
+        }
+
+        numberOfUniqueUsers = count;
+    }
+
+    //Updates finalLabel and it's percentage.
+    public void updateFinalLabelAndPercentage(ArrayList<ClassLabel> labels) {
+        int[] labelAssignmentTable = getLabelAssignmentTable(labels.size());
+
+        //Get count most assigned label(s).
+        int max = 0;
+        for (int i : labelAssignmentTable) {
+            if (i > max) {
+                max = i;
+            }
+        }
+
+        //Get most assigned label(s).
+        ArrayList<Integer> mostAssignedLabels = new ArrayList<>();
+        for (int i = 0; i < labels.size(); i++) {
+            if (labelAssignmentTable[i] == max) {
+                mostAssignedLabels.add(i);
+            }
+        }
+
+        //If there is more than one label in mostAssignedLabelsList select one randomly.
+        int finalLabelID = mostAssignedLabels.get((int) (Math.random() * mostAssignedLabels.size()));
+        //Calculate percentage.
+        float percentage = (float) (max * 1.0 / totalNumberOfLabelAssignments) * 100;
+
+        //Create FinalLabel object.
+        ClassLabelAndPercentage finalLabelAndPercentage = new ClassLabelAndPercentage(labels.get(finalLabelID), percentage);
+        this.finalLabelAndPercentage = finalLabelAndPercentage;
+    }
 }
