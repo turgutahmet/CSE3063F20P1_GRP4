@@ -65,6 +65,19 @@ public class Instance {
         list.addAll(set);
     }
 
+    //Check amount of labels and depending on it set canLabeled property.
+    private void checkAmountOfLabels() {
+        int count = 0;
+        for (LabeledInstance userLabel : userLabels) {
+            for (Label userLabelLabel : userLabel.getLabels()) {
+                count += userLabelLabel.getCount();
+            }
+        }
+        if (count >= maxNumberOfLabel) {
+            canLabeled = false;
+        }
+    }
+
 
     //Json property: The feature in which variables in json file which variables we should assign in our model.
 
