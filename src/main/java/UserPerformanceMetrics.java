@@ -25,7 +25,31 @@ public class UserPerformanceMetrics {
     public UserPerformanceMetrics(){
 
     }
+    //Updates completeness percentages of given dataset.
+    public void updateDatasetsCompletenessPercentage(int numberOfLabeledInstances, int numberOfInstances, int currentDatasetID) {
+        datasetsCompletenessPercentage[currentDatasetID - 1] = (float) (numberOfLabeledInstances * 1.0 / numberOfInstances) * 100;
+    }
 
+    //Increments total number of instances which are labeled.
+    public void incrementTotalNumberOfInstanceLabelled(){
+        totalNumberOfInstanceLabelled++;
+    }
+
+    //Increments total number of unique instances which are labeled.
+    public void incrementTotalUniqueNumberOfInstanceLabelled(){
+        totalNumberOfUniqueInstance++;
+    }
+
+    //Updates consistency percentage.
+    public void updateConsistencyPercentage(int numberOfRecurrentInstances, int numberOfRecurrentInstancesWithSameLabel) {
+        float percentage = (float) (numberOfRecurrentInstancesWithSameLabel * 1.0 / numberOfRecurrentInstances) * 100;
+        consistencyPercentage = percentage;
+    }
+
+    //Adds new finishing time of labeling process.
+    public void addTimes(float time){
+        times.add(time);
+    }
 
     //Getter methods.
     public int getNumberOfDataset() {
