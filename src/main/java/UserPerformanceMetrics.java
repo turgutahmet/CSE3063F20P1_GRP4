@@ -1,3 +1,5 @@
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.ArrayList;
 
 public class UserPerformanceMetrics {
@@ -73,6 +75,9 @@ public class UserPerformanceMetrics {
     public int getNumberOfDataset() {
         return numberOfDataset;
     }
+    public float[] getDatasetsCompletenessPercentage() {
+        return datasetsCompletenessPercentage;
+    }
     public int getTotalNumberOfInstanceLabelled() {
         return totalNumberOfInstanceLabelled;
     }
@@ -90,37 +95,43 @@ public class UserPerformanceMetrics {
         return times;
     }
 
+    //Json property: The feature in which variables in json file which variables we should assign in our model.
+    @JsonProperty("number of datasets assigned")
     public void setNumberOfDataset(int numberOfDataset) {
         this.numberOfDataset = numberOfDataset;
     }
 
-    public float[] getDatasetsCompletenessPercentage() {
-        return datasetsCompletenessPercentage;
-    }
+    @JsonProperty("list of all datasets with their completeness percentage")
     public void setDatasetsCompletenessPercentage(float[] datasetsCompletenessPercentage) {
         this.datasetsCompletenessPercentage = datasetsCompletenessPercentage;
     }
 
+    @JsonProperty("total number of instances labeled")
     public void setTotalNumberOfInstanceLabelled(int totalNumberOfInstanceLabelled) {
         this.totalNumberOfInstanceLabelled = totalNumberOfInstanceLabelled;
     }
 
+    @JsonProperty("total number of unique instances labeled")
     public void setTotalNumberOfUniqueInstance(int totalNumberOfUniqueInstance) {
         this.totalNumberOfUniqueInstance = totalNumberOfUniqueInstance;
     }
 
+    @JsonProperty("consistency percentage")
     public void setConsistencyPercentage(float consistencyPercentage) {
         this.consistencyPercentage = consistencyPercentage;
     }
 
+    @JsonProperty("average time spent in labeling an instance in seconds")
     public void setAvgTime(float avgTime) {
         this.avgTime = avgTime;
     }
 
+    @JsonProperty("std. dev. of  time spent in labeling an instance in seconds")
     public void setStdTime(float stdTime) {
         this.stdTime = stdTime;
     }
 
+    @JsonProperty("times")
     public void setTimes(ArrayList<Float> times) {
         this.times = times;
     }
