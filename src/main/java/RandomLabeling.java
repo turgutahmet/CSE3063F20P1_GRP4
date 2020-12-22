@@ -9,8 +9,24 @@ public class RandomLabeling extends LabelingMechanism {
 
     @Override
     public void labelInstanceWithUser(UserInfo userInfo, Instance instance, ArrayList<ClassLabel> classLabels, Logger logger) {
-        //Randomly labeling the instance and incrementing the number of filled labels.
+        //Select a random label from class labels
         int random_index = (int) (Math.random() * classLabels.size());
-        Label label = new Label(classLabels.get(random_index));
+        ClassLabel randomLabel = classLabels.get(random_index);
+
+        //Create a Label object
+        Label label = new Label(randomLabel);
+
+        //Add label to instance
+        LabeledInstance labeledInstance = instance.createLabeledInstance(userInfo);
+
+        //Update instance
+        instance.updateInstance(labeledInstance, label);
+
+        //Logger class initialize
+        logger = Logger.getLogger(this.getClass().getName());
+
+        //Print log check
+        logger.info("user id:" + userInfo.getUserID() + " " + userInfo.getUsername() + " " + "labeled instance id:" + instance.getID() + " "
+                + "with class label " + label.getLabel().getLabelID() + " :" + label.getLabel().getLabelText() + " " + "instance :" + instance.getInstance());
     }
 }
