@@ -1,71 +1,46 @@
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.lang.Math;
-
-import org.apache.log4j.Logger;
 
 public class LabeledInstance extends Instance {
-    //Variables of the LabeledInstance class.
-    private UserInfo whoLabeled ;
-    private ArrayList<Label> labels = new ArrayList<Label>();
-    private LocalDateTime date;
+    //LabeledInstance properties.
+    private final UserInfo whoLabeled ; //Labeled by that user.
+    private final ArrayList<Label> labels = new ArrayList<>(); //What labels did that user use.
+    private final LocalDateTime date; //Creation date.
 
-
-    //LabeledInstance constructor with logger.
-    LabeledInstance(int id, String instance, UserInfo userInfo , Label newLabel , LocalDateTime localDate, Logger logger) {
+    //LabeledInstance constructor.
+    LabeledInstance(int id, String instance, UserInfo userInfo, LocalDateTime localDate) {
         this.setID(id);
         this.setInstance(instance);
         this.whoLabeled = userInfo;
-        this.labels.add(newLabel);
         this.date = localDate;
+    }
 
-        //Logger class initialize
-        logger = Logger.getLogger(this.getClass().getName());
-        //Print log check
-        for (Label label : labels) {
-            logger.info("user id:" + whoLabeled.getUserID() +" "+ whoLabeled.getUsername() + " "+ "labeled instance id:" + this.getID() + " "
-                    + "with class label " + label.getLabel().getLabelID() + " :"+  label.getLabel().getLabelText() + " "+ "instance :" + this.getInstance());
+    //Update labels list.
+    public void updateLabel (Label label){
+        //Check: Is that label exist in labels list?
+        for (Label label1 : labels) {
+            if(label1.getLabel().getLabelID() == label.getLabel().getLabelID()){ //If it exist, increment count of this label
+                label1.incrementCount();
+                return;
+            }
         }
-
+        //If there is not exist, add it into labels list
+        labels.add(label);
     }
 
-   public void updateLabel (Label label,Logger logger){
-       for (Label label1 : labels) {
-           if(label1 == label){
-               label1.incrementCount();
-               return;
-           }
-       }
-       labels.add(label);
+    public void addLabel(Label label) {
+        labels.add(label);
     }
 
-    //Get&set methods.
-
-
+    //Getter methods.
     public UserInfo getWhoLabeled() {
         return whoLabeled;
     }
-
-    public void setWhoLabeled(UserInfo whoLabeled) {
-        this.whoLabeled = whoLabeled;
-    }
-
     public ArrayList<Label> getLabels() {
         return labels;
     }
-
-    public void setLabels(ArrayList<Label> labels) {
-        this.labels = labels;
-    }
-
     public LocalDateTime getDate() {
         return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
     }
 
 }
