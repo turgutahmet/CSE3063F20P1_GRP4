@@ -21,7 +21,34 @@ public class Instance {
         return new LabeledInstance(this.id, this.instance, userInfo, LocalDateTime.now());
     }
 
+    //Adds new LabeledInstance object into userLabels list or update existing record.
+    private void addUserLabel(LabeledInstance labeledInstance, Label label) {
+        //Check: Is there any record with related that user?
+        LabeledInstance existingLabeledInstance = checkUserLabels(labeledInstance.getWhoLabeled());
+        //If there is
+        if (existingLabeledInstance != null) {
+            //Check: Is that user labeled this instance with same label before or not?
+            existingLabeledInstance.updateLabel(label);
+            //Add that labeled instance record into user
+            existingLabeledInstance.getWhoLabeled().addLabeledInstance(labeledInstance);
+            return;
+        } else {
+            labeledInstance.addLabel(label);
+            userLabels.add(labeledInstance);
+        }
+        //Add that labeled instance record into user
+        labeledInstance.getWhoLabeled().addLabeledInstance(labeledInstance);
+    }
 
+    //Checks is there any record related with that user?
+    private LabeledInstance checkUserLabels(UserInfo userInfo) {
+        for (LabeledInstance userLabel : userLabels) {
+            if (userLabel.getWhoLabeled() == userInfo) {
+                return userLabel;
+            }
+        }
+        return null;
+    }
 
     //Json property: The feature in which variables in json file which variables we should assign in our model.
 
@@ -54,8 +81,5 @@ public class Instance {
         return userLabels;
     }
 
-    public void setLabelPairs(ArrayList<LabeledInstance> labelPairs) {
-        this.userLabels = labelPairs;
-    }
 
 }
