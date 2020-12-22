@@ -25,7 +25,7 @@ public class LabeledInstance extends Instance {
         logger = Logger.getLogger(this.getClass().getName());
         //Print log check
         for (Label label : labels) {
-            logger.info("user id:" + whoLabeled.getUserID() +" "+ whoLabeled.getUserName() + " "+ "labeled instance id:" + this.getID() + " "
+            logger.info("user id:" + whoLabeled.getUserID() +" "+ whoLabeled.getUsername() + " "+ "labeled instance id:" + this.getID() + " "
                     + "with class label " + label.getLabel().getLabelID() + " :"+  label.getLabel().getLabelText() + " "+ "instance :" + this.getInstance());
         }
 

@@ -9,6 +9,7 @@ public class UserInfo {
     private String userType; //Type of that user.
     private double consistencyCheckProbability; //Probability of labeling same instance.
     private final ArrayList<LabeledInstance> labeledInstances = new ArrayList<>(); //List of labeled instances by that user.
+    private UserPerformanceMetrics userPerformanceMetrics; //User performance metrics.
 
     //Add new entry into labeledInstances list or update an entry.
     public void addLabeledInstance (LabeledInstance labeledInstance){
@@ -28,9 +29,11 @@ public class UserInfo {
     public String getUsername() { return username; }
     public String getUserType() { return userType; }
     public double getConsistencyCheckProbability() { return consistencyCheckProbability; }
+    public UserPerformanceMetrics getUserPerformanceMetrics() { return userPerformanceMetrics; }
     public ArrayList<LabeledInstance> getLabeledInstances() { return labeledInstances; }
 
     //Setter methods.
+    public void setUserPerformanceMetrics(UserPerformanceMetrics userPerformanceMetrics) { this.userPerformanceMetrics = userPerformanceMetrics; }
 
     //Json property: The feature in which variables in json file which variables we should assign in our model.
     @JsonProperty("user id")
