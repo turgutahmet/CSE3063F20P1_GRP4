@@ -114,4 +114,33 @@ public class InstancePerformanceMetrics {
         ClassLabelAndPercentage finalLabelAndPercentage = new ClassLabelAndPercentage(labels.get(finalLabelID), percentage);
         this.finalLabelAndPercentage = finalLabelAndPercentage;
     }
+
+    //Updates all labels percentages which are labeled.
+    public void updateLabelsAndPercentage(ArrayList<ClassLabel> labels) {
+        classLabelsAndPercentages.clear();
+        int[] labelAssignmentTable = getLabelAssignmentTable(labels.size());
+
+        for (int i = 0; i < labelAssignmentTable.length; i++) {
+            float percentage = (float) (labelAssignmentTable[i] * 1.0 / totalNumberOfLabelAssignments) * 100;
+            classLabelsAndPercentages.add(new ClassLabelAndPercentage(labels.get(i), percentage));
+        }
+    }
+
+    //Updates entropy.
+    public void updateEntropy(int labelsSize) {
+        int[] labelAssignmentTable = getLabelAssignmentTable(labelsSize);
+        int countOfUniqueLabelAssignments = 0;
+        for (int i : labelAssignmentTable) {
+            if (i > 0) {
+                countOfUniqueLabelAssignments++;
+            }
+        }
+        entropy = 0;
+        for (int i : labelAssignmentTable) {
+            if (i > 0) {
+                float percentage = (float) (i * 1.0 / totalNumberOfLabelAssignments);
+                entropy -= (percentage) * (Math.log(percentage) / Math.log(countOfUniqueLabelAssignments));
+            }
+        }
+    }
 }
