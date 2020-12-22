@@ -77,6 +77,16 @@ public class Instance {
             canLabeled = false;
         }
     }
+    //Updates that instance's properties.
+    public void updateInstance(LabeledInstance labeledInstance, Label label) {
+        //Add labeledInstance into userLabels list
+        addUserLabel(labeledInstance, label);
+        //Add label into allLabels list
+        addLabel(label.getLabel());
+        //Update canLabeled status of this instance
+        checkAmountOfLabels();
+    }
+
 
 
     //Json property: The feature in which variables in json file which variables we should assign in our model.
