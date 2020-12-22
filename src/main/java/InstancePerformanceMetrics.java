@@ -1,3 +1,5 @@
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.ArrayList;
 
 public class InstancePerformanceMetrics {
@@ -142,5 +144,63 @@ public class InstancePerformanceMetrics {
                 entropy -= (percentage) * (Math.log(percentage) / Math.log(countOfUniqueLabelAssignments));
             }
         }
+    }
+    //Getter methods.
+    public ArrayList<LabelAssignment> getAllLabelAssignments() {
+        return allLabelAssignments;
+    }
+    public int getTotalNumberOfLabelAssignments() {
+        return totalNumberOfLabelAssignments;
+    }
+    public int getNumberOfUniqueLabelAssignments() {
+        return numberOfUniqueLabelAssignments;
+    }
+    public int getNumberOfUniqueUsers() {
+        return numberOfUniqueUsers;
+    }
+    public ClassLabelAndPercentage getFinalLabelAndPercentage() {
+        return finalLabelAndPercentage;
+    }
+    public ArrayList<ClassLabelAndPercentage> getClassLabelsAndPercentages() {
+        return classLabelsAndPercentages;
+    }
+    public float getEntropy() {
+        return entropy;
+    }
+
+    //Json property: The feature in which variables in json file which variables we should assign in our model.
+    @JsonProperty("all label assignments")
+    public void setAllLabelAssignments(ArrayList<LabelAssignment> allLabelAssignments) {
+        this.allLabelAssignments = allLabelAssignments;
+    }
+
+    @JsonProperty("total number of label assignments")
+    public void setTotalNumberOfLabelAssignments(int totalNumberOfLabelAssignments) {
+        this.totalNumberOfLabelAssignments = totalNumberOfLabelAssignments;
+    }
+
+    @JsonProperty("total number of unique label assignments")
+    public void setNumberOfUniqueLabelAssignments(int numberOfUniqueLabelAssignments) {
+        this.numberOfUniqueLabelAssignments = numberOfUniqueLabelAssignments;
+    }
+
+    @JsonProperty("number of unique users")
+    public void setNumberOfUniqueUsers(int numberOfUniqueUsers) {
+        this.numberOfUniqueUsers = numberOfUniqueUsers;
+    }
+
+    @JsonProperty("final label and percentage")
+    public void setFinalLabelAndPercentage(ClassLabelAndPercentage finalLabelAndPercentage) {
+        this.finalLabelAndPercentage = finalLabelAndPercentage;
+    }
+
+    @JsonProperty("class labels and percentages")
+    public void setClassLabelsAndPercentages(ArrayList<ClassLabelAndPercentage> classLabelsAndPercentages) {
+        this.classLabelsAndPercentages = classLabelsAndPercentages;
+    }
+
+    @JsonProperty("entropy")
+    public void setEntropy(float entropy) {
+        this.entropy = entropy;
     }
 }
