@@ -87,38 +87,21 @@ public class Instance {
         checkAmountOfLabels();
     }
 
+    //Getter methods.
+    public int getID() { return id; }
+    public String getInstance() { return instance; }
+    public boolean isCanLabeled() { return canLabeled; }
+    public ArrayList<LabeledInstance> getUserLabels() { return userLabels; }
+    public InstancePerformanceMetrics getInstancePerformanceMetrics() { return instancePerformanceMetrics; }
 
+    //Setter methods.
+    public void setMaxNumberOfLabel(int maxNumberOfLabel) { this.maxNumberOfLabel = maxNumberOfLabel; }
+    public void setInstancePerformanceMetrics(InstancePerformanceMetrics instancePerformanceMetrics) { this.instancePerformanceMetrics = instancePerformanceMetrics; }
 
     //Json property: The feature in which variables in json file which variables we should assign in our model.
-
-    //Variables getter setter methods
-    public int getID() { return id; }
     @JsonProperty("id")
     public void setID(int value) { this.id = value; }
 
-    public String getInstance() { return instance; }
     @JsonProperty("instance")
     public void setInstance(String value) { this.instance = value; }
-
-    public boolean isCanLabeled() {
-        return canLabeled;
-    }
-
-    public void setCanLabeled(boolean canLabeled) {
-        this.canLabeled = canLabeled;
-    }
-
-    public int getMaxNumberOfLabel() {
-        return maxNumberOfLabel;
-    }
-
-    public void setMaxNumberOfLabel(int maxNumberOfLabel) {
-        this.maxNumberOfLabel = maxNumberOfLabel;
-    }
-
-    public ArrayList<LabeledInstance> getLabelPairs() {
-        return userLabels;
-    }
-
-
 }

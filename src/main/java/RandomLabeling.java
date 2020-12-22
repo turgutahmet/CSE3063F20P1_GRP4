@@ -19,6 +19,9 @@ public class RandomLabeling extends LabelingMechanism {
         //Add label to instance
         LabeledInstance labeledInstance = instance.createLabeledInstance(userInfo);
 
+        //Add new label assignment into instance performance metrics
+        instance.getInstancePerformanceMetrics().addNewLabelAssignment(userInfo.getUsername(), randomLabel.getLabelText(), randomLabel.getLabelID(), userInfo.getUserID());
+
         //Update instance
         instance.updateInstance(labeledInstance, label);
 
