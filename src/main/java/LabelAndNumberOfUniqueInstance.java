@@ -1,8 +1,8 @@
-public class LabelAndNumberOfUniqueinstance {
+public class LabelAndNumberOfUniqueInstance {
     private ClassLabel classLabel;
     private int count;
 
-    public LabelAndNumberOfUniqueinstance(ClassLabel classLabel,int count){
+    public LabelAndNumberOfUniqueInstance(ClassLabel classLabel, int count){
         this.classLabel=classLabel;
         this.count=count;
     }
