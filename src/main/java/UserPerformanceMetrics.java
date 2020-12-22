@@ -51,6 +51,24 @@ public class UserPerformanceMetrics {
         times.add(time);
     }
 
+    //Updates average time spent in labeling processes'.
+    public void updateAverageTime() {
+        float totalTime  = 0;
+        for (Float time : times) {
+            totalTime += time;
+        }
+        avgTime = totalTime / times.size();
+    }
+
+    //Updates standart dev. of time spent in labeling processes'.
+    public void updateStdTime(){
+        float diffOfTimeSq = 0;
+        for (Float time : times) {
+            diffOfTimeSq += Math.pow((avgTime-time), 2);
+        }
+        stdTime = (float) Math.sqrt(diffOfTimeSq / times.size());
+    }
+
     //Getter methods.
     public int getNumberOfDataset() {
         return numberOfDataset;
