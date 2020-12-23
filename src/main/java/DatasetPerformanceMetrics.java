@@ -22,7 +22,7 @@ public class DatasetPerformanceMetrics {
             if (i.getUserLabels().size()!=0){
                 numOfLabeledInstances++;
             } }
-        this.percentage=numOfLabeledInstances/(float) instances.size();
+        this.percentage=(numOfLabeledInstances/(float) instances.size())*100;
     }
     public void updateDistributionOfFinalInstanceLabels(ArrayList<Instance> instances,ArrayList<ClassLabel>classLabels) {
 
