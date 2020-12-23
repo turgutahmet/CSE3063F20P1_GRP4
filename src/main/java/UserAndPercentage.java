@@ -13,4 +13,5 @@ public class UserAndPercentage {
     public float getPercentage() {
         return percentage;
     }
+    public void setPercentage(float percentage){this.percentage=percentage;}
 }

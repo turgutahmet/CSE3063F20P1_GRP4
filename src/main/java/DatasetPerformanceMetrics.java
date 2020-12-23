@@ -89,6 +89,21 @@ public class DatasetPerformanceMetrics {
         }
     }
 
+    public void updateAssignedUsersAndCompletenessPercentage(UserInfo userInfo ,int dataSetId){
+       float newPercentage= userInfo.getUserPerformanceMetrics().getDatasetsCompletenessPercentage()[dataSetId];
+       boolean check=false;
+       for (UserAndPercentage userAndPercentage:assignedUsersAndCompletenessPercentage){
+           if(userAndPercentage.getUserName().equals(userInfo.getUsername())){
+               userAndPercentage.setPercentage(newPercentage);
+               check=true;
+               break;
+           }
+       }
+       if (!check){
+           UserAndPercentage newUser=new UserAndPercentage(userInfo.getUsername(),newPercentage);
+           assignedUsersAndCompletenessPercentage.add(newUser);
+       }
+    }
     public float getPercentage() {
         return percentage;
     }
