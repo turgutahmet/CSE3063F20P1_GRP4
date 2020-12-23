@@ -104,6 +104,33 @@ public class DatasetPerformanceMetrics {
            assignedUsersAndCompletenessPercentage.add(newUser);
        }
     }
+
+    public void updateAssignedUsersAndConsistencyPercentage (UserInfo user){
+
+        int countOfRecurrent=0;
+        for (LabeledInstance labeledInstance : user.getLabeledInstances())
+            if (labeledInstance.getLabels().size()>1)
+                countOfRecurrent++;
+
+        int countOfConsistentInstances=0;
+        for (LabeledInstance labeledInstance : user.getLabeledInstances())
+            if (labeledInstance.getLabels().size()==1 && labeledInstance.getLabels().get(0).getCount()>1)
+                countOfConsistentInstances++;
+
+        countOfRecurrent += countOfConsistentInstances;
+        float percentage = (float) (countOfConsistentInstances * 1.0 / countOfRecurrent) * 100;
+        UserAndPercentage userAndPercentage = new UserAndPercentage(user.getUsername(), percentage);
+
+        for (UserAndPercentage andConsistencyPercentage : assignedUsersAndConsistencyPercentage) {
+            if (andConsistencyPercentage.getUserName().equals(userAndPercentage.getUserName())){
+                andConsistencyPercentage = userAndPercentage;
+                return;
+            }
+        }
+
+        assignedUsersAndConsistencyPercentage.add(userAndPercentage);
+    }
+
     public float getPercentage() {
         return percentage;
     }
