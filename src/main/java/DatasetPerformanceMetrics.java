@@ -16,6 +16,14 @@ public class DatasetPerformanceMetrics {
         this.assignedUsersAndConsistencyPercentage = new ArrayList<>();
     }
 
+    public void updatePercentage(ArrayList<Instance> instances){
+        float numOfLabeledInstances = (float) 0.0;
+        for (Instance i : instances){
+            if (i.getUserLabels().size()!=0){
+                numOfLabeledInstances++;
+            } }
+        this.percentage=numOfLabeledInstances/(float) instances.size();
+    }
     public void updateDistributionOfFinalInstanceLabels(ArrayList<Instance> instances,ArrayList<ClassLabel>classLabels) {
 
         distributionOfFinalInstanceLabels.clear();
