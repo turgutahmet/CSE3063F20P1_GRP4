@@ -16,6 +16,42 @@ public class DatasetPerformanceMetrics {
         this.assignedUsersAndConsistencyPercentage = new ArrayList<>();
     }
 
+    public void updateDistributionOfFinalInstanceLabels(ArrayList<Instance> instances,ArrayList<ClassLabel>classLabels) {
+
+        distributionOfFinalInstanceLabels.clear();
+        int[] finalLabelsTable = new int[classLabels.size()];
+        int total = 0;
+        for (int i : finalLabelsTable)
+            i = 0;
+
+        for (Instance instance : instances) {
+            if (instance.getInstancePerformanceMetrics().getFinalLabelAndPercentage() == null)
+                continue;
+            else{
+            ClassLabel finalLabel = instance.getInstancePerformanceMetrics().getFinalLabelAndPercentage().getClassLabel();
+            for (LabeledInstance userLabel : instance.getUserLabels()) {
+                for (Label label : userLabel.getLabels()) {
+                    if (label.getLabel() == finalLabel) {
+                        finalLabelsTable[finalLabel.getLabelID() - 1] += label.getCount();
+
+                        }
+                    }
+                }
+            }
+        }
+
+        for (int i : finalLabelsTable)
+            total += i;
+
+
+        for (int i = 0; i < finalLabelsTable.length; i++) {
+            if (finalLabelsTable[i] > 0) {
+                float percentage = (float) ((finalLabelsTable[i] * 1.0 / total) * 100);
+                ClassLabelAndPercentage classLabelAndPercentage = new ClassLabelAndPercentage(classLabels.get(i), percentage);
+                distributionOfFinalInstanceLabels.add(classLabelAndPercentage);
+            }
+        }
+    }
 
     public float getPercentage() {
         return percentage;
