@@ -53,6 +53,34 @@ public class DatasetPerformanceMetrics {
         }
     }
 
+
+    public void updateUniqueInstancesForEachLabel(ArrayList<ClassLabel>classLabels,ArrayList<Instance>instances){
+        labelAndNumberOfUniqueInstances.clear();
+        for (ClassLabel classLabel : classLabels) {
+            int[] numberOfUniqueInstances = new int[instances.size()];
+            for (int numberOfUniqueInstance : numberOfUniqueInstances) {
+                numberOfUniqueInstance=0;
+            }
+            for (Instance instance : instances) {
+                for (LabeledInstance userLabel : instance.getUserLabels()) {
+                    for (Label label : userLabel.getLabels()) {
+                        if (label.getLabel().getLabelID() == classLabel.getLabelID()){
+                            numberOfUniqueInstances[instance.getID()-1]++;
+                        }
+                    }
+                }
+            }
+            int count=0;
+            for (int i = 0; i < numberOfUniqueInstances.length; i++) {
+                if (numberOfUniqueInstances[i] > 0){
+                    count++;
+                }
+            }
+            LabelAndNumberOfUniqueInstance labelAndNumberOfUniqueInstance = new LabelAndNumberOfUniqueInstance(classLabel, count);
+            labelAndNumberOfUniqueInstances.add(labelAndNumberOfUniqueInstance);
+        }
+    }
+
     public float getPercentage() {
         return percentage;
     }
