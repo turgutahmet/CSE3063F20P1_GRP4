@@ -90,7 +90,7 @@ public class DatasetPerformanceMetrics {
     }
 
     public void updateAssignedUsersAndCompletenessPercentage(UserInfo userInfo ,int dataSetId){
-       float newPercentage= userInfo.getUserPerformanceMetrics().getDatasetsCompletenessPercentage()[dataSetId];
+       float newPercentage= userInfo.getUserPerformanceMetrics().getDatasetsCompletenessPercentage()[dataSetId-1];
        boolean check=false;
        for (UserAndPercentage userAndPercentage:assignedUsersAndCompletenessPercentage){
            if(userAndPercentage.getUserName().equals(userInfo.getUsername())){
