@@ -29,7 +29,9 @@ public class UserInfo {
     public String getUsername() { return username; }
     public String getUserType() { return userType; }
     public double getConsistencyCheckProbability() { return consistencyCheckProbability; }
+    @JsonBackReference(value="user-performance-metrics")
     public UserPerformanceMetrics getUserPerformanceMetrics() { return userPerformanceMetrics; }
+    @JsonBackReference(value="labeled-instances")
     public ArrayList<LabeledInstance> getLabeledInstances() { return labeledInstances; }
 
     //Setter methods.
