@@ -3,33 +3,59 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 
 public class UserPerformanceMetrics {
+    private UserInfo user;
     private int numberOfDataset; //User's number of assigned datasets.
-    private float[] datasetsCompletenessPercentage; //Datasets' completeness percentages.
+    private ArrayList<DatasetAndPercentage> datasetsCompletenessPercentage; //Datasets' completeness percentages.
     private int totalNumberOfInstanceLabelled; //Total number of instances labeled.
     private int totalNumberOfUniqueInstance; //Total number of unique instances labeled.
+    private int countOfRecurrentInstances; //Number of recurrent labeled instances.
     private float consistencyPercentage; //User's consistency percentage.
     private ArrayList<Float> times; //All labeling processes' finishing time.
     private float avgTime; //Average time of all labeling processes'.
     private float stdTime; //Standard dev. of all labeling processes'.
 
     //UserPerformanceMetrics constructors.
-    public UserPerformanceMetrics(int numberOfDatasets) {
+    public UserPerformanceMetrics(UserInfo user,int numberOfDatasets) {
+        this.user = user;
         this.numberOfDataset = numberOfDatasets;
-        this.datasetsCompletenessPercentage = new float[numberOfDatasets];
+        this.datasetsCompletenessPercentage = new ArrayList<>();
         this.times = new ArrayList<>();
         this.totalNumberOfInstanceLabelled = 0;
         this.totalNumberOfUniqueInstance = 0;
+        this.countOfRecurrentInstances = 0;
         this.consistencyPercentage = 0;
         this.avgTime = 0;
         this.stdTime = 0;
     }
-    //UserPerformanceMetrics default constructors.
     public UserPerformanceMetrics(){
 
     }
+
     //Updates completeness percentages of given dataset.
-    public void updateDatasetsCompletenessPercentage(int numberOfLabeledInstances, int numberOfInstances, int currentDatasetID) {
-        datasetsCompletenessPercentage[currentDatasetID - 1] = (float) (numberOfLabeledInstances * 1.0 / numberOfInstances) * 100;
+    public void updateDatasetsCompletenessPercentage(ArrayList<Instance> instancesInThatDataset, String currentDatasetName) {
+        //Get number of instances which are labeled in current dataset.
+        int numberOfLabeledInstancesInThatDataset = 0;
+        for (Instance instance : instancesInThatDataset) {
+            for (LabeledInstance userLabel : instance.getUserLabels()) {
+                if (userLabel.getWhoLabeled().getUserID() == user.getUserID()) {
+                    numberOfLabeledInstancesInThatDataset++;
+                }
+            }
+        }
+
+        float percentage =  (float) (numberOfLabeledInstancesInThatDataset * 1.0 / instancesInThatDataset.size()) * 100;
+        DatasetAndPercentage datasetAndPercentage = new DatasetAndPercentage(currentDatasetName, percentage);
+
+        for (DatasetAndPercentage andPercentage : datasetsCompletenessPercentage) {
+            if (andPercentage.getDatasetName().equals(datasetAndPercentage.getDatasetName())) {
+                datasetsCompletenessPercentage.remove(andPercentage);
+                andPercentage = datasetAndPercentage;
+                datasetsCompletenessPercentage.add(andPercentage);
+                return;
+            }
+        }
+
+        datasetsCompletenessPercentage.add(datasetAndPercentage);
     }
 
     //Increments total number of instances which are labeled.
@@ -42,9 +68,21 @@ public class UserPerformanceMetrics {
         totalNumberOfUniqueInstance++;
     }
 
+    public void incrementCountOfRecurrentInstances() { countOfRecurrentInstances++; }
+
     //Updates consistency percentage.
-    public void updateConsistencyPercentage(int numberOfRecurrentInstances, int numberOfRecurrentInstancesWithSameLabel) {
-        float percentage = (float) (numberOfRecurrentInstancesWithSameLabel * 1.0 / numberOfRecurrentInstances) * 100;
+    public void updateConsistencyPercentage() {
+        if (countOfRecurrentInstances == 0) {
+            consistencyPercentage = 0;
+            return;
+        }
+        //Count recurrent instances which are labeled with same label.
+        int countOfRecurrentInstancesWithSameLabel = 0;
+        for (LabeledInstance labeledInstance : user.getLabeledInstances()) {
+            //If instance is labeled with only one label and its count is more than one.
+            if (labeledInstance.getLabels().size() == 1 && labeledInstance.getLabels().get(0).getCount() > 1) countOfRecurrentInstancesWithSameLabel++;
+        }
+        float percentage = (float) (countOfRecurrentInstancesWithSameLabel * 1.0 / countOfRecurrentInstances) * 100;
         consistencyPercentage = percentage;
     }
 
@@ -72,11 +110,14 @@ public class UserPerformanceMetrics {
     }
 
     //Getter methods.
+
+
+    public UserInfo getUser() {
+        return user;
+    }
+
     public int getNumberOfDataset() {
         return numberOfDataset;
-    }
-    public float[] getDatasetsCompletenessPercentage() {
-        return datasetsCompletenessPercentage;
     }
     public int getTotalNumberOfInstanceLabelled() {
         return totalNumberOfInstanceLabelled;
@@ -84,6 +125,11 @@ public class UserPerformanceMetrics {
     public int getTotalNumberOfUniqueInstance() {
         return totalNumberOfUniqueInstance;
     }
+
+    public int getCountOfRecurrentInstances() {
+        return countOfRecurrentInstances;
+    }
+
     public float getConsistencyPercentage() {return consistencyPercentage; }
     public float getAvgTime() {
         return avgTime;
@@ -95,14 +141,23 @@ public class UserPerformanceMetrics {
         return times;
     }
 
+
     //Json property: The feature in which variables in json file which variables we should assign in our model.
+    @JsonProperty("user")
+    public void setUser(UserInfo user) {
+        this.user = user;
+    }
+
     @JsonProperty("number of datasets assigned")
     public void setNumberOfDataset(int numberOfDataset) {
         this.numberOfDataset = numberOfDataset;
     }
 
+    public ArrayList<DatasetAndPercentage> getDatasetsCompletenessPercentage() {
+        return datasetsCompletenessPercentage;
+    }
     @JsonProperty("list of all datasets with their completeness percentage")
-    public void setDatasetsCompletenessPercentage(float[] datasetsCompletenessPercentage) {
+    public void setDatasetsCompletenessPercentage(ArrayList<DatasetAndPercentage> datasetsCompletenessPercentage) {
         this.datasetsCompletenessPercentage = datasetsCompletenessPercentage;
     }
 
