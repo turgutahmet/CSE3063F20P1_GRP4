@@ -1,0 +1,38 @@
+{
+  "all label assignments" : [ {
+    "username" : "RandomLabelingMechanism3",
+    "label text" : "Positive",
+    "label id" : 1,
+    "user id" : 3
+  } ],
+  "total number of label assignments" : 1,
+  "total number of unique label assignments" : 1,
+  "number of unique users" : 1,
+  "final label and percentage" : {
+    "class label" : {
+      "label id" : 1,
+      "label text" : "Positive"
+    },
+    "percentage" : 100.0
+  },
+  "class labels and percentages" : [ {
+    "class label" : {
+      "label id" : 1,
+      "label text" : "Positive"
+    },
+    "percentage" : 100.0
+  }, {
+    "class label" : {
+      "label id" : 2,
+      "label text" : "Negative"
+    },
+    "percentage" : 0.0
+  }, {
+    "class label" : {
+      "label id" : 3,
+      "label text" : "Notr"
+    },
+    "percentage" : 0.0
+  } ],
+  "entropy" : "NaN"
+}
