@@ -2,8 +2,6 @@ import com.fasterxml.jackson.annotation.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import org.apache.log4j.Logger;
-
 public class Instance {
     //Instance properties.
     private int id; //Unique id of that instance.
@@ -18,6 +16,28 @@ public class Instance {
     public LabeledInstance createLabeledInstance(UserInfo userInfo) {
         //Create new labeledInstance and return it
         return new LabeledInstance(this.id, this.instance, userInfo, LocalDateTime.now());
+    }
+
+    //Updates userLabels list according previous runs.
+    public void updateUserLabels(ArrayList<UserInfo> userInfos,ArrayList<ClassLabel> classLabels ){
+        ArrayList<LabelAssignment> allLabelAssignments = instancePerformanceMetrics.getAllLabelAssignments();
+        for (LabelAssignment allLabelAssignment : allLabelAssignments) {
+            UserInfo user = userInfos.get(allLabelAssignment.getUserID()-1);
+            Label label = new Label(classLabels.get(allLabelAssignment.getLabelID()-1));
+            LabeledInstance labeledInstance = createLabeledInstance(user);
+            addUserLabel(labeledInstance,label);
+        }
+        checkAmountOfLabels();
+    }
+
+    //Updates that instance's properties.
+    public void updateInstance(LabeledInstance labeledInstance, Label label) {
+        //Add labeledInstance into userLabels list
+        addUserLabel(labeledInstance, label);
+        //Add label into allLabels list
+        addLabel(label.getLabel());
+        //Update canLabeled status of this instance
+        checkAmountOfLabels();
     }
 
     //Adds new LabeledInstance object into userLabels list or update existing record.
@@ -48,6 +68,7 @@ public class Instance {
         }
         return null;
     }
+
     //Add new Label object into allLabels list.
     private void addLabel(ClassLabel label) {
         allLabels.add(label);
@@ -76,15 +97,6 @@ public class Instance {
         if (count >= maxNumberOfLabel) {
             canLabeled = false;
         }
-    }
-    //Updates that instance's properties.
-    public void updateInstance(LabeledInstance labeledInstance, Label label) {
-        //Add labeledInstance into userLabels list
-        addUserLabel(labeledInstance, label);
-        //Add label into allLabels list
-        addLabel(label.getLabel());
-        //Update canLabeled status of this instance
-        checkAmountOfLabels();
     }
 
     //Getter methods.
