@@ -89,11 +89,19 @@ public class DatasetPerformanceMetrics {
         }
     }
 
-    public void updateAssignedUsersAndCompletenessPercentage(UserInfo userInfo ,int dataSetId){
-       float newPercentage= userInfo.getUserPerformanceMetrics().getDatasetsCompletenessPercentage()[dataSetId-1];
+    public void updateAssignedUsersAndCompletenessPercentage(UserInfo userInfo ,String datasetName){
+       float newPercentage = 0;
+
+        for (DatasetAndPercentage datasetAndPercentage : userInfo.getUserPerformanceMetrics().getDatasetsCompletenessPercentage()) {
+            if (datasetAndPercentage.getDatasetName().equals(datasetName)) {
+                newPercentage = datasetAndPercentage.getPercentage();
+                break;
+            }
+        }
+
        boolean check=false;
        for (UserAndPercentage userAndPercentage:assignedUsersAndCompletenessPercentage){
-           if(userAndPercentage.getUserName().equals(userInfo.getUsername())){
+           if(userAndPercentage.getUserInfo().equals(userInfo.getUsername())){
                userAndPercentage.setPercentage(newPercentage);
                check=true;
                break;
@@ -122,7 +130,7 @@ public class DatasetPerformanceMetrics {
         UserAndPercentage userAndPercentage = new UserAndPercentage(user.getUsername(), percentage);
 
         for (UserAndPercentage andConsistencyPercentage : assignedUsersAndConsistencyPercentage) {
-            if (andConsistencyPercentage.getUserName().equals(userAndPercentage.getUserName())){
+            if (andConsistencyPercentage.getUserInfo().equals(userAndPercentage.getUserInfo())){
                 andConsistencyPercentage = userAndPercentage;
                 return;
             }
