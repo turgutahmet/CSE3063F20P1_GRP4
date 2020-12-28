@@ -24,7 +24,7 @@ public class AssignedUsers {
     }
 
     public AssignedUsers invoke() {
-        allUsers = config.getUserInfos();
+        allUsers = config.getBotInfos();
         currentUser = new ArrayList<>();
         for (BotInfo botInfo : allUsers) {
             //Print config log records check log.txt.

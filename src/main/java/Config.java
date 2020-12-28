@@ -7,6 +7,7 @@ public class Config {
     //Define basic User variable
     private int currentDatasetID;
     private ArrayList<BotInfo> botInfos;
+    private ArrayList<UserInfo> userInfos;
     private ArrayList<DatasetInfo> datasetInfos;
 
     public Config readConfig() {
@@ -16,11 +17,11 @@ public class Config {
     //Json property: The feature in which variables in json file which variables we should assign in our model.
 
     //Variables getter setter methods
-    public ArrayList<BotInfo> getUserInfos() {
+    public ArrayList<BotInfo> getBotInfos() {
         return botInfos;
     }
     @JsonProperty("bots")
-    public void setUserInfos(ArrayList<BotInfo> botInfos) {
+    public void setBotInfos(ArrayList<BotInfo> botInfos) {
         this.botInfos = botInfos;
     }
 
@@ -39,4 +40,8 @@ public class Config {
     public void setDatasetInfos(ArrayList<DatasetInfo> datasetInfos) {
         this.datasetInfos = datasetInfos;
     }
+
+    public ArrayList<UserInfo> getUserInfos() {return userInfos; }
+    @JsonProperty("users")
+    public void setUserInfos(ArrayList<UserInfo> userInfos) { this.userInfos = userInfos; }
 }
