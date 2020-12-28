@@ -4,8 +4,8 @@
   "number of unique currentUsers" : 1,
   "final label and percentage" : {
     "class label" : {
-      "label id" : 1,
-      "label text" : "Positive"
+      "label id" : 3,
+      "label text" : "Notr"
     },
     "percentage" : 100.0
   },
@@ -14,7 +14,7 @@
       "label id" : 1,
       "label text" : "Positive"
     },
-    "percentage" : 100.0
+    "percentage" : 0.0
   }, {
     "class label" : {
       "label id" : 2,
@@ -26,7 +26,7 @@
       "label id" : 3,
       "label text" : "Notr"
     },
-    "percentage" : 0.0
+    "percentage" : 100.0
   } ],
   "entropy" : "NaN"
 }

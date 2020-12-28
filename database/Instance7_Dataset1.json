@@ -1,9 +1,9 @@
 {
   "all label assignments" : [ {
-    "username" : "RandomLabelingMechanism1",
+    "username" : "RandomLabelingMechanism6",
     "label text" : "Negative",
     "label id" : 2,
-    "user id" : 1
+    "user id" : 6
   } ],
   "total number of label assignments" : 1,
   "total number of unique label assignments" : 1,
