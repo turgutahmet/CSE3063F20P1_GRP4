@@ -8,7 +8,7 @@ public class RandomLabeling extends LabelingMechanism {
     }
 
     @Override
-    public void labelInstanceWithUser(UserInfo userInfo, Instance instance, ArrayList<ClassLabel> classLabels) {
+    public void labelInstanceWithUser(BotInfo botInfo, Instance instance, ArrayList<ClassLabel> classLabels) {
         //Select a random label from class labels
         int random_index = (int) (Math.random() * classLabels.size());
         ClassLabel randomLabel = classLabels.get(random_index);
@@ -17,10 +17,10 @@ public class RandomLabeling extends LabelingMechanism {
         Label label = new Label(randomLabel);
 
         //Add label to instance
-        LabeledInstance labeledInstance = instance.createLabeledInstance(userInfo);
+        LabeledInstance labeledInstance = instance.createLabeledInstance(botInfo);
 
         //Add new label assignment into instance performance metrics
-        instance.getInstancePerformanceMetrics().addNewLabelAssignment(userInfo.getUsername(), randomLabel.getLabelText(), randomLabel.getLabelID(), userInfo.getUserID());
+        instance.getInstancePerformanceMetrics().addNewLabelAssignment(botInfo.getUsername(), randomLabel.getLabelText(), randomLabel.getLabelID(), botInfo.getUserID());
 
         //Update instance
         instance.updateInstance(labeledInstance, label);
@@ -29,7 +29,7 @@ public class RandomLabeling extends LabelingMechanism {
         Logger logger = Logger.getLogger(this.getClass().getName());
 
         //Print log check
-        logger.info("user id:" + userInfo.getUserID() + " " + userInfo.getUsername() + " " + "labeled instance id:" + instance.getID() + " "
+        logger.info("user id:" + botInfo.getUserID() + " " + botInfo.getUsername() + " " + "labeled instance id:" + instance.getID() + " "
                 + "with class label " + label.getLabel().getLabelID() + " :" + label.getLabel().getLabelText() + " " + "instance :" + instance.getInstance());
     }
 }

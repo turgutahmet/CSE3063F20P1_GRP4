@@ -27,8 +27,8 @@ public class Main {
 
 		//Get all users in the system.
 		AssignedUsers assignedUsers = new AssignedUsers(config, currentDatasetInfo, logger).invoke();
-		ArrayList<UserInfo> allUsers = assignedUsers.getAllUsers();
-		ArrayList<UserInfo> currentUsers = assignedUsers.getCurrentUsers();
+		ArrayList<BotInfo> allUsers = assignedUsers.getAllUsers();
+		ArrayList<BotInfo> currentUsers = assignedUsers.getCurrentUsers();
 
 		//Get all labels and all instances in the system.
 		ArrayList<ClassLabel> classLabels = data.getClassLabels();

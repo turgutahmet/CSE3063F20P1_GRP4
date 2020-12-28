@@ -2,8 +2,8 @@ import com.fasterxml.jackson.annotation.*;
 
 import java.util.ArrayList;
 
-public class UserInfo {
-    //UserInfo properties.
+public class BotInfo {
+    //BotInfo properties.
     private int userID; //Unique id of that user.
     private String username; //Username of that user.
     private String userType; //Type of that user.

@@ -35,7 +35,7 @@ public class DatasetInfo {
     public ArrayList<Integer> getAssignUserID() {
         return assignUserID;
     }
-    @JsonProperty("assign users")
+    @JsonProperty("assign bots")
     public void setAssignUserID(ArrayList<Integer> assignUserID) {
         this.assignUserID = assignUserID;
     }

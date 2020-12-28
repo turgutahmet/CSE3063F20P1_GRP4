@@ -3,11 +3,11 @@ import java.util.ArrayList;
 
 public class InstancePerformanceMetricsCreator {
     private int currentDatasetID;
-    private ArrayList<UserInfo> allUsers;
+    private ArrayList<BotInfo> allUsers;
     private ArrayList<ClassLabel> classLabels;
     private ArrayList<Instance> instances;
 
-    public InstancePerformanceMetricsCreator(int currentDatasetID, ArrayList<UserInfo> allUsers, ArrayList<ClassLabel> classLabels, ArrayList<Instance> instances) {
+    public InstancePerformanceMetricsCreator(int currentDatasetID, ArrayList<BotInfo> allUsers, ArrayList<ClassLabel> classLabels, ArrayList<Instance> instances) {
         this.currentDatasetID = currentDatasetID;
         this.allUsers = allUsers;
         this.classLabels = classLabels;

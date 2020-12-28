@@ -3,15 +3,15 @@ import java.util.ArrayList;
 
 public class LabeledInstance extends Instance {
     //LabeledInstance properties.
-    private final UserInfo whoLabeled ; //Labeled by that user.
+    private final BotInfo whoLabeled ; //Labeled by that user.
     private final ArrayList<Label> labels = new ArrayList<>(); //What labels did that user use.
     private final LocalDateTime date; //Creation date.
 
     //LabeledInstance constructor.
-    LabeledInstance(int id, String instance, UserInfo userInfo, LocalDateTime localDate) {
+    LabeledInstance(int id, String instance, BotInfo botInfo, LocalDateTime localDate) {
         this.setID(id);
         this.setInstance(instance);
-        this.whoLabeled = userInfo;
+        this.whoLabeled = botInfo;
         this.date = localDate;
     }
 
@@ -33,7 +33,7 @@ public class LabeledInstance extends Instance {
     }
 
     //Getter methods.
-    public UserInfo getWhoLabeled() {
+    public BotInfo getWhoLabeled() {
         return whoLabeled;
     }
     public ArrayList<Label> getLabels() {

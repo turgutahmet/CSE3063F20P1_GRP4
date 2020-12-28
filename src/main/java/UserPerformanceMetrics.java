@@ -3,7 +3,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 
 public class UserPerformanceMetrics {
-    private UserInfo user;
+    private BotInfo user;
     private int numberOfDataset; //User's number of assigned datasets.
     private ArrayList<DatasetAndPercentage> datasetsCompletenessPercentage; //Datasets' completeness percentages.
     private int totalNumberOfInstanceLabelled; //Total number of instances labeled.
@@ -15,7 +15,7 @@ public class UserPerformanceMetrics {
     private float stdTime; //Standard dev. of all labeling processes'.
 
     //UserPerformanceMetrics constructors.
-    public UserPerformanceMetrics(UserInfo user,int numberOfDatasets) {
+    public UserPerformanceMetrics(BotInfo user, int numberOfDatasets) {
         this.user = user;
         this.numberOfDataset = numberOfDatasets;
         this.datasetsCompletenessPercentage = new ArrayList<>();
@@ -112,7 +112,7 @@ public class UserPerformanceMetrics {
     //Getter methods.
 
 
-    public UserInfo getUser() {
+    public BotInfo getUser() {
         return user;
     }
 
@@ -144,7 +144,7 @@ public class UserPerformanceMetrics {
 
     //Json property: The feature in which variables in json file which variables we should assign in our model.
     @JsonProperty("user")
-    public void setUser(UserInfo user) {
+    public void setUser(BotInfo user) {
         this.user = user;
     }
 

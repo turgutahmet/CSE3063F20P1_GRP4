@@ -6,8 +6,8 @@ public class AssignedUsers {
     private Config config;
     private DatasetInfo currentDatasetInfo;
     private Logger logger;
-    private ArrayList<UserInfo> allUsers;
-    private ArrayList<UserInfo> currentUser;
+    private ArrayList<BotInfo> allUsers;
+    private ArrayList<BotInfo> currentUser;
 
     public AssignedUsers(Config config, DatasetInfo currentDatasetInfo, Logger logger) {
         this.config = config;
@@ -15,22 +15,22 @@ public class AssignedUsers {
         this.logger = logger;
     }
 
-    public ArrayList<UserInfo> getAllUsers() {
+    public ArrayList<BotInfo> getAllUsers() {
         return allUsers;
     }
 
-    public ArrayList<UserInfo> getCurrentUsers() {
+    public ArrayList<BotInfo> getCurrentUsers() {
         return currentUser;
     }
 
     public AssignedUsers invoke() {
         allUsers = config.getUserInfos();
         currentUser = new ArrayList<>();
-        for (UserInfo userInfo : allUsers) {
+        for (BotInfo botInfo : allUsers) {
             //Print config log records check log.txt.
-            if (currentDatasetInfo.getAssignUserID().contains(userInfo.getUserID())) {
-                logger.info("config: created " + userInfo.getUsername() + " as " + userInfo.getUserType());
-                currentUser.add(userInfo);
+            if (currentDatasetInfo.getAssignUserID().contains(botInfo.getUserID())) {
+                logger.info("config: created " + botInfo.getUsername() + " as " + botInfo.getUserType());
+                currentUser.add(botInfo);
             }
         }
         return this;

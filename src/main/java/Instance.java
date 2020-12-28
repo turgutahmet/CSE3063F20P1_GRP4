@@ -13,16 +13,16 @@ public class Instance {
     private InstancePerformanceMetrics instancePerformanceMetrics; //Instance performance metrics.
 
     //Create new LabeledInstance object and return it to labeling mechanism.
-    public LabeledInstance createLabeledInstance(UserInfo userInfo) {
+    public LabeledInstance createLabeledInstance(BotInfo botInfo) {
         //Create new labeledInstance and return it
-        return new LabeledInstance(this.id, this.instance, userInfo, LocalDateTime.now());
+        return new LabeledInstance(this.id, this.instance, botInfo, LocalDateTime.now());
     }
 
     //Updates userLabels list according previous runs.
-    public void updateUserLabels(ArrayList<UserInfo> userInfos,ArrayList<ClassLabel> classLabels ){
+    public void updateUserLabels(ArrayList<BotInfo> botInfos, ArrayList<ClassLabel> classLabels ){
         ArrayList<LabelAssignment> allLabelAssignments = instancePerformanceMetrics.getAllLabelAssignments();
         for (LabelAssignment allLabelAssignment : allLabelAssignments) {
-            UserInfo user = userInfos.get(allLabelAssignment.getUserID()-1);
+            BotInfo user = botInfos.get(allLabelAssignment.getUserID()-1);
             Label label = new Label(classLabels.get(allLabelAssignment.getLabelID()-1));
             LabeledInstance labeledInstance = createLabeledInstance(user);
             addUserLabel(labeledInstance,label);
@@ -60,9 +60,9 @@ public class Instance {
     }
 
     //Checks is there any record related with that user?
-    private LabeledInstance checkUserLabels(UserInfo userInfo) {
+    private LabeledInstance checkUserLabels(BotInfo botInfo) {
         for (LabeledInstance userLabel : userLabels) {
-            if (userLabel.getWhoLabeled() == userInfo) {
+            if (userLabel.getWhoLabeled() == botInfo) {
                 return userLabel;
             }
         }

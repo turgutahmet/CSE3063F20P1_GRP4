@@ -89,10 +89,10 @@ public class DatasetPerformanceMetrics {
         }
     }
 
-    public void updateAssignedUsersAndCompletenessPercentage(UserInfo userInfo ,String datasetName){
+    public void updateAssignedUsersAndCompletenessPercentage(BotInfo botInfo, String datasetName){
        float newPercentage = 0;
 
-        for (DatasetAndPercentage datasetAndPercentage : userInfo.getUserPerformanceMetrics().getDatasetsCompletenessPercentage()) {
+        for (DatasetAndPercentage datasetAndPercentage : botInfo.getUserPerformanceMetrics().getDatasetsCompletenessPercentage()) {
             if (datasetAndPercentage.getDatasetName().equals(datasetName)) {
                 newPercentage = datasetAndPercentage.getPercentage();
                 break;
@@ -101,19 +101,19 @@ public class DatasetPerformanceMetrics {
 
        boolean check=false;
        for (UserAndPercentage userAndPercentage:assignedUsersAndCompletenessPercentage){
-           if(userAndPercentage.getUserInfo().equals(userInfo.getUsername())){
+           if(userAndPercentage.getUserInfo().equals(botInfo.getUsername())){
                userAndPercentage.setPercentage(newPercentage);
                check=true;
                break;
            }
        }
        if (!check){
-           UserAndPercentage newUser=new UserAndPercentage(userInfo.getUsername(),newPercentage);
+           UserAndPercentage newUser=new UserAndPercentage(botInfo.getUsername(),newPercentage);
            assignedUsersAndCompletenessPercentage.add(newUser);
        }
     }
 
-    public void updateAssignedUsersAndConsistencyPercentage (UserInfo user){
+    public void updateAssignedUsersAndConsistencyPercentage (BotInfo user){
 
         int countOfRecurrent=0;
         for (LabeledInstance labeledInstance : user.getLabeledInstances())
