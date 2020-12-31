@@ -24,6 +24,10 @@ public class AssignedUsers {
         return currentUser;
     }
 
+    public ArrayList<UserInfo> getRealUsers() {
+        return realUsers;
+    }
+
     public AssignedUsers invoke() {
         allUsers = config.getBotInfos();
         currentUser = new ArrayList<>();

@@ -11,11 +11,13 @@ public class LabelingSimulation {
     private ArrayList<BotInfo> currentUsers;
     private ArrayList<Instance> instances;
     private ArrayList<ClassLabel> classLabels;
+    private ArrayList<UserInfo> realUsers;
 
-    public LabelingSimulation(Dataset dataset, ArrayList<BotInfo> allUsers, ArrayList<BotInfo> currentUsers, ArrayList<Instance> instances, ArrayList<ClassLabel> classLabels) {
+    public LabelingSimulation(Dataset dataset, ArrayList<BotInfo> allUsers, ArrayList<BotInfo> currentUsers, ArrayList<UserInfo> realUsers, ArrayList<Instance> instances, ArrayList<ClassLabel> classLabels) {
         this.dataset = dataset;
         this.allUsers = allUsers;
         this.currentUsers = currentUsers;
+        this.realUsers = realUsers;
         this.instances = instances;
         this.classLabels = classLabels;
     }
