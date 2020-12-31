@@ -13,46 +13,46 @@ public class Instance {
     private InstancePerformanceMetrics instancePerformanceMetrics; //Instance performance metrics.
 
     //Create new LabeledInstance object and return it to labeling mechanism.
-    public LabeledInstance createLabeledInstance(BotInfo botInfo) {
+    public LabeledInstance createLabeledInstance(UserInfo userInfo) {
         //Create new labeledInstance and return it
-        return new LabeledInstance(this.id, this.instance, botInfo, LocalDateTime.now());
+        return new LabeledInstance(this.id, this.instance, userInfo, LocalDateTime.now());
     }
 
     //Updates userLabels list according previous runs.
-    public void updateUserLabels(ArrayList<BotInfo> botInfos, ArrayList<ClassLabel> classLabels ){
+    public void updateUserLabels(ArrayList<UserInfo> userInfos, ArrayList<ClassLabel> classLabels ){
         ArrayList<LabelAssignment> allLabelAssignments = instancePerformanceMetrics.getAllLabelAssignments();
         for (LabelAssignment allLabelAssignment : allLabelAssignments) {
-            BotInfo user = botInfos.get(allLabelAssignment.getUserID()-1);
-            Label label = new Label(classLabels.get(allLabelAssignment.getLabelID()-1));
+            UserInfo user = userInfos.get(allLabelAssignment.getUserID()-1);
+            LabelCounter labelCounter = new LabelCounter(classLabels.get(allLabelAssignment.getLabelID()-1));
             LabeledInstance labeledInstance = createLabeledInstance(user);
-            addUserLabel(labeledInstance,label);
+            addUserLabel(labeledInstance, labelCounter);
         }
         checkAmountOfLabels();
     }
 
     //Updates that instance's properties.
-    public void updateInstance(LabeledInstance labeledInstance, Label label) {
+    public void updateInstance(LabeledInstance labeledInstance, LabelCounter labelCounter) {
         //Add labeledInstance into userLabels list
-        addUserLabel(labeledInstance, label);
+        addUserLabel(labeledInstance, labelCounter);
         //Add label into allLabels list
-        addLabel(label.getLabel());
+        addLabel(labelCounter.getLabel());
         //Update canLabeled status of this instance
         checkAmountOfLabels();
     }
 
     //Adds new LabeledInstance object into userLabels list or update existing record.
-    private void addUserLabel(LabeledInstance labeledInstance, Label label) {
+    private void addUserLabel(LabeledInstance labeledInstance, LabelCounter labelCounter) {
         //Check: Is there any record with related that user?
         LabeledInstance existingLabeledInstance = checkUserLabels(labeledInstance.getWhoLabeled());
         //If there is
         if (existingLabeledInstance != null) {
             //Check: Is that user labeled this instance with same label before or not?
-            existingLabeledInstance.updateLabel(label);
+            existingLabeledInstance.updateLabel(labelCounter);
             //Add that labeled instance record into user
             existingLabeledInstance.getWhoLabeled().addLabeledInstance(labeledInstance);
             return;
         } else {
-            labeledInstance.addLabel(label);
+            labeledInstance.addLabel(labelCounter);
             userLabels.add(labeledInstance);
         }
         //Add that labeled instance record into user
@@ -60,9 +60,9 @@ public class Instance {
     }
 
     //Checks is there any record related with that user?
-    private LabeledInstance checkUserLabels(BotInfo botInfo) {
+    private LabeledInstance checkUserLabels(UserInfo userInfo) {
         for (LabeledInstance userLabel : userLabels) {
-            if (userLabel.getWhoLabeled() == botInfo) {
+            if (userLabel.getWhoLabeled() == userInfo) {
                 return userLabel;
             }
         }
@@ -90,8 +90,8 @@ public class Instance {
     private void checkAmountOfLabels() {
         int count = 0;
         for (LabeledInstance userLabel : userLabels) {
-            for (Label userLabelLabel : userLabel.getLabels()) {
-                count += userLabelLabel.getCount();
+            for (LabelCounter userLabelLabelCounter : userLabel.getLabels()) {
+                count += userLabelLabelCounter.getCount();
             }
         }
         if (count >= maxNumberOfLabel) {

@@ -37,8 +37,8 @@ public class InstancePerformanceMetrics {
     }
 
     //Adds new label assignment into allLabelAssignments list.
-    public void addNewLabelAssignment(String username, String label, int labelID, int userID) {
-        allLabelAssignments.add(new LabelAssignment(username, label, labelID, userID));
+    public void addNewLabelAssignment(UserInfo user, ClassLabel label) {
+        allLabelAssignments.add(new LabelAssignment(user, label));
     }
 
     //Updates total number of label assignments.

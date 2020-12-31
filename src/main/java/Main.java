@@ -27,9 +27,8 @@ public class Main {
 
 		//Get all users in the system.
 		AssignedUsers assignedUsers = new AssignedUsers(config, currentDatasetInfo, logger).invoke();
-		ArrayList<BotInfo> allUsers = assignedUsers.getAllUsers();
-		ArrayList<BotInfo> currentUsers = assignedUsers.getCurrentUsers();
-		ArrayList<UserInfo> realUsers = assignedUsers.getRealUsers();
+		ArrayList<UserInfo> allUsers = assignedUsers.getAllUsers();
+		ArrayList<UserInfo> currentUsers = assignedUsers.getCurrentUsers();
 
 		//Get all labels and all instances in the system.
 		ArrayList<ClassLabel> classLabels = data.getClassLabels();
@@ -52,7 +51,7 @@ public class Main {
 		LabelingMechanism randomLabelling = new RandomLabeling();
 
 		//Random Labeling Simulation
-		LabelingSimulation labelingSimulation = new LabelingSimulation(data, allUsers, currentUsers, realUsers, instances, classLabels);
+		LabelingSimulation labelingSimulation = new LabelingSimulation(data, allUsers, currentUsers, instances, classLabels);
 		labelingSimulation.startSimulation(randomLabelling);
 	}
 }

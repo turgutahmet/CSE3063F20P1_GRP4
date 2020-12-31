@@ -6,7 +6,6 @@ import java.util.ArrayList;
 public class Config {
     //Define basic User variable
     private int currentDatasetID;
-    private ArrayList<BotInfo> botInfos;
     private ArrayList<UserInfo> userInfos;
     private ArrayList<DatasetInfo> datasetInfos;
 
@@ -17,13 +16,6 @@ public class Config {
     //Json property: The feature in which variables in json file which variables we should assign in our model.
 
     //Variables getter setter methods
-    public ArrayList<BotInfo> getBotInfos() {
-        return botInfos;
-    }
-    @JsonProperty("bots")
-    public void setBotInfos(ArrayList<BotInfo> botInfos) {
-        this.botInfos = botInfos;
-    }
 
     public int getCurrentDatasetID() {
         return currentDatasetID;

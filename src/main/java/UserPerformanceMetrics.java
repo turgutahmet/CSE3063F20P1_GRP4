@@ -3,7 +3,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 
 public class UserPerformanceMetrics {
-    private BotInfo user;
+    private UserInfo user;
     private int numberOfDataset; //User's number of assigned datasets.
     private ArrayList<DatasetAndPercentage> datasetsCompletenessPercentage; //Datasets' completeness percentages.
     private int totalNumberOfInstanceLabelled; //Total number of instances labeled.
@@ -15,7 +15,7 @@ public class UserPerformanceMetrics {
     private float stdTime; //Standard dev. of all labeling processes'.
 
     //UserPerformanceMetrics constructors.
-    public UserPerformanceMetrics(BotInfo user, int numberOfDatasets) {
+    public UserPerformanceMetrics(UserInfo user, int numberOfDatasets) {
         this.user = user;
         this.numberOfDataset = numberOfDatasets;
         this.datasetsCompletenessPercentage = new ArrayList<>();
@@ -32,7 +32,7 @@ public class UserPerformanceMetrics {
     }
 
     //Updates completeness percentages of given dataset.
-    public void updateDatasetsCompletenessPercentage(ArrayList<Instance> instancesInThatDataset, String currentDatasetName) {
+    public void updateDatasetsCompletenessPercentage(ArrayList<Instance> instancesInThatDataset, Dataset currentDataset) {
         //Get number of instances which are labeled in current dataset.
         int numberOfLabeledInstancesInThatDataset = 0;
         for (Instance instance : instancesInThatDataset) {
@@ -44,7 +44,7 @@ public class UserPerformanceMetrics {
         }
 
         float percentage =  (float) (numberOfLabeledInstancesInThatDataset * 1.0 / instancesInThatDataset.size()) * 100;
-        DatasetAndPercentage datasetAndPercentage = new DatasetAndPercentage(currentDatasetName, percentage);
+        DatasetAndPercentage datasetAndPercentage = new DatasetAndPercentage(currentDataset.getDatasetName(), percentage);
 
         for (DatasetAndPercentage andPercentage : datasetsCompletenessPercentage) {
             if (andPercentage.getDatasetName().equals(datasetAndPercentage.getDatasetName())) {
@@ -112,7 +112,7 @@ public class UserPerformanceMetrics {
     //Getter methods.
 
 
-    public BotInfo getUser() {
+    public UserInfo getUser() {
         return user;
     }
 
@@ -144,7 +144,7 @@ public class UserPerformanceMetrics {
 
     //Json property: The feature in which variables in json file which variables we should assign in our model.
     @JsonProperty("user")
-    public void setUser(BotInfo user) {
+    public void setUser(UserInfo user) {
         this.user = user;
     }
 

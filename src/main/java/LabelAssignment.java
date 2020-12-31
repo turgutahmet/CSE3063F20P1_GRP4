@@ -2,43 +2,40 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class LabelAssignment {
     //LabelAssignment properties.
-    private String username; //Username of who assigned label.
-    private String labelText; //Assigned label text.
-    private int labelID; //Assigned label id.
-    private int userID; //User's id.
+    private UserInfo user;
+    private ClassLabel label;
 
     //LabelAssignment constructors.
-    public LabelAssignment(String username, String labelText, int labelID, int userID) {
-        this.username = username;
-        this.labelText = labelText;
-        this.labelID = labelID;
-        this.userID = userID;
+    public LabelAssignment(UserInfo user, ClassLabel label) {
+        this.user = user;
+        this.label = label;
     }
     public LabelAssignment(){
-
+        user = new UserInfo();
+        label = new ClassLabel();
     }
 
     //Getter methods.
-    public String getUsername() { return username; }
-    public String getLabelText() { return labelText; }
-    public int getLabelID() { return labelID; }
-    public int getUserID() { return userID; }
+    public String getUsername() { return user.getUsername(); }
+    public String getLabelText() { return label.getLabelText(); }
+    public int getLabelID() { return label.getLabelID(); }
+    public int getUserID() { return user.getUserID(); }
 
     //Setter methods.
     @JsonProperty("username")
     public void setUsername(String username) {
-        this.username = username;
+        this.user.setUsername(username);
     }
     @JsonProperty("label text")
     public void setLabelText(String labelText) {
-        this.labelText = labelText;
+        this.label.setLabelText(labelText);
     }
     @JsonProperty("label id")
     public void setLabelID(int labelID) {
-        this.labelID = labelID;
+        this.label.setLabelID(labelID);
     }
     @JsonProperty("user id")
     public void setUserID(int userID) {
-        this.userID = userID;
+        this.user.setUserID(userID);
     }
 }

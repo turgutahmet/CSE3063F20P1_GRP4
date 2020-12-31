@@ -7,24 +7,22 @@ import java.util.LinkedHashMap;
 
 public class LabelingSimulation {
     private Dataset dataset;
-    private ArrayList<BotInfo> allUsers;
-    private ArrayList<BotInfo> currentUsers;
+    private ArrayList<UserInfo> allUsers;
+    private ArrayList<UserInfo> currentUsers;
     private ArrayList<Instance> instances;
     private ArrayList<ClassLabel> classLabels;
-    private ArrayList<UserInfo> realUsers;
 
-    public LabelingSimulation(Dataset dataset, ArrayList<BotInfo> allUsers, ArrayList<BotInfo> currentUsers, ArrayList<UserInfo> realUsers, ArrayList<Instance> instances, ArrayList<ClassLabel> classLabels) {
+    public LabelingSimulation(Dataset dataset, ArrayList<UserInfo> allUsers, ArrayList<UserInfo> currentUsers, ArrayList<Instance> instances, ArrayList<ClassLabel> classLabels) {
         this.dataset = dataset;
         this.allUsers = allUsers;
         this.currentUsers = currentUsers;
-        this.realUsers = realUsers;
         this.instances = instances;
         this.classLabels = classLabels;
     }
 
     public void startSimulation(LabelingMechanism labelingMechanism) {
         //Iterate currentUsers.
-        for (BotInfo user : currentUsers) {
+        for (UserInfo user : currentUsers) {
             //Check user's type.
             switch (user.getUserType()) {
                 case "RandomBot":
@@ -40,7 +38,7 @@ public class LabelingSimulation {
     }
 
     //Returns not labeled instances by given user.
-    private ArrayList<Instance> getNotLabeledInstances(BotInfo user) {
+    private ArrayList<Instance> getNotLabeledInstances(UserInfo user) {
         ArrayList<Instance> notLabeledInstances = new ArrayList<>();
         for (Instance instance : instances) {
             notLabeledInstances.add(instance);
@@ -66,7 +64,7 @@ public class LabelingSimulation {
     }
 
     //Returns previously labeled instances by given user
-    private ArrayList<Instance> getPreviouslyLabeledInstances(BotInfo user) {
+    private ArrayList<Instance> getPreviouslyLabeledInstances(UserInfo user) {
         ArrayList<Instance> previouslyLabeledInstances = new ArrayList<>();
         //Iterate all instances
         for (Instance instance : instances) {
@@ -89,7 +87,7 @@ public class LabelingSimulation {
         return (int) (Math.random() * 10);
     }
 
-    private void startTurn(BotInfo user, LabelingMechanism labelingMechanism) {
+    private void startTurn(UserInfo user, LabelingMechanism labelingMechanism) {
         //Start time for measuring evaluated time in that turn.
         long start = System.currentTimeMillis();
 
@@ -127,7 +125,7 @@ public class LabelingSimulation {
 
     }
 
-    private Instance getRandomInstance(BotInfo user, ArrayList<Instance> notLabeledInstances, ArrayList<Instance> previouslyLabeledInstances) {
+    private Instance getRandomInstance(UserInfo user, ArrayList<Instance> notLabeledInstances, ArrayList<Instance> previouslyLabeledInstances) {
         Instance randomInstance;
         String selectedList = "";
 
@@ -158,21 +156,21 @@ public class LabelingSimulation {
         return randomInstance;
     }
 
-    private void incrementSpecificNumberOfInstanceLabeled(BotInfo user, String selectedList) {
+    private void incrementSpecificNumberOfInstanceLabeled(UserInfo user, String selectedList) {
         //Increment total number of unique instances of given user, if random instance is selected from notLabeledInstances list.
         if (selectedList.equals("notLabeledInstances")) user.getUserPerformanceMetrics().incrementTotalUniqueNumberOfInstanceLabelled();
         //Increment count of recurrent labeled instance of given user, if random instance is selected from previouslyLabeled list.
         if (selectedList.equals("previouslyLabeledInstance")) user.getUserPerformanceMetrics().incrementCountOfRecurrentInstances();
     }
 
-    private void updateUserPerformanceMetrics(BotInfo botInfo, float sec) {
-        UserPerformanceMetrics userPerformanceMetrics = botInfo.getUserPerformanceMetrics();
+    private void updateUserPerformanceMetrics(UserInfo userInfo, float sec) {
+        UserPerformanceMetrics userPerformanceMetrics = userInfo.getUserPerformanceMetrics();
 
         //Increment total number of instance labeled after each successful labeling process.
         userPerformanceMetrics.incrementTotalNumberOfInstanceLabelled();
 
         //Update dataset's completeness percentage.
-        userPerformanceMetrics.updateDatasetsCompletenessPercentage(instances, dataset.getDatasetName());
+        userPerformanceMetrics.updateDatasetsCompletenessPercentage(instances, dataset);
 
         //Update consistency percentage
         userPerformanceMetrics.updateConsistencyPercentage();
@@ -209,7 +207,7 @@ public class LabelingSimulation {
         instancePerformanceMetrics.updateEntropy(classLabels.size());
     }
 
-    private void updateDatasetPerformanceMetrics(BotInfo botInfo) {
+    private void updateDatasetPerformanceMetrics(UserInfo userInfo) {
         //Update dataset's completeness percentage
         dataset.getDatasetPerformanceMetrics().updatePercentage(instances);
 
@@ -220,18 +218,18 @@ public class LabelingSimulation {
         dataset.getDatasetPerformanceMetrics().updateUniqueInstancesForEachLabel(classLabels, instances);
 
         //Update assigned user and completeness percentage
-        dataset.getDatasetPerformanceMetrics().updateAssignedUsersAndCompletenessPercentage(botInfo, dataset.getDatasetName());
+        dataset.getDatasetPerformanceMetrics().updateAssignedUsersAndCompletenessPercentage(userInfo, dataset.getDatasetName());
 
         //Update assigned user and consistency percentage
-        dataset.getDatasetPerformanceMetrics().updateAssignedUsersAndConsistencyPercentage(botInfo);
+        dataset.getDatasetPerformanceMetrics().updateAssignedUsersAndConsistencyPercentage(userInfo);
     }
 
-    private void writeUserPerformanceMetrics(BotInfo botInfo, UserPerformanceMetrics userPerformanceMetrics) throws IOException {
+    private void writeUserPerformanceMetrics(UserInfo userInfo, UserPerformanceMetrics userPerformanceMetrics) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
 
         //Write into databases directory.
         File dir = new File("./database/");
-        File fileUser = new File("./database/User"+ botInfo.getUserID() + ".json");
+        File fileUser = new File("./database/User"+ userInfo.getUserID() + ".json");
         LinkedHashMap jsonObjectUser = new LinkedHashMap();
         jsonObjectUser.put("user", userPerformanceMetrics.getUser());
         jsonObjectUser.put("number of datasets assigned", userPerformanceMetrics.getNumberOfDataset());
@@ -246,7 +244,7 @@ public class LabelingSimulation {
 
         //Write into outputs directory.
         dir = new File("./outputs/");
-        fileUser = new File("./outputs/User"+ botInfo.getUserID() + ".json");
+        fileUser = new File("./outputs/User"+ userInfo.getUserID() + ".json");
         jsonObjectUser = new LinkedHashMap();
         jsonObjectUser.put("user", userPerformanceMetrics.getUser());
         jsonObjectUser.put("number of datasets assigned", userPerformanceMetrics.getNumberOfDataset());
