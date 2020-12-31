@@ -7,8 +7,6 @@ import java.util.ArrayList;
 
 public class Main {
 	public static void main(String[] args) throws IOException {
-		ObjectMapper mapper = new ObjectMapper();
-
 		//Create config object for keep config's information.
 		Config config = new Config().readConfig();
 
@@ -46,6 +44,8 @@ public class Main {
 
 		//Create Dataset's performance metrics.
 		DatasetPerformanceMetrics datasetPerformanceMetrics = new DatasetPerformanceMetrics(datasetsInfo.get(currentDatasetID-1).getAssignUserID().size());
+
+		Keywords keywords = new KeywordsCreator().invoke();
 
 		//Create labelling mechanisms.
 		LabelingMechanism randomLabelling = new RandomLabeling();
