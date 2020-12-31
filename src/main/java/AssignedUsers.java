@@ -8,6 +8,7 @@ public class AssignedUsers {
     private Logger logger;
     private ArrayList<BotInfo> allUsers;
     private ArrayList<BotInfo> currentUser;
+    private ArrayList<UserInfo> realUsers;
 
     public AssignedUsers(Config config, DatasetInfo currentDatasetInfo, Logger logger) {
         this.config = config;
@@ -33,6 +34,7 @@ public class AssignedUsers {
                 currentUser.add(botInfo);
             }
         }
+        realUsers = config.getUserInfos();
         return this;
     }
 }
