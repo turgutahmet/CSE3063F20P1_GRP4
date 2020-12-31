@@ -45,13 +45,8 @@ public class Main {
 		//Create Dataset's performance metrics.
 		DatasetPerformanceMetrics datasetPerformanceMetrics = new DatasetPerformanceMetrics(datasetsInfo.get(currentDatasetID-1).getAssignUserID().size());
 
-		Keywords keywords = new KeywordsCreator().invoke();
-
-		//Create labelling mechanisms.
-		LabelingMechanism randomLabelling = new RandomLabeling();
-
 		//Random Labeling Simulation
 		LabelingSimulation labelingSimulation = new LabelingSimulation(data, allUsers, currentUsers, instances, classLabels);
-		labelingSimulation.startSimulation(randomLabelling);
+		labelingSimulation.startSimulation();
 	}
 }

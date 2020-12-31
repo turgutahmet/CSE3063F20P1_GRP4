@@ -17,7 +17,6 @@ public class UserInfo {
         //If there is any entry related with that instance update it.
         for (int i = 0; i < labeledInstances.size(); i++) {
             if (labeledInstances.get(i).getID() == labeledInstance.getID()) {
-                labeledInstances.set(i, labeledInstance);
                 return;
             }
         }

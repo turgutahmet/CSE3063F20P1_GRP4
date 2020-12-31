@@ -20,19 +20,26 @@ public class LabelingSimulation {
         this.classLabels = classLabels;
     }
 
-    public void startSimulation(LabelingMechanism labelingMechanism) {
+    public void startSimulation() {
         //Iterate currentUsers.
         for (UserInfo user : currentUsers) {
+            //Get turn number.
+            int numberOfTurn = getNumberOfTurn();
+
             //Check user's type.
             switch (user.getUserType()) {
                 case "RandomBot":
-                    //Get turn number.
-                    int numberOfTurn = getNumberOfTurn();
-
                     //Simulate turns.
                     for (int i = 0; i < numberOfTurn; i++) {
-                        startTurn(user, labelingMechanism);
+                        startTurn(user, new RandomLabeling());
                     }
+                    break;
+                case "SentimentBot":
+                    //Simulate turns.
+                    for (int i = 0; i < numberOfTurn; i++) {
+                        startTurn(user, new SentimentLabeling());
+                    }
+                    break;
             }
         }
     }
@@ -160,7 +167,7 @@ public class LabelingSimulation {
         //Increment total number of unique instances of given user, if random instance is selected from notLabeledInstances list.
         if (selectedList.equals("notLabeledInstances")) user.getUserPerformanceMetrics().incrementTotalUniqueNumberOfInstanceLabelled();
         //Increment count of recurrent labeled instance of given user, if random instance is selected from previouslyLabeled list.
-        if (selectedList.equals("previouslyLabeledInstance")) user.getUserPerformanceMetrics().incrementCountOfRecurrentInstances();
+        if (selectedList.equals("previouslyLabeledInstances")) user.getUserPerformanceMetrics().incrementCountOfRecurrentInstances();
     }
 
     private void updateUserPerformanceMetrics(UserInfo userInfo, float sec) {
@@ -235,6 +242,7 @@ public class LabelingSimulation {
         jsonObjectUser.put("number of datasets assigned", userPerformanceMetrics.getNumberOfDataset());
         jsonObjectUser.put("list of all datasets with their completeness percentage", userPerformanceMetrics.getDatasetsCompletenessPercentage());
         jsonObjectUser.put("total number of instances labeled", userPerformanceMetrics.getTotalNumberOfInstanceLabelled());
+        jsonObjectUser.put("count of recurrent instances", userPerformanceMetrics.getCountOfRecurrentInstances());
         jsonObjectUser.put("consistency percentage", userPerformanceMetrics.getConsistencyPercentage());
         jsonObjectUser.put("total number of unique instances labeled", userPerformanceMetrics.getTotalNumberOfUniqueInstance());
         jsonObjectUser.put("average time spent in labeling an instance in seconds", userPerformanceMetrics.getAvgTime());
