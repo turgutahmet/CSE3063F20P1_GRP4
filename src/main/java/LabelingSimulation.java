@@ -58,7 +58,7 @@ public class LabelingSimulation {
         }
         else{
         for (UserInfo user : currentUsers){
-            if (user.getUsername() == userName && user.getPassword()==password){
+            if (user.getUsername().equals(userName) && user.getPassword().equals(password)){
               //creat here
             }}
 
