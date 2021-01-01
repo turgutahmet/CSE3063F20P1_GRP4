@@ -52,7 +52,7 @@ public class LabelingSimulation {
         String userName = scan.nextLine();
         System.out.println("Enter password");
         String password = scan.nextLine();
-        if (userName.isEmpty()){
+        if (userName.isEmpty() && password.isEmpty()){
             startSimulation();
             break;
         }
