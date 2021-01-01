@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Scanner;
 
 public class LabelingSimulation {
     private Dataset dataset;
@@ -43,6 +44,28 @@ public class LabelingSimulation {
             }
         }
     }
+
+    public void UserLogIn(){
+        while(true)
+        { Scanner scan = new Scanner(System.in);
+        System.out.println("Enter username");
+        String userName = scan.nextLine();
+        System.out.println("Enter password");
+        String password = scan.nextLine();
+        if (userName.isEmpty()){
+            startSimulation();
+            break;
+        }
+        else{
+        for (UserInfo user : currentUsers){
+            if (user.getUsername() == userName && user.getPassword()==password){
+              //creat here
+            }}
+
+        System.out.println("wrong user name or password please enter the information again");
+        }}
+    }
+
 
     //Returns not labeled instances by given user.
     private ArrayList<Instance> getNotLabeledInstances(UserInfo user) {
