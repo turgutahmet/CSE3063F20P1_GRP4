@@ -12,9 +12,9 @@
   {"user id":8,"user name":"SentimentLabeling1","password":"","user type":"SentimentBot","ConsistencyCheckProbability":0.1},
   {"user id":8,"user name":"SentimentLabeling2","password":"","user type":"SentimentBot","ConsistencyCheckProbability":0.1},
 {"user id":9,"user name":"MachineLearningLabelingMechanism","user type":"MachineLearningBot","ConsistencyCheckProbability":0.1},
-  {"user id":10, "user name":"user1","password":"admin","user type":"RealUser","ConsistencyCheckProbability":0.1},
-  {"user id":11, "user name":"user2","password":"password","user type":"RealUser","ConsistencyCheckProbability":0.1},
-  {"user id":12, "user name":"user3","password":"123456","user type":"RealUser","ConsistencyCheckProbability":0.1}
+  {"user id":10, "user name":"user1","password":"admin","user type":"RealUser","ConsistencyCheckProbability":0.5},
+  {"user id":11, "user name":"user2","password":"password","user type":"RealUser","ConsistencyCheckProbability":0.5},
+  {"user id":12, "user name":"user3","password":"123456","user type":"RealUser","ConsistencyCheckProbability":0.5}
   ],
 "datasets": [
   {"dataset id":1,"dataset name":"Sentiment Dataset","dataset file path":"src/input-1.json","assign bots":[1,3,4,6,7,10,11]},

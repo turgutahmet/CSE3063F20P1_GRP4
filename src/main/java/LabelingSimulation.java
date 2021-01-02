@@ -7,12 +7,12 @@ import java.util.LinkedHashMap;
 import java.util.Scanner;
 
 public class LabelingSimulation {
-    private Dataset dataset;
-    private ArrayList<UserInfo> allUsers;
-    private ArrayList<UserInfo> currentUsers;
-    private ArrayList<Instance> instances;
-    private ArrayList<ClassLabel> classLabels;
     Scanner scan = new Scanner(System.in);
+    private final Dataset dataset;
+    private final ArrayList<UserInfo> allUsers;
+    private final ArrayList<UserInfo> currentUsers;
+    private final ArrayList<Instance> instances;
+    private final ArrayList<ClassLabel> classLabels;
 
     public LabelingSimulation(Dataset dataset, ArrayList<UserInfo> allUsers, ArrayList<UserInfo> currentUsers, ArrayList<Instance> instances, ArrayList<ClassLabel> classLabels) {
         this.dataset = dataset;
@@ -46,88 +46,119 @@ public class LabelingSimulation {
         }
     }
 
-    public void userLogIn(){
-        while(true)
-        {
-        System.out.println("Enter username");
-        String userName = scan.nextLine();
-        System.out.println("Enter password");
-        String password = scan.nextLine();
-        if (userName.isEmpty() && password.isEmpty()){
-            startSimulation();
-            break;
-        }
-        else{
-        for (UserInfo user : currentUsers){
-            if (user.getUsername().equals(userName) && user.getPassword().equals(password)){
-                int a = 1;
-                while(a == 1) {
-                    userLabeling(user);
-                    System.out.println("Enter 1 to continue labeling :");
-                    a = scan.nextInt();
-                }
-                System.exit(1);
-            }}
-
-        System.out.println("wrong user name or password please enter the information again");
-        }}
-    }
-
-    public void userLabeling(UserInfo user){
-        labelSelection(user,instanceSelection());
-    }
-
-    public Instance instanceSelection(){
-        System.out.println("Select one of these instances to label.");
-        for (Instance instance : instances) {
-            System.out.println("["+instance.getID()+"] "+instance.getInstance());
-        }
-        System.out.println("Enter the number of instance :");
-        int instanceID = scan.nextInt();
-        while(true) {
-            for (Instance instance : instances) {
-                if (instance.getID() == instanceID) {
-                    if(instance.isCanLabeled())
-                        return instance;
-                    else
-                        System.out.println("This label cant get more labels.");
-                }
-            }
-            System.out.println("There are no instance with this number enter a valid number :");
-            instanceID = scan.nextInt();
-        }
-    }
-
-    public void labelSelection(UserInfo user,Instance selectedInstance){
-        System.out.println("Select the labels for the instance\""+selectedInstance.getInstance()+"\"");
-        for (ClassLabel label : classLabels) {
-            System.out.println("["+ label.getLabelID()+"] "+label.getLabelText());
-        }
-
-        while(true) {
-            System.out.println("Enter the number of label (0 to stop labeling):");
-            int labelID = scan.nextInt();
-            if(labelID == 0) {
+    public void userLogIn() {
+        while (true) {
+            System.out.println("Enter username");
+            String userName = scan.nextLine();
+            System.out.println("Enter password");
+            String password = scan.nextLine();
+            if (userName.isEmpty() && password.isEmpty()) {
+                startSimulation();
                 break;
-            }
-            else{
-                for (ClassLabel label : classLabels) {
-                    if(label.getLabelID() == labelID) {
-                        startTurnForUser(user, new UserLabeling(), selectedInstance, label);
-                        break;
+            } else {
+                for (UserInfo user : currentUsers) {
+                    if (user.getUsername().equals(userName) && user.getPassword().equals(password)) {
+                        int a = 1;
+                        while (a == 1) {
+                            userLabeling(user);
+                            System.out.println("Enter 1 to continue labeling :");
+                            a = scan.nextInt();
+                        }
+                        System.exit(1);
                     }
                 }
+
+                System.out.println("wrong user name or password please enter the information again");
             }
         }
     }
 
-    private void startTurnForUser(UserInfo user, UserLabeling userLabeling,Instance selectedInstance,ClassLabel selectedLabel) {
+    public void userLabeling(UserInfo user) {
+        labelSelection(user, instanceSelection(user));
+    }
+
+    public Instance instanceSelection(UserInfo user) {
+        //Get previously labeled instances by that user.
+        ArrayList<Instance> previouslyLabeledInstances = getPreviouslyLabeledInstances(user);
+
+        //Get not labeled Instances by that user.
+        ArrayList<Instance> notLabeledInstances = getNotLabeledInstances(user);
+
+
+        System.out.println();
+
+        //According to consistencyCheck probability of that user select an instance from previouslyLabeledInstances or notLabeledInstances.
+        int upperLimit = (int) (user.getConsistencyCheckProbability() * 100);
+        int dice = (int) (Math.random() * 100);
+
+        Instance selectedInstance = null;
+        String selectedList = "";
+
+        if (dice < upperLimit) {
+            if (previouslyLabeledInstances.isEmpty()) {
+                if (!notLabeledInstances.isEmpty()) {
+                    //Select next not labeled instance.
+                    selectedList = "notLabeledInstances";
+                    selectedInstance = notLabeledInstances.get(0);
+                } else {
+                    return null;
+                }
+            } else {
+                //Select a random instance from previouslyLabeledInstances.
+                selectedList = "previouslyLabeledInstances";
+                int random_index = (int) (Math.random() * previouslyLabeledInstances.size());
+                selectedInstance = previouslyLabeledInstances.get(random_index);
+            }
+
+        } else {
+            //if there is no available instance to label return null
+            if (notLabeledInstances.isEmpty()) {
+                return null;
+            }
+            //Select next not labeled instance.
+            selectedList = "notLabeledInstances";
+            selectedInstance = notLabeledInstances.get(0);
+        }
+
+        incrementSpecificNumberOfInstanceLabeled(user, selectedList);
+
+        return selectedInstance;
+    }
+
+    public void labelSelection(UserInfo user, Instance selectedInstance) {
+        if (selectedInstance == null) {
+            //finish labeling process
+            return;
+        }
+
+        System.out.println("Select the labels for the instance\"" + selectedInstance.getInstance() + "\"");
+        for (ClassLabel label : classLabels) {
+            System.out.println("[" + label.getLabelID() + "] " + label.getLabelText());
+        }
+
+
+        System.out.println("Enter the number of label (0 to stop labeling):");
+        int labelID = scan.nextInt();
+        if (labelID == 0) {
+            return;
+        } else {
+            for (ClassLabel label : classLabels) {
+                if (label.getLabelID() == labelID) {
+                    startTurnForUser(user, new UserLabeling(), selectedInstance, label);
+                    break;
+                }
+            }
+        }
+
+    }
+
+    private void startTurnForUser(UserInfo user, UserLabeling userLabeling, Instance selectedInstance, ClassLabel selectedLabel) {
         //Start time for measuring evaluated time in that turn.
         long start = System.currentTimeMillis();
 
         long end = System.currentTimeMillis();
 
-        if(selectedInstance != null) {
+        if (selectedInstance != null) {
             userLabeling.labelInstanceWithUser(user, selectedInstance, selectedLabel);
 
             float sec = (end - start) / 1000F;
@@ -270,9 +301,11 @@ public class LabelingSimulation {
 
     private void incrementSpecificNumberOfInstanceLabeled(UserInfo user, String selectedList) {
         //Increment total number of unique instances of given user, if random instance is selected from notLabeledInstances list.
-        if (selectedList.equals("notLabeledInstances")) user.getUserPerformanceMetrics().incrementTotalUniqueNumberOfInstanceLabelled();
+        if (selectedList.equals("notLabeledInstances"))
+            user.getUserPerformanceMetrics().incrementTotalUniqueNumberOfInstanceLabelled();
         //Increment count of recurrent labeled instance of given user, if random instance is selected from previouslyLabeled list.
-        if (selectedList.equals("previouslyLabeledInstances")) user.getUserPerformanceMetrics().incrementCountOfRecurrentInstances();
+        if (selectedList.equals("previouslyLabeledInstances"))
+            user.getUserPerformanceMetrics().incrementCountOfRecurrentInstances();
     }
 
     private void updateUserPerformanceMetrics(UserInfo userInfo, float sec) {
@@ -341,7 +374,7 @@ public class LabelingSimulation {
 
         //Write into databases directory.
         File dir = new File("./database/");
-        File fileUser = new File("./database/User"+ userInfo.getUserID() + ".json");
+        File fileUser = new File("./database/User" + userInfo.getUserID() + ".json");
         LinkedHashMap jsonObjectUser = new LinkedHashMap();
         jsonObjectUser.put("user", userPerformanceMetrics.getUser());
         jsonObjectUser.put("number of datasets assigned", userPerformanceMetrics.getNumberOfDataset());
@@ -357,7 +390,7 @@ public class LabelingSimulation {
 
         //Write into outputs directory.
         dir = new File("./outputs/");
-        fileUser = new File("./outputs/User"+ userInfo.getUserID() + ".json");
+        fileUser = new File("./outputs/User" + userInfo.getUserID() + ".json");
         jsonObjectUser = new LinkedHashMap();
         jsonObjectUser.put("user", userPerformanceMetrics.getUser());
         jsonObjectUser.put("number of datasets assigned", userPerformanceMetrics.getNumberOfDataset());
@@ -375,7 +408,7 @@ public class LabelingSimulation {
 
         //Write into databases directory.
         File dir = new File("./database/");
-        File fileInstance = new File("./database/Instance"+ randomInstance.getID() + "_Dataset" + dataset.getDatasetID() + ".json");
+        File fileInstance = new File("./database/Instance" + randomInstance.getID() + "_Dataset" + dataset.getDatasetID() + ".json");
         LinkedHashMap jsonObjectInstance = new LinkedHashMap();
         jsonObjectInstance.put("all label assignments", instancePerformanceMetrics.getAllLabelAssignments());
         jsonObjectInstance.put("total number of label assignments", instancePerformanceMetrics.getTotalNumberOfLabelAssignments());
@@ -388,7 +421,7 @@ public class LabelingSimulation {
 
         //Write into outputs directory.
         dir = new File("./outputs/");
-        fileInstance = new File("./outputs/Instance"+ randomInstance.getID() + "_Dataset" + dataset.getDatasetID() + ".json");
+        fileInstance = new File("./outputs/Instance" + randomInstance.getID() + "_Dataset" + dataset.getDatasetID() + ".json");
         jsonObjectInstance = new LinkedHashMap();
         jsonObjectInstance.put("total number of label assignments", instancePerformanceMetrics.getTotalNumberOfLabelAssignments());
         jsonObjectInstance.put("total number of unique label assignments", instancePerformanceMetrics.getNumberOfUniqueLabelAssignments());
@@ -404,9 +437,9 @@ public class LabelingSimulation {
 
         //Write into outputs directory
         File dir = new File("./outputs/");
-        File fileDataset = new File("Dataset"+ dataset.getDatasetID() + ".json");
+        File fileDataset = new File("Dataset" + dataset.getDatasetID() + ".json");
         LinkedHashMap jsonObjectDataset = new LinkedHashMap();
-        jsonObjectDataset.put("completeness percentage",datasetPerformanceMetrics.getPercentage());
+        jsonObjectDataset.put("completeness percentage", datasetPerformanceMetrics.getPercentage());
         jsonObjectDataset.put("class distribution based on final instance labels", datasetPerformanceMetrics.getDistributionOfFinalInstanceLabels());
         jsonObjectDataset.put("list number of unique instances for each class label", datasetPerformanceMetrics.getLabelAndNumberOfUniqueInstances());
         jsonObjectDataset.put("number of currentUsers assigned to this dataset", datasetPerformanceMetrics.getNumberOfUserAssigned());

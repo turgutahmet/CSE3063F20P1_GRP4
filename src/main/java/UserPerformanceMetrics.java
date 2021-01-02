@@ -190,4 +190,9 @@ public class UserPerformanceMetrics {
     public void setTimes(ArrayList<Float> times) {
         this.times = times;
     }
+
+    @JsonProperty("count of recurrent instances")
+    public void setCountOfRecurrentInstances(int countOfRecurrentInstances) {
+        this.countOfRecurrentInstances = countOfRecurrentInstances;
+    }
 }
