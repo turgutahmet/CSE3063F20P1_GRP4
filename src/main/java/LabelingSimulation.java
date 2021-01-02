@@ -74,6 +74,7 @@ public class LabelingSimulation {
     }
 
     public void userLabeling(UserInfo user){
+        labelSelection(user,instanceSelection());
     }
 
     public Instance instanceSelection(){
@@ -97,6 +98,28 @@ public class LabelingSimulation {
         }
     }
 
+    public void labelSelection(UserInfo user,Instance selectedInstance){
+        System.out.println("Select the labels for the instance\""+selectedInstance.getInstance()+"\"");
+        for (ClassLabel label : classLabels) {
+            System.out.println("["+ label.getLabelID()+"] "+label.getLabelText());
+        }
+
+        while(true) {
+            System.out.println("Enter the number of label (0 to stop labeling):");
+            int labelID = scan.nextInt();
+            if(labelID == 0) {
+                break;
+            }
+            else{
+                for (ClassLabel label : classLabels) {
+                    if(label.getLabelID() == labelID) {
+
+                        break;
+                    }
+                }
+            }
+        }
+    }
 
     //Returns not labeled instances by given user.
     private ArrayList<Instance> getNotLabeledInstances(UserInfo user) {
