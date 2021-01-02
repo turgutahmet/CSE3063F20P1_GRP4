@@ -113,10 +113,38 @@ public class LabelingSimulation {
             else{
                 for (ClassLabel label : classLabels) {
                     if(label.getLabelID() == labelID) {
-
+                        startTurnForUser(user, new UserLabeling(), selectedInstance, label);
                         break;
                     }
                 }
+            }
+        }
+    }
+
+    private void startTurnForUser(UserInfo user, UserLabeling userLabeling,Instance selectedInstance,ClassLabel selectedLabel) {
+        //Start time for measuring evaluated time in that turn.
+        long start = System.currentTimeMillis();
+
+        long end = System.currentTimeMillis();
+
+        if(selectedInstance != null) {
+            userLabeling.labelInstanceWithUser(user, selectedInstance, selectedLabel);
+
+            float sec = (end - start) / 1000F;
+
+            //Update metrics at end of each turn.
+            updateUserPerformanceMetrics(user, sec);
+            updateInstancePerformanceMetrics(selectedInstance);
+            updateDatasetPerformanceMetrics(user);
+
+            //Write each metrics into outputs and datasets directories.
+            try {
+                writeUserPerformanceMetrics(user, user.getUserPerformanceMetrics());
+                writeInstancePerformanceMetrics(selectedInstance, selectedInstance.getInstancePerformanceMetrics());
+                writeDatasetPerformanceMetrics(dataset.getDatasetPerformanceMetrics());
+            } catch (IOException e) {
+                e.printStackTrace();
+                //Get evaluated time in that turn.
             }
         }
     }
