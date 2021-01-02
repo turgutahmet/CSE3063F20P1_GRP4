@@ -131,7 +131,7 @@ public class LabelingSimulation {
             return;
         }
 
-        System.out.println("Select the labels for the instance\"" + selectedInstance.getInstance() + "\"");
+        System.out.println("Select the labels for the instance \"" + selectedInstance.getInstance() + "\"");
         for (ClassLabel label : classLabels) {
             System.out.println("[" + label.getLabelID() + "] " + label.getLabelText());
         }
