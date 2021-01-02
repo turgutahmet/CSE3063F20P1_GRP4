@@ -1,6 +1,6 @@
 public class UserAndPercentage {
     private final String username; //User's username.
-    private final float percentage; //Percentage of that user.
+    private float percentage; //Percentage of that user.
 
     //UserAndPercentage constructor.
     public UserAndPercentage(String username, float percentage) {
@@ -18,5 +18,6 @@ public class UserAndPercentage {
     }
 
     public void setPercentage(float newPercentage) {
+        this.percentage = percentage;
     }
 }
