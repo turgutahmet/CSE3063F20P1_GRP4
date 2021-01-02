@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 public class SentimentLabeling extends LabelingMechanism {
 
-    public SentimentLabeling() { this.setLabelingMechanismType("SentimentLabeling");}
+    public SentimentLabeling() {
+        this.setLabelingMechanismType("SentimentLabeling");
+    }
 
     @Override
     public void labelInstanceWithUser(UserInfo userInfo, Instance instance, ArrayList<ClassLabel> classLabel) {
@@ -41,8 +43,7 @@ public class SentimentLabeling extends LabelingMechanism {
         LabelCounter labelCounter;
         if (positiveWords > negativeWords) {
             labelCounter = new LabelCounter(classLabel.get(0)); //Positive
-        }
-        else if (negativeWords > positiveWords) {
+        } else if (negativeWords > positiveWords) {
             labelCounter = new LabelCounter(classLabel.get(1)); //Negative
         } else {
             labelCounter = new LabelCounter(classLabel.get(2)); //Notr

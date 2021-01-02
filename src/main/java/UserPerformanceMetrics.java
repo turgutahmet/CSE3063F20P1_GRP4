@@ -27,7 +27,8 @@ public class UserPerformanceMetrics {
         this.avgTime = 0;
         this.stdTime = 0;
     }
-    public UserPerformanceMetrics(){
+
+    public UserPerformanceMetrics() {
 
     }
 
@@ -43,7 +44,7 @@ public class UserPerformanceMetrics {
             }
         }
 
-        float percentage =  (float) (numberOfLabeledInstancesInThatDataset * 1.0 / instancesInThatDataset.size()) * 100;
+        float percentage = (float) (numberOfLabeledInstancesInThatDataset * 1.0 / instancesInThatDataset.size()) * 100;
         DatasetAndPercentage datasetAndPercentage = new DatasetAndPercentage(currentDataset.getDatasetName(), percentage);
 
         for (DatasetAndPercentage andPercentage : datasetsCompletenessPercentage) {
@@ -59,16 +60,18 @@ public class UserPerformanceMetrics {
     }
 
     //Increments total number of instances which are labeled.
-    public void incrementTotalNumberOfInstanceLabelled(){
+    public void incrementTotalNumberOfInstanceLabelled() {
         totalNumberOfInstanceLabelled++;
     }
 
     //Increments total number of unique instances which are labeled.
-    public void incrementTotalUniqueNumberOfInstanceLabelled(){
+    public void incrementTotalUniqueNumberOfInstanceLabelled() {
         totalNumberOfUniqueInstance++;
     }
 
-    public void incrementCountOfRecurrentInstances() { countOfRecurrentInstances++; }
+    public void incrementCountOfRecurrentInstances() {
+        countOfRecurrentInstances++;
+    }
 
     //Updates consistency percentage.
     public void updateConsistencyPercentage() {
@@ -80,20 +83,21 @@ public class UserPerformanceMetrics {
         int countOfRecurrentInstancesWithSameLabel = 0;
         for (LabeledInstance labeledInstance : user.getLabeledInstances()) {
             //If instance is labeled with only one label and its count is more than one.
-            if (labeledInstance.getLabels().size() == 1 && labeledInstance.getLabels().get(0).getCount() > 1) countOfRecurrentInstancesWithSameLabel++;
+            if (labeledInstance.getLabels().size() == 1 && labeledInstance.getLabels().get(0).getCount() > 1)
+                countOfRecurrentInstancesWithSameLabel++;
         }
         float percentage = (float) (countOfRecurrentInstancesWithSameLabel * 1.0 / countOfRecurrentInstances) * 100;
         consistencyPercentage = percentage;
     }
 
     //Adds new finishing time of labeling process.
-    public void addTimes(float time){
+    public void addTimes(float time) {
         times.add(time);
     }
 
     //Updates average time spent in labeling processes'.
     public void updateAverageTime() {
-        float totalTime  = 0;
+        float totalTime = 0;
         for (Float time : times) {
             totalTime += time;
         }
@@ -101,10 +105,10 @@ public class UserPerformanceMetrics {
     }
 
     //Updates standart dev. of time spent in labeling processes'.
-    public void updateStdTime(){
+    public void updateStdTime() {
         float diffOfTimeSq = 0;
         for (Float time : times) {
-            diffOfTimeSq += Math.pow((avgTime-time), 2);
+            diffOfTimeSq += Math.pow((avgTime - time), 2);
         }
         stdTime = (float) Math.sqrt(diffOfTimeSq / times.size());
     }
@@ -116,36 +120,14 @@ public class UserPerformanceMetrics {
         return user;
     }
 
-    public int getNumberOfDataset() {
-        return numberOfDataset;
-    }
-    public int getTotalNumberOfInstanceLabelled() {
-        return totalNumberOfInstanceLabelled;
-    }
-    public int getTotalNumberOfUniqueInstance() {
-        return totalNumberOfUniqueInstance;
-    }
-
-    public int getCountOfRecurrentInstances() {
-        return countOfRecurrentInstances;
-    }
-
-    public float getConsistencyPercentage() {return consistencyPercentage; }
-    public float getAvgTime() {
-        return avgTime;
-    }
-    public float getStdTime() {
-        return stdTime;
-    }
-    public ArrayList<Float> getTimes() {
-        return times;
-    }
-
-
     //Json property: The feature in which variables in json file which variables we should assign in our model.
     @JsonProperty("user")
     public void setUser(UserInfo user) {
         this.user = user;
+    }
+
+    public int getNumberOfDataset() {
+        return numberOfDataset;
     }
 
     @JsonProperty("number of datasets assigned")
@@ -153,12 +135,8 @@ public class UserPerformanceMetrics {
         this.numberOfDataset = numberOfDataset;
     }
 
-    public ArrayList<DatasetAndPercentage> getDatasetsCompletenessPercentage() {
-        return datasetsCompletenessPercentage;
-    }
-    @JsonProperty("list of all datasets with their completeness percentage")
-    public void setDatasetsCompletenessPercentage(ArrayList<DatasetAndPercentage> datasetsCompletenessPercentage) {
-        this.datasetsCompletenessPercentage = datasetsCompletenessPercentage;
+    public int getTotalNumberOfInstanceLabelled() {
+        return totalNumberOfInstanceLabelled;
     }
 
     @JsonProperty("total number of instances labeled")
@@ -166,9 +144,26 @@ public class UserPerformanceMetrics {
         this.totalNumberOfInstanceLabelled = totalNumberOfInstanceLabelled;
     }
 
+    public int getTotalNumberOfUniqueInstance() {
+        return totalNumberOfUniqueInstance;
+    }
+
     @JsonProperty("total number of unique instances labeled")
     public void setTotalNumberOfUniqueInstance(int totalNumberOfUniqueInstance) {
         this.totalNumberOfUniqueInstance = totalNumberOfUniqueInstance;
+    }
+
+    public int getCountOfRecurrentInstances() {
+        return countOfRecurrentInstances;
+    }
+
+    @JsonProperty("count of recurrent instances")
+    public void setCountOfRecurrentInstances(int countOfRecurrentInstances) {
+        this.countOfRecurrentInstances = countOfRecurrentInstances;
+    }
+
+    public float getConsistencyPercentage() {
+        return consistencyPercentage;
     }
 
     @JsonProperty("consistency percentage")
@@ -176,9 +171,17 @@ public class UserPerformanceMetrics {
         this.consistencyPercentage = consistencyPercentage;
     }
 
+    public float getAvgTime() {
+        return avgTime;
+    }
+
     @JsonProperty("average time spent in labeling an instance in seconds")
     public void setAvgTime(float avgTime) {
         this.avgTime = avgTime;
+    }
+
+    public float getStdTime() {
+        return stdTime;
     }
 
     @JsonProperty("std. dev. of  time spent in labeling an instance in seconds")
@@ -186,13 +189,21 @@ public class UserPerformanceMetrics {
         this.stdTime = stdTime;
     }
 
+    public ArrayList<Float> getTimes() {
+        return times;
+    }
+
     @JsonProperty("times")
     public void setTimes(ArrayList<Float> times) {
         this.times = times;
     }
 
-    @JsonProperty("count of recurrent instances")
-    public void setCountOfRecurrentInstances(int countOfRecurrentInstances) {
-        this.countOfRecurrentInstances = countOfRecurrentInstances;
+    public ArrayList<DatasetAndPercentage> getDatasetsCompletenessPercentage() {
+        return datasetsCompletenessPercentage;
+    }
+
+    @JsonProperty("list of all datasets with their completeness percentage")
+    public void setDatasetsCompletenessPercentage(ArrayList<DatasetAndPercentage> datasetsCompletenessPercentage) {
+        this.datasetsCompletenessPercentage = datasetsCompletenessPercentage;
     }
 }

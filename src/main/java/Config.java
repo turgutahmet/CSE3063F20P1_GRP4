@@ -1,4 +1,4 @@
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,6 +20,7 @@ public class Config {
     public int getCurrentDatasetID() {
         return currentDatasetID;
     }
+
     @JsonProperty("current dataset id")
     public void setCurrentDatasetID(int currentDatasetID) {
         this.currentDatasetID = currentDatasetID;
@@ -28,12 +29,18 @@ public class Config {
     public ArrayList<DatasetInfo> getDatasetInfos() {
         return datasetInfos;
     }
+
     @JsonProperty("datasets")
     public void setDatasetInfos(ArrayList<DatasetInfo> datasetInfos) {
         this.datasetInfos = datasetInfos;
     }
 
-    public ArrayList<UserInfo> getUserInfos() {return userInfos; }
+    public ArrayList<UserInfo> getUserInfos() {
+        return userInfos;
+    }
+
     @JsonProperty("users")
-    public void setUserInfos(ArrayList<UserInfo> userInfos) { this.userInfos = userInfos; }
+    public void setUserInfos(ArrayList<UserInfo> userInfos) {
+        this.userInfos = userInfos;
+    }
 }

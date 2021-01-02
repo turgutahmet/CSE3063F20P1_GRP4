@@ -7,12 +7,12 @@ import java.util.LinkedHashMap;
 import java.util.Scanner;
 
 public class LabelingSimulation {
-    Scanner scan = new Scanner(System.in);
     private final Dataset dataset;
     private final ArrayList<UserInfo> allUsers;
     private final ArrayList<UserInfo> currentUsers;
     private final ArrayList<Instance> instances;
     private final ArrayList<ClassLabel> classLabels;
+    Scanner scan = new Scanner(System.in);
 
     public LabelingSimulation(Dataset dataset, ArrayList<UserInfo> allUsers, ArrayList<UserInfo> currentUsers, ArrayList<Instance> instances, ArrayList<ClassLabel> classLabels) {
         this.dataset = dataset;
@@ -146,7 +146,7 @@ public class LabelingSimulation {
                 if (label.getLabelID() == labelID) {
                     //Start time for measuring evaluated time in that turn.
                     long start = System.currentTimeMillis();
-                    startTurnForUser(user, new UserLabeling(), selectedInstance, label,start);
+                    startTurnForUser(user, new UserLabeling(), selectedInstance, label, start);
                     break;
                 }
             }

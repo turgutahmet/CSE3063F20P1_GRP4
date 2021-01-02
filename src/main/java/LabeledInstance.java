@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class LabeledInstance extends Instance {
     //LabeledInstance properties.
-    private final UserInfo whoLabeled ; //Labeled by that user.
+    private final UserInfo whoLabeled; //Labeled by that user.
     private final ArrayList<LabelCounter> labelCounters = new ArrayList<>(); //What labels did that user use.
     private final LocalDateTime date; //Creation date.
 
@@ -16,10 +16,10 @@ public class LabeledInstance extends Instance {
     }
 
     //Update labels list.
-    public void updateLabel (LabelCounter labelCounter){
+    public void updateLabel(LabelCounter labelCounter) {
         //Check: Is that label exist in labels list?
         for (LabelCounter labelCounter1 : labelCounters) {
-            if(labelCounter1.getLabel().getLabelID() == labelCounter.getLabel().getLabelID()){ //If it exist, increment count of this label
+            if (labelCounter1.getLabel().getLabelID() == labelCounter.getLabel().getLabelID()) { //If it exist, increment count of this label
                 labelCounter1.incrementCount();
                 return;
             }
@@ -36,9 +36,11 @@ public class LabeledInstance extends Instance {
     public UserInfo getWhoLabeled() {
         return whoLabeled;
     }
+
     public ArrayList<LabelCounter> getLabels() {
         return labelCounters;
     }
+
     public LocalDateTime getDate() {
         return date;
     }

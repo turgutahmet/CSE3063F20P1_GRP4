@@ -1,15 +1,18 @@
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class Instance {
+    private final ArrayList<LabeledInstance> userLabels = new ArrayList<>(); //LabeledInstances records.
+    private final ArrayList<ClassLabel> allLabels = new ArrayList<>(); //All assigned unique labels.
     //Instance properties.
     private int id; //Unique id of that instance.
     private String instance; //Instance text.
     private boolean canLabeled = true; //Is that instance can be labeled?
     private int maxNumberOfLabel; //Maximum number of label can be assigned to that instance.
-    private final ArrayList<LabeledInstance> userLabels = new ArrayList<>(); //LabeledInstances records.
-    private final ArrayList<ClassLabel> allLabels = new ArrayList<>(); //All assigned unique labels.
     private InstancePerformanceMetrics instancePerformanceMetrics; //Instance performance metrics.
 
     //Create new LabeledInstance object and return it to labeling mechanism.
@@ -19,11 +22,11 @@ public class Instance {
     }
 
     //Updates userLabels list according previous runs.
-    public void updateUserLabels(ArrayList<UserInfo> userInfos, ArrayList<ClassLabel> classLabels ){
+    public void updateUserLabels(ArrayList<UserInfo> userInfos, ArrayList<ClassLabel> classLabels) {
         ArrayList<LabelAssignment> allLabelAssignments = instancePerformanceMetrics.getAllLabelAssignments();
         for (LabelAssignment allLabelAssignment : allLabelAssignments) {
-            UserInfo user = userInfos.get(allLabelAssignment.getUserID()-1);
-            LabelCounter labelCounter = new LabelCounter(classLabels.get(allLabelAssignment.getLabelID()-1));
+            UserInfo user = userInfos.get(allLabelAssignment.getUserID() - 1);
+            LabelCounter labelCounter = new LabelCounter(classLabels.get(allLabelAssignment.getLabelID() - 1));
             LabeledInstance labeledInstance = createLabeledInstance(user);
             addUserLabel(labeledInstance, labelCounter);
         }
@@ -100,20 +103,43 @@ public class Instance {
     }
 
     //Getter methods.
-    public int getID() { return id; }
-    public String getInstance() { return instance; }
-    public boolean isCanLabeled() { return canLabeled; }
-    public ArrayList<LabeledInstance> getUserLabels() { return userLabels; }
-    public InstancePerformanceMetrics getInstancePerformanceMetrics() { return instancePerformanceMetrics; }
-
-    //Setter methods.
-    public void setMaxNumberOfLabel(int maxNumberOfLabel) { this.maxNumberOfLabel = maxNumberOfLabel; }
-    public void setInstancePerformanceMetrics(InstancePerformanceMetrics instancePerformanceMetrics) { this.instancePerformanceMetrics = instancePerformanceMetrics; }
+    public int getID() {
+        return id;
+    }
 
     //Json property: The feature in which variables in json file which variables we should assign in our model.
     @JsonProperty("id")
-    public void setID(int value) { this.id = value; }
+    public void setID(int value) {
+        this.id = value;
+    }
+
+    public String getInstance() {
+        return instance;
+    }
 
     @JsonProperty("instance")
-    public void setInstance(String value) { this.instance = value; }
+    public void setInstance(String value) {
+        this.instance = value;
+    }
+
+    public boolean isCanLabeled() {
+        return canLabeled;
+    }
+
+    public ArrayList<LabeledInstance> getUserLabels() {
+        return userLabels;
+    }
+
+    public InstancePerformanceMetrics getInstancePerformanceMetrics() {
+        return instancePerformanceMetrics;
+    }
+
+    public void setInstancePerformanceMetrics(InstancePerformanceMetrics instancePerformanceMetrics) {
+        this.instancePerformanceMetrics = instancePerformanceMetrics;
+    }
+
+    //Setter methods.
+    public void setMaxNumberOfLabel(int maxNumberOfLabel) {
+        this.maxNumberOfLabel = maxNumberOfLabel;
+    }
 }

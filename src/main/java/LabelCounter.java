@@ -1,16 +1,18 @@
 public class LabelCounter {
 
-    private ClassLabel classLabel ;
+    private ClassLabel classLabel;
     private int count;
 
 
-    public LabelCounter(ClassLabel label ){
+    public LabelCounter(ClassLabel label) {
         this.classLabel = label;
         this.count = 1;
     }
-    LabelCounter(){}
 
-    public void incrementCount(){
+    LabelCounter() {
+    }
+
+    public void incrementCount() {
         this.count++;
     }
 

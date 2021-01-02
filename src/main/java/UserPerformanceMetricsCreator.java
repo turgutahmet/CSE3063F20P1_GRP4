@@ -2,20 +2,21 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class UserPerformanceMetricsCreator {
-    private ArrayList<DatasetInfo> datasetsInfo;
-    private ArrayList<UserInfo> currentUsers;
+    private final ArrayList<DatasetInfo> datasetsInfo;
+    private final ArrayList<UserInfo> currentUsers;
 
     public UserPerformanceMetricsCreator(ArrayList<DatasetInfo> datasetsInfo, ArrayList<UserInfo> currentUsers) {
         this.datasetsInfo = datasetsInfo;
         this.currentUsers = currentUsers;
     }
+
     public void invoke() {
         //Create and set all user performance metrics.
         for (UserInfo userInfo : currentUsers) {
             //Create a a File object related to that user's UserPerformanceMetrics.
             UserPerformanceMetrics userPerformanceMetrics;
             File dir = new File("./database/");
-            File file = new File("./database/User"+ userInfo.getUserID() + ".json");
+            File file = new File("./database/User" + userInfo.getUserID() + ".json");
 
             //If that File object exists read from that file and set user performance metrics.
             if (file.exists()) {

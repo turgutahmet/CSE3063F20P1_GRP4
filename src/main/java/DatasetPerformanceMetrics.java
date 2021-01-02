@@ -1,11 +1,12 @@
-import java.util.*;
+import java.util.ArrayList;
+
 public class DatasetPerformanceMetrics {
     private float percentage;
-    private ArrayList<ClassLabelAndPercentage> distributionOfFinalInstanceLabels;
-    private ArrayList<LabelAndNumberOfUniqueInstance> labelAndNumberOfUniqueInstances;
-    private int numberOfUserAssigned;
-    private ArrayList<UserAndPercentage> assignedUsersAndCompletenessPercentage;
-    private ArrayList<UserAndPercentage> assignedUsersAndConsistencyPercentage;
+    private final ArrayList<ClassLabelAndPercentage> distributionOfFinalInstanceLabels;
+    private final ArrayList<LabelAndNumberOfUniqueInstance> labelAndNumberOfUniqueInstances;
+    private final int numberOfUserAssigned;
+    private final ArrayList<UserAndPercentage> assignedUsersAndCompletenessPercentage;
+    private final ArrayList<UserAndPercentage> assignedUsersAndConsistencyPercentage;
 
     public DatasetPerformanceMetrics(int numberOfUserAssigned) {
         this.percentage = 0;
@@ -16,15 +17,17 @@ public class DatasetPerformanceMetrics {
         this.assignedUsersAndConsistencyPercentage = new ArrayList<>();
     }
 
-    public void updatePercentage(ArrayList<Instance> instances){
+    public void updatePercentage(ArrayList<Instance> instances) {
         float numOfLabeledInstances = (float) 0.0;
-        for (Instance i : instances){
-            if (i.getUserLabels().size()!=0){
+        for (Instance i : instances) {
+            if (i.getUserLabels().size() != 0) {
                 numOfLabeledInstances++;
-            } }
-        this.percentage=(numOfLabeledInstances/(float) instances.size())*100;
+            }
+        }
+        this.percentage = (numOfLabeledInstances / (float) instances.size()) * 100;
     }
-    public void updateDistributionOfFinalInstanceLabels(ArrayList<Instance> instances,ArrayList<ClassLabel>classLabels) {
+
+    public void updateDistributionOfFinalInstanceLabels(ArrayList<Instance> instances, ArrayList<ClassLabel> classLabels) {
 
         distributionOfFinalInstanceLabels.clear();
         int[] finalLabelsTable = new int[classLabels.size()];
@@ -35,12 +38,12 @@ public class DatasetPerformanceMetrics {
         for (Instance instance : instances) {
             if (instance.getInstancePerformanceMetrics().getFinalLabelAndPercentage() == null)
                 continue;
-            else{
-            ClassLabel finalLabel = instance.getInstancePerformanceMetrics().getFinalLabelAndPercentage().getClassLabel();
-            for (LabeledInstance userLabel : instance.getUserLabels()) {
-                for (LabelCounter labelCounter : userLabel.getLabels()) {
-                    if (labelCounter.getLabel() == finalLabel) {
-                        finalLabelsTable[finalLabel.getLabelID() - 1] += labelCounter.getCount();
+            else {
+                ClassLabel finalLabel = instance.getInstancePerformanceMetrics().getFinalLabelAndPercentage().getClassLabel();
+                for (LabeledInstance userLabel : instance.getUserLabels()) {
+                    for (LabelCounter labelCounter : userLabel.getLabels()) {
+                        if (labelCounter.getLabel() == finalLabel) {
+                            finalLabelsTable[finalLabel.getLabelID() - 1] += labelCounter.getCount();
 
                         }
                     }
@@ -62,25 +65,25 @@ public class DatasetPerformanceMetrics {
     }
 
 
-    public void updateUniqueInstancesForEachLabel(ArrayList<ClassLabel>classLabels,ArrayList<Instance>instances){
+    public void updateUniqueInstancesForEachLabel(ArrayList<ClassLabel> classLabels, ArrayList<Instance> instances) {
         labelAndNumberOfUniqueInstances.clear();
         for (ClassLabel classLabel : classLabels) {
             int[] numberOfUniqueInstances = new int[instances.size()];
             for (int numberOfUniqueInstance : numberOfUniqueInstances) {
-                numberOfUniqueInstance=0;
+                numberOfUniqueInstance = 0;
             }
             for (Instance instance : instances) {
                 for (LabeledInstance userLabel : instance.getUserLabels()) {
                     for (LabelCounter labelCounter : userLabel.getLabels()) {
-                        if (labelCounter.getLabel().getLabelID() == classLabel.getLabelID()){
-                            numberOfUniqueInstances[instance.getID()-1]++;
+                        if (labelCounter.getLabel().getLabelID() == classLabel.getLabelID()) {
+                            numberOfUniqueInstances[instance.getID() - 1]++;
                         }
                     }
                 }
             }
-            int count=0;
+            int count = 0;
             for (int i = 0; i < numberOfUniqueInstances.length; i++) {
-                if (numberOfUniqueInstances[i] > 0){
+                if (numberOfUniqueInstances[i] > 0) {
                     count++;
                 }
             }
@@ -89,8 +92,8 @@ public class DatasetPerformanceMetrics {
         }
     }
 
-    public void updateAssignedUsersAndCompletenessPercentage(UserInfo userInfo, String datasetName){
-       float newPercentage = 0;
+    public void updateAssignedUsersAndCompletenessPercentage(UserInfo userInfo, String datasetName) {
+        float newPercentage = 0;
 
         for (DatasetAndPercentage datasetAndPercentage : userInfo.getUserPerformanceMetrics().getDatasetsCompletenessPercentage()) {
             if (datasetAndPercentage.getDatasetName().equals(datasetName)) {
@@ -99,30 +102,30 @@ public class DatasetPerformanceMetrics {
             }
         }
 
-       boolean check=false;
-       for (UserAndPercentage userAndPercentage:assignedUsersAndCompletenessPercentage){
-           if(userAndPercentage.getUserInfo().equals(userInfo.getUsername())){
-               userAndPercentage.setPercentage(newPercentage);
-               check=true;
-               break;
-           }
-       }
-       if (!check){
-           UserAndPercentage newUser=new UserAndPercentage(userInfo.getUsername(),newPercentage);
-           assignedUsersAndCompletenessPercentage.add(newUser);
-       }
+        boolean check = false;
+        for (UserAndPercentage userAndPercentage : assignedUsersAndCompletenessPercentage) {
+            if (userAndPercentage.getUserInfo().equals(userInfo.getUsername())) {
+                userAndPercentage.setPercentage(newPercentage);
+                check = true;
+                break;
+            }
+        }
+        if (!check) {
+            UserAndPercentage newUser = new UserAndPercentage(userInfo.getUsername(), newPercentage);
+            assignedUsersAndCompletenessPercentage.add(newUser);
+        }
     }
 
-    public void updateAssignedUsersAndConsistencyPercentage (UserInfo user){
+    public void updateAssignedUsersAndConsistencyPercentage(UserInfo user) {
 
-        int countOfRecurrent=0;
+        int countOfRecurrent = 0;
         for (LabeledInstance labeledInstance : user.getLabeledInstances())
-            if (labeledInstance.getLabels().size()>1)
+            if (labeledInstance.getLabels().size() > 1)
                 countOfRecurrent++;
 
-        int countOfConsistentInstances=0;
+        int countOfConsistentInstances = 0;
         for (LabeledInstance labeledInstance : user.getLabeledInstances())
-            if (labeledInstance.getLabels().size()==1 && labeledInstance.getLabels().get(0).getCount()>1)
+            if (labeledInstance.getLabels().size() == 1 && labeledInstance.getLabels().get(0).getCount() > 1)
                 countOfConsistentInstances++;
 
         countOfRecurrent += countOfConsistentInstances;
@@ -130,7 +133,7 @@ public class DatasetPerformanceMetrics {
         UserAndPercentage userAndPercentage = new UserAndPercentage(user.getUsername(), percentage);
 
         for (UserAndPercentage andConsistencyPercentage : assignedUsersAndConsistencyPercentage) {
-            if (andConsistencyPercentage.getUserInfo().equals(userAndPercentage.getUserInfo())){
+            if (andConsistencyPercentage.getUserInfo().equals(userAndPercentage.getUserInfo())) {
                 andConsistencyPercentage = userAndPercentage;
                 return;
             }
@@ -142,11 +145,24 @@ public class DatasetPerformanceMetrics {
     public float getPercentage() {
         return percentage;
     }
-    public ArrayList<ClassLabelAndPercentage> getDistributionOfFinalInstanceLabels() { return distributionOfFinalInstanceLabels; }
-    public ArrayList<LabelAndNumberOfUniqueInstance> getLabelAndNumberOfUniqueInstances() { return labelAndNumberOfUniqueInstances; }
+
+    public ArrayList<ClassLabelAndPercentage> getDistributionOfFinalInstanceLabels() {
+        return distributionOfFinalInstanceLabels;
+    }
+
+    public ArrayList<LabelAndNumberOfUniqueInstance> getLabelAndNumberOfUniqueInstances() {
+        return labelAndNumberOfUniqueInstances;
+    }
+
     public int getNumberOfUserAssigned() {
         return numberOfUserAssigned;
     }
-    public ArrayList<UserAndPercentage> getAssignedUsersAndCompletenessPercentage() { return assignedUsersAndCompletenessPercentage; }
-    public ArrayList<UserAndPercentage> getAssignedUsersAndConsistencyPercentage() { return assignedUsersAndConsistencyPercentage; }
+
+    public ArrayList<UserAndPercentage> getAssignedUsersAndCompletenessPercentage() {
+        return assignedUsersAndCompletenessPercentage;
+    }
+
+    public ArrayList<UserAndPercentage> getAssignedUsersAndConsistencyPercentage() {
+        return assignedUsersAndConsistencyPercentage;
+    }
 }

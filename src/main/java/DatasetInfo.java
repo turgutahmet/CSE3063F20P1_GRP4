@@ -11,6 +11,7 @@ public class DatasetInfo {
     public int getDatasetID() {
         return datasetID;
     }
+
     @JsonProperty("dataset id")
     public void setDatasetID(int datasetID) {
         this.datasetID = datasetID;
@@ -19,6 +20,7 @@ public class DatasetInfo {
     public String getDatasetName() {
         return datasetName;
     }
+
     @JsonProperty("dataset name")
     public void setDatasetName(String datasetName) {
         this.datasetName = datasetName;
@@ -27,6 +29,7 @@ public class DatasetInfo {
     public String getDatasetFilePath() {
         return datasetFilePath;
     }
+
     @JsonProperty("dataset file path")
     public void setDatasetFilePath(String datasetFilePath) {
         this.datasetFilePath = datasetFilePath;
@@ -35,6 +38,7 @@ public class DatasetInfo {
     public ArrayList<Integer> getAssignUserID() {
         return assignUserID;
     }
+
     @JsonProperty("assign bots")
     public void setAssignUserID(ArrayList<Integer> assignUserID) {
         this.assignUserID = assignUserID;

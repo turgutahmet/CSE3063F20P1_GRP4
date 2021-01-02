@@ -1,6 +1,5 @@
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class Keywords {
@@ -11,13 +10,13 @@ public class Keywords {
         return positives;
     }
 
-    public ArrayList<String> getNegatives() {
-        return negatives;
-    }
-
     @JsonProperty("positives")
     public void setPositives(ArrayList<String> positives) {
         this.positives = positives;
+    }
+
+    public ArrayList<String> getNegatives() {
+        return negatives;
     }
 
     @JsonProperty("negatives")

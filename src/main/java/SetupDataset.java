@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class SetupDataset {
-    private Config config;
+    private final Config config;
     private int currentDatasetID;
     private ArrayList<DatasetInfo> datasetsInfo;
     private DatasetInfo currentDatasetInfo;

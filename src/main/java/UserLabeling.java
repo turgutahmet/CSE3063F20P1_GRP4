@@ -9,9 +9,9 @@ public class UserLabeling extends LabelingMechanism {
 
     @Override
     public void labelInstanceWithUser(UserInfo userInfo, Instance instance, ArrayList<ClassLabel> classLabels) {
-       }
+    }
 
-       public void labelInstanceWithUser(UserInfo userInfo, Instance instance ,ClassLabel label){
+    public void labelInstanceWithUser(UserInfo userInfo, Instance instance, ClassLabel label) {
 
         LabelCounter labelCounter = new LabelCounter(label);
 
