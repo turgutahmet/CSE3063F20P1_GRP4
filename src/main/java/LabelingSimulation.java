@@ -120,7 +120,7 @@ public class LabelingSimulation {
             selectedInstance = notLabeledInstances.get(0);
         }
 
-        incrementSpecificNumberOfInstanceLabeled(user, selectedList);
+        incrementSpecificNumberOfInstanceLabeled(user, selectedList, selectedInstance);
 
         return selectedInstance;
     }
@@ -274,35 +274,36 @@ public class LabelingSimulation {
                 return null;
             }
             selectedList = "notLabeledInstances";
-            incrementSpecificNumberOfInstanceLabeled(user, selectedList);
             randomInstance = notLabeledInstances.get((int) (Math.random() * notLabeledInstances.size()));
+            incrementSpecificNumberOfInstanceLabeled(user, selectedList, randomInstance);
         } else {
             //According to consistency check probability select a random instance from previouslyLabeledInstance list or notLabeledInstances list.
             int upperLimit = (int) (user.getConsistencyCheckProbability() * 100);
             int dice = (int) (Math.random() * 100);
             if (dice < upperLimit) {
                 selectedList = "previouslyLabeledInstances";
-                incrementSpecificNumberOfInstanceLabeled(user, selectedList);
                 randomInstance = previouslyLabeledInstances.get((int) (Math.random() * previouslyLabeledInstances.size()));
+                incrementSpecificNumberOfInstanceLabeled(user, selectedList, randomInstance);
             } else {
                 if (notLabeledInstances.isEmpty()) { //If there isn't any not labeled instance skip this labeling process.
                     return null;
                 }
                 selectedList = "notLabeledInstances";
-                incrementSpecificNumberOfInstanceLabeled(user, selectedList);
                 randomInstance = notLabeledInstances.get((int) (Math.random() * notLabeledInstances.size()));
+                incrementSpecificNumberOfInstanceLabeled(user, selectedList, randomInstance);
             }
         }
         return randomInstance;
     }
 
-    private void incrementSpecificNumberOfInstanceLabeled(UserInfo user, String selectedList) {
+    private void incrementSpecificNumberOfInstanceLabeled(UserInfo user, String selectedList, Instance selectedInstance) {
         //Increment total number of unique instances of given user, if random instance is selected from notLabeledInstances list.
         if (selectedList.equals("notLabeledInstances"))
             user.getUserPerformanceMetrics().incrementTotalUniqueNumberOfInstanceLabelled();
         //Increment count of recurrent labeled instance of given user, if random instance is selected from previouslyLabeled list.
-        if (selectedList.equals("previouslyLabeledInstances"))
+        if (selectedList.equals("previouslyLabeledInstances")) {
             user.getUserPerformanceMetrics().incrementCountOfRecurrentInstances();
+        }
     }
 
     private void updateUserPerformanceMetrics(UserInfo userInfo, float sec) {
