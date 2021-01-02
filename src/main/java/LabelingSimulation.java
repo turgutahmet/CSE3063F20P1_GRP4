@@ -12,6 +12,7 @@ public class LabelingSimulation {
     private ArrayList<UserInfo> currentUsers;
     private ArrayList<Instance> instances;
     private ArrayList<ClassLabel> classLabels;
+    Scanner scan = new Scanner(System.in);
 
     public LabelingSimulation(Dataset dataset, ArrayList<UserInfo> allUsers, ArrayList<UserInfo> currentUsers, ArrayList<Instance> instances, ArrayList<ClassLabel> classLabels) {
         this.dataset = dataset;
@@ -45,9 +46,9 @@ public class LabelingSimulation {
         }
     }
 
-    public void UserLogIn(){
+    public void userLogIn(){
         while(true)
-        { Scanner scan = new Scanner(System.in);
+        {
         System.out.println("Enter username");
         String userName = scan.nextLine();
         System.out.println("Enter password");
@@ -59,11 +60,41 @@ public class LabelingSimulation {
         else{
         for (UserInfo user : currentUsers){
             if (user.getUsername().equals(userName) && user.getPassword().equals(password)){
-              //creat here
+                int a = 1;
+                while(a == 1) {
+                    userLabeling(user);
+                    System.out.println("Enter 1 to continue labeling :");
+                    a = scan.nextInt();
+                }
+                System.exit(1);
             }}
 
         System.out.println("wrong user name or password please enter the information again");
         }}
+    }
+
+    public void userLabeling(UserInfo user){
+    }
+
+    public Instance instanceSelection(){
+        System.out.println("Select one of these instances to label.");
+        for (Instance instance : instances) {
+            System.out.println("["+instance.getID()+"] "+instance.getInstance());
+        }
+        System.out.println("Enter the number of instance :");
+        int instanceID = scan.nextInt();
+        while(true) {
+            for (Instance instance : instances) {
+                if (instance.getID() == instanceID) {
+                    if(instance.isCanLabeled())
+                        return instance;
+                    else
+                        System.out.println("This label cant get more labels.");
+                }
+            }
+            System.out.println("There are no instance with this number enter a valid number :");
+            instanceID = scan.nextInt();
+        }
     }
 
 

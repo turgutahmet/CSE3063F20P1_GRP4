@@ -47,6 +47,6 @@ public class Main {
 
 		//Random Labeling Simulation
 		LabelingSimulation labelingSimulation = new LabelingSimulation(data, allUsers, currentUsers, instances, classLabels);
-		labelingSimulation.startSimulation();
+		labelingSimulation.userLogIn();
 	}
 }
