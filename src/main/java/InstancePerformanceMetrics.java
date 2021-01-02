@@ -148,11 +148,17 @@ public class InstancePerformanceMetrics {
                 countOfUniqueLabelAssignments++;
             }
         }
+
         entropy = 0;
         for (int i : labelAssignmentTable) {
             if (i > 0) {
                 float percentage = (float) (i * 1.0 / totalNumberOfLabelAssignments);
-                entropy -= (percentage) * (Math.log(percentage) / Math.log(countOfUniqueLabelAssignments));
+                if (percentage == 1 || countOfUniqueLabelAssignments == 1) {
+                    entropy = 0;
+                } else {
+                    entropy -= (percentage) * (Math.log(percentage) / Math.log(countOfUniqueLabelAssignments));
+                }
+
             }
         }
     }

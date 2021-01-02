@@ -129,7 +129,13 @@ public class DatasetPerformanceMetrics {
                 countOfConsistentInstances++;
 
         countOfRecurrent += countOfConsistentInstances;
-        float percentage = (float) (countOfConsistentInstances * 1.0 / countOfRecurrent) * 100;
+        float percentage = 0;
+        if (countOfRecurrent == 0) {
+            percentage = 0;
+        } else {
+            percentage = (float) (countOfConsistentInstances * 1.0 / countOfRecurrent) * 100;
+        }
+
         UserAndPercentage userAndPercentage = new UserAndPercentage(user.getUsername(), percentage);
 
         for (UserAndPercentage andConsistencyPercentage : assignedUsersAndConsistencyPercentage) {

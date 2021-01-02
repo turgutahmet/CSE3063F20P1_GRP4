@@ -17,7 +17,7 @@
   {"user id":14, "user name":"user3","password":"123456","user type":"RealUser","ConsistencyCheckProbability":0.5}
   ],
 "datasets": [
-  {"dataset id":1,"dataset name":"Sentiment Dataset","dataset file path":"src/input-1.json","assign bots":[12]},
+  {"dataset id":1,"dataset name":"Sentiment Dataset","dataset file path":"src/input-1.json","assign bots":[10,11,12]},
   {"dataset id":2,"dataset name":"Multilabel Topic Classification Dataset","dataset file path":"src/input-2.json","assign bots":[2,4,6,8,9,11,12]}
 ]
 }

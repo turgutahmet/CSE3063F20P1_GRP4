@@ -17,7 +17,7 @@ public class UserAndPercentage {
         return percentage;
     }
 
-    public void setPercentage(float newPercentage) {
+    public void setPercentage(float percentage) {
         this.percentage = percentage;
     }
 }
