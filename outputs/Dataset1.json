@@ -1,0 +1,38 @@
+{
+  "completeness percentage" : 10.0,
+  "class distribution based on final instance labels" : [ {
+    "class label" : {
+      "label id" : 2,
+      "label text" : "Negative"
+    },
+    "percentage" : 100.0
+  } ],
+  "list number of unique instances for each class label" : [ {
+    "classLabel" : {
+      "label id" : 1,
+      "label text" : "Positive"
+    },
+    "count" : 0
+  }, {
+    "classLabel" : {
+      "label id" : 2,
+      "label text" : "Negative"
+    },
+    "count" : 1
+  }, {
+    "classLabel" : {
+      "label id" : 3,
+      "label text" : "Notr"
+    },
+    "count" : 0
+  } ],
+  "number of currentUsers assigned to this dataset" : 3,
+  "list of currentUsers assigned and their completeness percentage" : [ {
+    "percentage" : 10.0,
+    "userInfo" : "user1"
+  } ],
+  "list of currentUsers assigned and their consistency percentage" : [ {
+    "percentage" : 0.0,
+    "userInfo" : "user1"
+  } ]
+}
