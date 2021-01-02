@@ -1,4 +1,4 @@
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ClassLabel {
     //Define basic ClassLabel variable
@@ -8,11 +8,21 @@ public class ClassLabel {
     //Json property: The feature in which variables in json file which variables we should assign in our model.
 
     //Variables getter setter methods
-    public int getLabelID() { return labelID; }
-    @JsonProperty("label id")
-    public void setLabelID(int value) { this.labelID = value; }
+    public int getLabelID() {
+        return labelID;
+    }
 
-    public String getLabelText() { return labelText; }
+    @JsonProperty("label id")
+    public void setLabelID(int value) {
+        this.labelID = value;
+    }
+
+    public String getLabelText() {
+        return labelText;
+    }
+
     @JsonProperty("label text")
-    public void setLabelText(String value) { this.labelText = value; }
+    public void setLabelText(String value) {
+        this.labelText = value;
+    }
 }

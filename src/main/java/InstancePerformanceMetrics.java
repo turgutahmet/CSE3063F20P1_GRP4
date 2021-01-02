@@ -37,8 +37,8 @@ public class InstancePerformanceMetrics {
     }
 
     //Adds new label assignment into allLabelAssignments list.
-    public void addNewLabelAssignment(String username, String label, int labelID, int userID) {
-        allLabelAssignments.add(new LabelAssignment(username, label, labelID, userID));
+    public void addNewLabelAssignment(UserInfo user, ClassLabel label) {
+        allLabelAssignments.add(new LabelAssignment(user, label));
     }
 
     //Updates total number of label assignments.
@@ -76,6 +76,7 @@ public class InstancePerformanceMetrics {
         }
         return labelAssignmentsTable;
     }
+
     //Updates number of unique users who are labeled that instance.
     public void updateNumberOfUniqueUsers(int usersSize) {
         int[] usersTable = new int[usersSize];
@@ -147,35 +148,24 @@ public class InstancePerformanceMetrics {
                 countOfUniqueLabelAssignments++;
             }
         }
+
         entropy = 0;
         for (int i : labelAssignmentTable) {
             if (i > 0) {
                 float percentage = (float) (i * 1.0 / totalNumberOfLabelAssignments);
-                entropy -= (percentage) * (Math.log(percentage) / Math.log(countOfUniqueLabelAssignments));
+                if (percentage == 1 || countOfUniqueLabelAssignments == 1) {
+                    entropy = 0;
+                } else {
+                    entropy -= (percentage) * (Math.log(percentage) / Math.log(countOfUniqueLabelAssignments));
+                }
+
             }
         }
     }
+
     //Getter methods.
     public ArrayList<LabelAssignment> getAllLabelAssignments() {
         return allLabelAssignments;
-    }
-    public int getTotalNumberOfLabelAssignments() {
-        return totalNumberOfLabelAssignments;
-    }
-    public int getNumberOfUniqueLabelAssignments() {
-        return numberOfUniqueLabelAssignments;
-    }
-    public int getNumberOfUniqueUsers() {
-        return numberOfUniqueUsers;
-    }
-    public ClassLabelAndPercentage getFinalLabelAndPercentage() {
-        return finalLabelAndPercentage;
-    }
-    public ArrayList<ClassLabelAndPercentage> getClassLabelsAndPercentages() {
-        return classLabelsAndPercentages;
-    }
-    public float getEntropy() {
-        return entropy;
     }
 
     //Json property: The feature in which variables in json file which variables we should assign in our model.
@@ -184,9 +174,17 @@ public class InstancePerformanceMetrics {
         this.allLabelAssignments = allLabelAssignments;
     }
 
+    public int getTotalNumberOfLabelAssignments() {
+        return totalNumberOfLabelAssignments;
+    }
+
     @JsonProperty("total number of label assignments")
     public void setTotalNumberOfLabelAssignments(int totalNumberOfLabelAssignments) {
         this.totalNumberOfLabelAssignments = totalNumberOfLabelAssignments;
+    }
+
+    public int getNumberOfUniqueLabelAssignments() {
+        return numberOfUniqueLabelAssignments;
     }
 
     @JsonProperty("total number of unique label assignments")
@@ -194,9 +192,17 @@ public class InstancePerformanceMetrics {
         this.numberOfUniqueLabelAssignments = numberOfUniqueLabelAssignments;
     }
 
+    public int getNumberOfUniqueUsers() {
+        return numberOfUniqueUsers;
+    }
+
     @JsonProperty("number of unique users")
     public void setNumberOfUniqueUsers(int numberOfUniqueUsers) {
         this.numberOfUniqueUsers = numberOfUniqueUsers;
+    }
+
+    public ClassLabelAndPercentage getFinalLabelAndPercentage() {
+        return finalLabelAndPercentage;
     }
 
     @JsonProperty("final label and percentage")
@@ -204,9 +210,17 @@ public class InstancePerformanceMetrics {
         this.finalLabelAndPercentage = finalLabelAndPercentage;
     }
 
+    public ArrayList<ClassLabelAndPercentage> getClassLabelsAndPercentages() {
+        return classLabelsAndPercentages;
+    }
+
     @JsonProperty("class labels and percentages")
     public void setClassLabelsAndPercentages(ArrayList<ClassLabelAndPercentage> classLabelsAndPercentages) {
         this.classLabelsAndPercentages = classLabelsAndPercentages;
+    }
+
+    public float getEntropy() {
+        return entropy;
     }
 
     @JsonProperty("entropy")

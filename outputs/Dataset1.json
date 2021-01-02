@@ -1,62 +1,38 @@
 {
-  "completeness percentage" : 100.0,
+  "completeness percentage" : 10.0,
   "class distribution based on final instance labels" : [ {
-    "class label" : {
-      "label id" : 1,
-      "label text" : "Positive"
-    },
-    "percentage" : 10.0
-  }, {
     "class label" : {
       "label id" : 2,
       "label text" : "Negative"
     },
-    "percentage" : 60.0
-  }, {
-    "class label" : {
-      "label id" : 3,
-      "label text" : "Notr"
-    },
-    "percentage" : 30.0
+    "percentage" : 100.0
   } ],
   "list number of unique instances for each class label" : [ {
     "classLabel" : {
       "label id" : 1,
       "label text" : "Positive"
     },
-    "count" : 1
+    "count" : 0
   }, {
     "classLabel" : {
       "label id" : 2,
       "label text" : "Negative"
     },
-    "count" : 6
+    "count" : 1
   }, {
     "classLabel" : {
       "label id" : 3,
       "label text" : "Notr"
     },
-    "count" : 3
+    "count" : 0
   } ],
-  "number of currentUsers assigned to this dataset" : 5,
+  "number of currentUsers assigned to this dataset" : 3,
   "list of currentUsers assigned and their completeness percentage" : [ {
     "percentage" : 10.0,
-    "userInfo" : "RandomLabelingMechanism3"
-  }, {
-    "percentage" : 10.0,
-    "userInfo" : "RandomLabelingMechanism4"
-  }, {
-    "percentage" : 10.0,
-    "userInfo" : "RandomLabelingMechanism6"
+    "userInfo" : "user1"
   } ],
   "list of currentUsers assigned and their consistency percentage" : [ {
-    "percentage" : "NaN",
-    "userInfo" : "RandomLabelingMechanism3"
-  }, {
-    "percentage" : "NaN",
-    "userInfo" : "RandomLabelingMechanism4"
-  }, {
-    "percentage" : "NaN",
-    "userInfo" : "RandomLabelingMechanism6"
+    "percentage" : 0.0,
+    "userInfo" : "user1"
   } ]
 }

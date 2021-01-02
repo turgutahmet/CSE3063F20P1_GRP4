@@ -3,9 +3,9 @@ import org.apache.log4j.Logger;
 import java.util.ArrayList;
 
 public class AssignedUsers {
-    private Config config;
-    private DatasetInfo currentDatasetInfo;
-    private Logger logger;
+    private final Config config;
+    private final DatasetInfo currentDatasetInfo;
+    private final Logger logger;
     private ArrayList<UserInfo> allUsers;
     private ArrayList<UserInfo> currentUser;
 

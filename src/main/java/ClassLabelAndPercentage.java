@@ -10,19 +10,24 @@ public class ClassLabelAndPercentage {
         this.classLabel = classLabel;
         this.percentage = percentage;
     }
-    public ClassLabelAndPercentage(){
+
+    public ClassLabelAndPercentage() {
 
     }
 
     //Getter methods.
 
-    public ClassLabel getClassLabel() { return classLabel; }
-
-    public float getPercentage() { return percentage; }
+    public ClassLabel getClassLabel() {
+        return classLabel;
+    }
 
     @JsonProperty("class label")
     public void setClassLabel(ClassLabel classLabel) {
         this.classLabel = classLabel;
+    }
+
+    public float getPercentage() {
+        return percentage;
     }
 
     @JsonProperty("percentage")

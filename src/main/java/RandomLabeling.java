@@ -14,22 +14,22 @@ public class RandomLabeling extends LabelingMechanism {
         ClassLabel randomLabel = classLabels.get(random_index);
 
         //Create a Label object
-        Label label = new Label(randomLabel);
+        LabelCounter labelCounter = new LabelCounter(randomLabel);
 
         //Add label to instance
         LabeledInstance labeledInstance = instance.createLabeledInstance(userInfo);
 
         //Add new label assignment into instance performance metrics
-        instance.getInstancePerformanceMetrics().addNewLabelAssignment(userInfo.getUsername(), randomLabel.getLabelText(), randomLabel.getLabelID(), userInfo.getUserID());
+        instance.getInstancePerformanceMetrics().addNewLabelAssignment(userInfo, randomLabel);
 
         //Update instance
-        instance.updateInstance(labeledInstance, label);
+        instance.updateInstance(labeledInstance, labelCounter);
 
         //Logger class initialize
         Logger logger = Logger.getLogger(this.getClass().getName());
 
         //Print log check
         logger.info("user id:" + userInfo.getUserID() + " " + userInfo.getUsername() + " " + "labeled instance id:" + instance.getID() + " "
-                + "with class label " + label.getLabel().getLabelID() + " :" + label.getLabel().getLabelText() + " " + "instance :" + instance.getInstance());
+                + "with class label " + labelCounter.getLabel().getLabelID() + " :" + labelCounter.getLabel().getLabelText() + " " + "instance :" + instance.getInstance());
     }
 }
