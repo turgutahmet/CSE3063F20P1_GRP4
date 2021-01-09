@@ -10,7 +10,7 @@ class Config:
         self.studentListDirectory = data["student list directory"]
 
     @staticmethod
-        def readJson():
-            with open('config.json') as data:
-                data = json.load(data)
-                return data
+    def readJson():
+        with open('config.json') as data:
+            data = json.load(data)
+            return data
