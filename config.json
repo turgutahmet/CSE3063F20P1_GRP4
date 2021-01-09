@@ -1,0 +1,5 @@
+{
+  "poll result directory": "./pollReports",
+  "answer key directory": "./answerKeys",
+  "student list directory": "./studentList/CES3063_Fall2020_rptSinifListesi.XLS"
+}
