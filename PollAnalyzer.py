@@ -3,6 +3,9 @@ from Config import *
 from Student import *
 from Poll import *
 import xlrd as xlrd
+from os.path import isfile, join
+from os import listdir
+
 class PollAnalyzer():
     def __init__(self):
         self.students=[]
@@ -30,4 +33,15 @@ class PollAnalyzer():
         self.questions.append(newQuestion)
         return newQuestion
 
-
+    def readAnswerKeys(self):
+        filesInPath = [f for f in listdir(self.config.answerKeyDirectory) if
+                       isfile(join(self.config.answerKeyDirectory, f))]
+        for fileName in filesInPath:
+            path = self.config.answerKeyDirectory + "/" + fileName
+            answerKey = xlrd.open_workbook(path)
+            sheet = answerKey.sheet_by_index(0)
+            poll = Poll(sheet.cell_value(0, 0))
+            for i in range(1, sheet.nrows):
+                newQuestion = self.createQuestion(sheet.cell_value(i, 0), sheet.cell_value(i, 1))
+                poll.addQuestion(newQuestion)
+            self.polls.append(poll)
