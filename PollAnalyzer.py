@@ -22,6 +22,12 @@ class PollAnalyzer():
             except ValueError:
                 continue
 
-
+    def createQuestion(self, questionText, correctAnswer):
+        for question in self.questions:
+            if question.questionText == questionText:
+                return question
+        newQuestion = Question(questionText, correctAnswer)
+        self.questions.append(newQuestion)
+        return newQuestion
 
 
