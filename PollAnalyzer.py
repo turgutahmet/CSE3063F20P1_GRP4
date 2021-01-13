@@ -2,25 +2,36 @@ from Question import *
 from Config import *
 from Student import *
 from Poll import *
-import xlrd as xlrd
-from os.path import isfile, join
+from PollReport import *
 from os import listdir
+from os.path import isfile, join
+from QuestionAndGivenAnswer import *
+import xlrd as xlrd
+import csv
+import datetime as dt
+import re
 
-class PollAnalyzer():
+
+class PollAnalyzer:
     def __init__(self):
-        self.students=[]
-        self.questions=[]
-        self.polls=[]
-        self.pollResults=[]
-        self.config= Config()
+        self.students = []
+        self.questions = []
+        self.polls = []
+        self.pollResults = []
+        self.config = Config()
+
+    def startAnalyzer(self):
+        self.readStudent()
+        self.readAnswerKeys()
+        self.readPollReports()
 
     def readStudent(self):
-        f=xlrd.open_workbook(self.config.studentListDirectory)
+        f = xlrd.open_workbook(self.config.studentListDirectory)
         sheet = f.sheet_by_index(0)
-        for i in range(13,sheet.nrows):
+        for i in range(13, sheet.nrows):
             try:
                 int(sheet.cell_value(i, 2))
-                newstudent=Student(sheet.cell_value(i, 2),sheet.cell_value(i, 4),sheet.cell_value(i, 7))
+                newstudent = Student(sheet.cell_value(i, 2), sheet.cell_value(i, 4), sheet.cell_value(i, 7))
                 self.students.append(newstudent)
             except ValueError:
                 continue
@@ -75,6 +86,7 @@ class PollAnalyzer():
                 pollsInPollReport = self.findPoll(pollKey, questionList)
 
             self.addNewPollReport(date, pollsInPollReport, questionsAndGivenAnswersList)
+            print()
 
     def readPollReportRow(self, answerList, date, i, pollKey, prev, questionList, questionsAndGivenAnswersList, reader):
         for row in reader:
@@ -159,7 +171,7 @@ class PollAnalyzer():
             if question.questionText == questionText:
                 return question
         return
-    
+
     def reformatName(self, name):
         name = name.replace("Ö", "O")
         name = name.replace("Ü", "U")

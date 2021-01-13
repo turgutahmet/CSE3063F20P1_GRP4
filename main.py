@@ -1,6 +1,8 @@
 from Config import Config
-"""
-example config object
-config = Config()
+from PollAnalyzer import PollAnalyzer
 
-print(config.pollResultDirectory + " " + config.answerKeyDirectory + " " + config.studentListDirectory) """
+config = Config()
+pollAnalyzer = PollAnalyzer()
+
+# start analyzing
+pollAnalyzer.startAnalyzer()
