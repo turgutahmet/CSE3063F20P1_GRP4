@@ -45,6 +45,37 @@ class PollAnalyzer():
                 newQuestion = self.createQuestion(sheet.cell_value(i, 0), sheet.cell_value(i, 1))
                 poll.addQuestion(newQuestion)
             self.polls.append(poll)
+
+    def readPollReports(self):
+        # find all files in given path.
+        filesInPath = [f for f in listdir(self.config.pollResultDirectory) if
+                       isfile(join(self.config.pollResultDirectory, f))]
+
+        # read files one by one.
+        for pollReportFile in filesInPath:
+            path = self.config.pollResultDirectory + "/" + pollReportFile
+
+            self.reformatFile(path)
+
+            # read rows one by one
+            with open(path, 'r') as file:
+                reader = csv.DictReader(file)
+                pollKey = 1
+                questionKey = 1
+                i = 0
+                j = 0
+                prev = " "
+                questionList = dict()
+                answerList = dict()
+                questionsAndGivenAnswersList = dict()
+                date = " "
+                date, pollKey = self.readPollReportRow(answerList, date, i, pollKey, prev, questionList,
+                                                       questionsAndGivenAnswersList, reader)
+                date = dt.datetime.strptime(date, "%b %d, %Y %H:%M:%S")
+                pollsInPollReport = self.findPoll(pollKey, questionList)
+
+            self.addNewPollReport(date, pollsInPollReport, questionsAndGivenAnswersList)
+
     def readPollReportRow(self, answerList, date, i, pollKey, prev, questionList, questionsAndGivenAnswersList, reader):
         for row in reader:
             date = row["Submitted Date/Time"]
@@ -128,3 +159,34 @@ class PollAnalyzer():
             if question.questionText == questionText:
                 return question
         return
+    
+    def reformatName(self, name):
+        name = name.replace("Ö", "O")
+        name = name.replace("Ü", "U")
+        name = name.replace("İ", "I")
+        name = name.replace("Ş", "S")
+        name = name.replace("Ç", "C")
+        name = name.replace("Ğ", "G")
+        return name
+
+    def reformatFile(self, path):
+        file1 = open(path, 'r')
+        Lines = file1.readlines()
+        line = Lines[0]
+
+        chars = list(line)
+
+        if chars[len(chars) - 2] == ",":
+            chars[len(chars) - 2] = ""
+
+        line = "".join(chars)
+
+        Lines[0] = line
+
+        file1 = open(path, 'w')
+        file1.writelines(Lines)
+        file1.close()
+
+    def removeSpecialCharacters(self, cellValue):
+        text = re.sub(r"[\r\n\t\x07\x0b]", "", cellValue)
+        return text
