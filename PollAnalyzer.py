@@ -17,7 +17,7 @@ class PollAnalyzer:
         self.students = []
         self.questions = []
         self.polls = []
-        self.pollResults = []
+        self.pollReports = []
         self.config = Config()
 
     def startAnalyzer(self):
@@ -107,9 +107,11 @@ class PollAnalyzer:
 
                 else:
                     answerList[row["User Name"] + " " + str(pollKey) + "." + str(questionKey)] = q
-                    name = row["User Name"].replace(" ", "").upper()
-                    name = self.reformatName(name)
-                    questionAndGivenAnswer = self.createQuestionAndGivenAnswer(studentName=name,
+                    names = row["User Name"].upper()
+                    names = names.split()
+                    for i in range(0, len(names)):
+                        names[i] = self.reformatName(names[i])
+                    questionAndGivenAnswer = self.createQuestionAndGivenAnswer(studentName=names,
                                                                                questionText=questionList[
                                                                                    str(pollKey) + "." + str(
                                                                                        questionKey)],
@@ -159,11 +161,23 @@ class PollAnalyzer:
         return
 
     def findStudent(self, studentName):
+        flag = False
+        countOfNames = len(studentName)
         for student in self.students:
-            name = str(student.firstName + student.lastName).replace(" ", "").upper()
+            name = str(student.firstName + student.lastName).upper()
             name = self.reformatName(name)
-            if name in studentName:
-                return student
+            nameCounter = 0
+            for stName in studentName:
+                if stName in name:
+                    nameCounter += 1
+                else:
+                    break
+
+                if nameCounter == countOfNames:
+                    flag = True
+                    return student
+        if not flag:
+            print(studentName)
         return
 
     def findQuestion(self, questionText):
@@ -179,6 +193,18 @@ class PollAnalyzer:
         name = name.replace("Ş", "S")
         name = name.replace("Ç", "C")
         name = name.replace("Ğ", "G")
+        name = name.replace(".", "")
+        name = name.replace(" ", "")
+        name = name.replace("1", "")
+        name = name.replace("2", "")
+        name = name.replace("3", "")
+        name = name.replace("4", "")
+        name = name.replace("5", "")
+        name = name.replace("6", "")
+        name = name.replace("7", "")
+        name = name.replace("8", "")
+        name = name.replace("9", "")
+        name = name.replace("0", "")
         return name
 
     def reformatFile(self, path):

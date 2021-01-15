@@ -10,11 +10,9 @@ class PollReport:
 
     def splitPollReportRows(self):
         pollReportRow = PollReportRow()
-        for i in range(1, len(self.questionsAndGivenAnswers)):
-            prevName = self.questionsAndGivenAnswers[i - 1].student.firstName + self.questionsAndGivenAnswers[
-                i - 1].student.lastName
-            currentName = self.questionsAndGivenAnswers[i].student.firstName + self.questionsAndGivenAnswers[
-                i].student.lastName
+        prevName = self.questionsAndGivenAnswers[0].student.firstName + self.questionsAndGivenAnswers[0].student.lastName
+        for i in range(0, len(self.questionsAndGivenAnswers)):
+            currentName = self.questionsAndGivenAnswers[i].student.firstName + self.questionsAndGivenAnswers[i].student.lastName
 
             temp = self.questionsAndGivenAnswers[i]
             if prevName in currentName:
@@ -24,7 +22,11 @@ class PollReport:
                 pollReportRow.setStudent(temp.student)
                 pollReportRow.addNewQuestionAndGivenAnswer(temp)
             else:
+                prevName = self.questionsAndGivenAnswers[i].student.firstName + self.questionsAndGivenAnswers[i].student.lastName
                 self.pollReportRows.append(pollReportRow)
                 pollReportRow = PollReportRow()
                 pollReportRow.setStudent(temp.student)
                 pollReportRow.addNewQuestionAndGivenAnswer(temp)
+
+            if i == len(self.questionsAndGivenAnswers) - 1:
+                self.pollReportRows.append(pollReportRow)
