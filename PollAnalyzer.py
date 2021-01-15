@@ -205,6 +205,7 @@ class PollAnalyzer:
         name = name.replace("8", "")
         name = name.replace("9", "")
         name = name.replace("0", "")
+        name = name.replace("@SOMEMAILCOM", "")
         return name
 
     def reformatFile(self, path):
