@@ -158,6 +158,33 @@ class PollAnalyzer:
                 for s in s_list.keys():
                     print(str(s.lastName) + str(s_list[s]))
 
+    def statisticsGraph(self):
+        generalDic = {}
+        fig = plt.figure(figsize=(10, 10))
+        for pr in self.pollReports:
+            middleDic = {}
+            for q in pr.questionsInPollReport:
+                ansAndPer = {}
+                colors = []
+                red = 'red'
+                green = 'lime'
+                total = 0
+                for i in q.answers.values():
+                    total += i
+                for ans in q.answers.keys():
+                    if q.question.correctAnswer == ans:
+                        colors.append(green)
+                    else:
+                        colors.append(red)
+                    ansAndPer[ans] = int((q.answers[ans] / total) * 10000) / 100
+                middleDic[q.question.questionText] = ansAndPer
+                if "Attendance" in pr.poll.pollName:#To give attendances seperately
+                    continue
+                plt.pie(ansAndPer.values(), labels=ansAndPer.keys(), colors=colors, autopct='%.1f%%')
+                plt.show()
+            generalDic[pr.poll.pollName] = middleDic
+        print(generalDic)
+
     # Finds identities of polls' in poll report file.
     def findPoll(self, pollKey, questionList):
         pollsInPollReport = []
