@@ -27,6 +27,9 @@ class PollAnalyzer:
         self.readAnswerKeys()
         self.readPollReports()
         self.updatePollReports()
+        self.calculateSuccessRate()
+        self.attendance()
+        self.statisticsGraph()
 
     def readStudent(self):  # Reads all students in student list which stored in config.studentListDirectory path
         f = xlrd.open_workbook(self.config.studentListDirectory)
@@ -135,6 +138,44 @@ class PollAnalyzer:
                     questionKey += 1
                 j += 1
         return date, pollKey
+
+    def attendance(self):
+        attendance = dict((i, []) for i in self.students)
+        date = []
+        dateOfPoll = " "
+        condition = 0
+        for i in range (0,len(self.pollReports)):
+            attendancePoll = 0
+            j = self.pollReports[i]
+            if i == 0:
+                dateOfPoll = j.date
+            if i+1 < len(self.pollReports):
+                if not dateOfPoll == self.pollReports[i+1].date:
+                    dateOfPoll = self.pollReports[i+1].date
+                    condition = 1
+            else :
+                condition = 1
+            if not j.date in date:
+                date.append(j.date)
+            for x in j.questionsAndGivenAnswers:
+                if x.student in self.students:
+                    if not j.date in attendance[x.student]:
+                        attendance[x.student].append(j.date)
+            if condition == 1:
+                for stu in attendance.keys():
+                    for dates in attendance[stu]:
+                        if dates == j.date:
+                            attendancePoll += 1
+                attAnsAndPer = {}
+                attAnsAndPer["Absent " + str(len(self.students) - attendancePoll) ] =  len(self.students) - attendancePoll
+                attAnsAndPer["Attended " + str(attendancePoll)] = attendancePoll
+                plt.pie(attAnsAndPer.values(), labels=attAnsAndPer.keys(), autopct='%.1f%%')
+                plt.show()
+                condition = 0
+        attendanceStat = {}
+        for i in attendance.keys():
+            attendanceStat[i] = (len(date), len(attendance[i]), len(attendance[i]) / len(date) * 100)
+            print(attendanceStat[i])
 
     def calculateSuccessRate(self):
         for pr in self.pollReports:
