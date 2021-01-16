@@ -183,6 +183,7 @@ class PollAnalyzer:
 
         self.pollOutput.creatingAttendanceFile(attendance,date)
     def calculateSuccessRate(self):
+        s_total_list = dict((i, []) for i in self.students)
         for pr in self.pollReports:
             s_list = dict((i, []) for i in self.students)
             if pr.poll.pollName != 'Attendance Poll':
@@ -196,11 +197,14 @@ class PollAnalyzer:
                                     total_right += 1
                                 else:
                                     s_list[s].append(0)
+                    s_total_list[s].append(pr.poll.pollName + " " + pr.date)
+                    s_total_list[s].append(((total_right / len(pr.poll.questions)) * 10000) / 100)
                     s_list[s].append(str(total_right) + "/" + str(len(pr.poll.questions)))
                     s_list[s].append(((total_right / len(pr.poll.questions)) * 10000) / 100)
 
                 outputName = pr.date + " " + pr.poll.pollName
                 self.pollOutput.creatCalculateSuccessRate(outputName,len(pr.poll.questions),s_list)
+        self.pollOutput.outputSum(s_total_list)
 
     def statisticsGraph(self):
         generalDic = {}

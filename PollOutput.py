@@ -64,3 +64,31 @@ class PollOutput:
             k+=1
 
         wb.save("./outputs/"+PollName+'.xls')
+
+    def outputSum(self, s_total_list):
+        wb = xlwt.Workbook()
+        new_sheet = wb.add_sheet("student_scores")
+        new_sheet.write(0, 0, 'Student Number')
+        new_sheet.write(0, 1, 'First Name')
+        new_sheet.write(0, 2, 'Last Name')
+        j = 3
+        i = 0
+        for s in s_total_list.values():
+            if i == 0:
+                for i in range(0, len(s), 2):
+                    new_sheet.write(0, j, s[i])
+                    j += 1
+                i += 1
+
+        k = 1
+        for i in s_total_list.keys():
+            j = 3
+            new_sheet.write(k, 0, i.studentNumber)
+            new_sheet.write(k, 1, i.firstName)
+            new_sheet.write(k, 2, i.lastName)
+            for r in range(1, len(s_total_list[i]), 2):
+                new_sheet.write(k, j, s_total_list[i][r])
+                j += 1
+            k += 1
+
+        wb.save("./outputs/"+"student_scores" + '.xls')
