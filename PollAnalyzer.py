@@ -13,7 +13,7 @@ import xlrd as xlrd
 import csv
 import datetime as dt
 import re
-
+import matplotlib.backends.backend_pdf
 
 class PollAnalyzer:
     def __init__(self):
@@ -31,7 +31,7 @@ class PollAnalyzer:
         self.updatePollReports()
         self.calculateSuccessRate()
         self.attendance()
-        #self.statisticsGraph()
+        self.statisticsGraph()
 
     def readStudent(self):  # Reads all students in student list which stored in config.studentListDirectory path
         f = xlrd.open_workbook(self.config.studentListDirectory)
@@ -168,23 +168,24 @@ class PollAnalyzer:
                     for dates in attendance[stu]:
                         if dates == j.date:
                             attendancePoll += 1
-                attAnsAndPer = {}
-                attAnsAndPer["Absent " + str(len(self.students) - attendancePoll) ] =  len(self.students) - attendancePoll
-                attAnsAndPer["Attended " + str(attendancePoll)] = attendancePoll
-                plt.pie(attAnsAndPer.values(), labels=attAnsAndPer.keys(), autopct='%.1f%%')
-                plt.show()
+                pdfName = "./outputs/attendanceCharts/"+str(j.date)+"_attendance.pdf"
+                with matplotlib.backends.backend_pdf.PdfPages(pdfName) as export_pdf:
+                    attAnsAndPer = {}
+                    attAnsAndPer["Absent " + str(len(self.students) - attendancePoll) ] =  len(self.students) - attendancePoll
+                    attAnsAndPer["Attended " + str(attendancePoll)] = attendancePoll
+                    plt.pie(attAnsAndPer.values(), labels=attAnsAndPer.keys(), autopct='%.1f%%')
+                    export_pdf.savefig()
+                    plt.close()
                 condition = 0
         attendanceStat = {}
         for i in attendance.keys():
             attendanceStat[i] = (len(date), len(attendance[i]), len(attendance[i]) / len(date) * 100)
-            print(attendanceStat[i])
 
         self.pollOutput.creatingAttendanceFile(attendance,date)
     def calculateSuccessRate(self):
         for pr in self.pollReports:
             s_list = dict((i, []) for i in self.students)
             if pr.poll.pollName != 'Attendance Poll':
-                print(pr.poll.pollName)
                 for s in self.students:
                     total_right = 0
                     for r in pr.pollReportRows:
@@ -197,39 +198,38 @@ class PollAnalyzer:
                                     s_list[s].append(0)
                     s_list[s].append(str(total_right) + "/" + str(len(pr.poll.questions)))
                     s_list[s].append(((total_right / len(pr.poll.questions)) * 10000) / 100)
-                    print((str(s.lastName) + str(s_list[s])) + str(pr.date) + " " + str(
-                        (len(pr.poll.questions))) + " " + str(((total_right / len(pr.poll.questions)) * 10000) / 100))
 
-                for s in s_list.keys():
-                    print(str(s.lastName) + str(s_list[s]))
-                self.pollOutput.creatCalculateSuccessRate(pr.poll.pollName,len(pr.poll.questions),s_list)
+                outputName = pr.date + " " + pr.poll.pollName
+                self.pollOutput.creatCalculateSuccessRate(outputName,len(pr.poll.questions),s_list)
 
     def statisticsGraph(self):
         generalDic = {}
-        fig = plt.figure(figsize=(10, 10))
         for pr in self.pollReports:
             middleDic = {}
-            for q in pr.questionsInPollReport:
-                ansAndPer = {}
-                colors = []
-                red = 'red'
-                green = 'lime'
-                total = 0
-                for i in q.answers.values():
-                    total += i
-                for ans in q.answers.keys():
-                    if q.question.correctAnswer == ans:
-                        colors.append(green)
-                    else:
-                        colors.append(red)
-                    ansAndPer[ans] = int((q.answers[ans] / total) * 10000) / 100
-                middleDic[q.question.questionText] = ansAndPer
-                if "Attendance" in pr.poll.pollName:#To give attendances seperately
-                    continue
-                plt.pie(ansAndPer.values(), labels=ansAndPer.keys(), colors=colors, autopct='%.1f%%')
-                plt.show()
+            if not "Attendance" in pr.poll.pollName:
+                pdfName = "./outputs/charts/" + str(pr.date) + " " + str(pr.poll.pollName) + ".pdf"
+                with matplotlib.backends.backend_pdf.PdfPages(pdfName) as export_pdf:
+                    for q in pr.questionsInPollReport:
+                        ansAndPer = {}
+                        colors = []
+                        red = 'red'
+                        green = 'lime'
+                        total = 0
+                        for i in q.answers.values():
+                            total += i
+                        for ans in q.answers.keys():
+                            if q.question.correctAnswer == ans:
+                                colors.append(green)
+                            else:
+                                colors.append(red)
+                            ansAndPer[ans] = int((q.answers[ans] / total) * 10000) / 100
+                        fig = plt.figure(figsize=(15, 10))
+                        middleDic[q.question.questionText] = ansAndPer
+                        plt.title(q.question.questionText,fontsize = 10)
+                        plt.pie(ansAndPer.values(), labels=ansAndPer.keys(), colors=colors, autopct='%.1f%%')
+                        export_pdf.savefig()
+                        plt.close()
             generalDic[pr.poll.pollName] = middleDic
-        print(generalDic)
 
     # Finds identities of polls' in poll report file.
     def findPoll(self, pollKey, questionList):
@@ -287,9 +287,6 @@ class PollAnalyzer:
                 if nameCounter == countOfNames:
                     flag = True
                     return student
-        if not flag:
-            # Student not exist in student list.
-            print(studentName)
         return
 
     # Find Question object in question list related with passed questionText argument and return it.

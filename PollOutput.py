@@ -21,7 +21,7 @@ class PollOutput:
             newsheet.write(j, 3, 'attended ' + str(len(attendance[i])) + ' of ' + str(len(date)) + ' courses')
             newsheet.write(j, 4, str(round(len(attendance[i]) / len(date) * 100)) + '%')
             j += 1
-        wb.save('Attendance.xls')
+        wb.save("./outputs/"+'Attendance.xls')
 
 
     def creatCalculateSuccessRate(self,PollName,numberOfQuestions,s_list):
@@ -63,4 +63,4 @@ class PollOutput:
                 newsheet.write(k, j+2, s_list[i][-1])
             k+=1
 
-        wb.save(PollName+'.xls')
+        wb.save("./outputs/"+PollName+'.xls')
