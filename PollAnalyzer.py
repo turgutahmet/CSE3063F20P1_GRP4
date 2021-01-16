@@ -3,6 +3,7 @@ from Config import *
 from Student import *
 from Poll import *
 from PollReport import *
+from PollOutput import *
 from os import listdir
 from os.path import isfile, join
 from QuestionAndGivenAnswer import *
@@ -21,6 +22,7 @@ class PollAnalyzer:
         self.polls = []  # All polls in the system.
         self.pollReports = []  # All poll reports in the system.
         self.config = Config()  # Stores paths.
+        self.pollOutput=PollOutput()
 
     def startAnalyzer(self):
         self.readStudent()
@@ -29,7 +31,7 @@ class PollAnalyzer:
         self.updatePollReports()
         self.calculateSuccessRate()
         self.attendance()
-        self.statisticsGraph()
+        #self.statisticsGraph()
 
     def readStudent(self):  # Reads all students in student list which stored in config.studentListDirectory path
         f = xlrd.open_workbook(self.config.studentListDirectory)
@@ -177,6 +179,7 @@ class PollAnalyzer:
             attendanceStat[i] = (len(date), len(attendance[i]), len(attendance[i]) / len(date) * 100)
             print(attendanceStat[i])
 
+        self.pollOutput.creatingAttendanceFile(attendance,date)
     def calculateSuccessRate(self):
         for pr in self.pollReports:
             s_list = dict((i, []) for i in self.students)
@@ -196,8 +199,10 @@ class PollAnalyzer:
                     s_list[s].append(((total_right / len(pr.poll.questions)) * 10000) / 100)
                     print((str(s.lastName) + str(s_list[s])) + str(pr.date) + " " + str(
                         (len(pr.poll.questions))) + " " + str(((total_right / len(pr.poll.questions)) * 10000) / 100))
+
                 for s in s_list.keys():
                     print(str(s.lastName) + str(s_list[s]))
+                self.pollOutput.creatCalculateSuccessRate(pr.poll.pollName,len(pr.poll.questions),s_list)
 
     def statisticsGraph(self):
         generalDic = {}
@@ -350,3 +355,4 @@ class PollAnalyzer:
     def removeSpecialCharacters(self, cellValue):
         text = re.sub(r"[\r\n\t\x07\x0b]", "", cellValue)
         return text
+
