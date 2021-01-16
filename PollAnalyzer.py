@@ -136,6 +136,28 @@ class PollAnalyzer:
                 j += 1
         return date, pollKey
 
+    def calculateSuccessRate(self):
+        for pr in self.pollReports:
+            s_list = dict((i, []) for i in self.students)
+            if pr.poll.pollName != 'Attendance Poll':
+                print(pr.poll.pollName)
+                for s in self.students:
+                    total_right = 0
+                    for r in pr.pollReportRows:
+                        if r.student == s:
+                            for q in r.questionsAndGivenAnswers:
+                                if q.isCorrect:
+                                    s_list[s].append(1)
+                                    total_right += 1
+                                else:
+                                    s_list[s].append(0)
+                    s_list[s].append(str(total_right) + "/" + str(len(pr.poll.questions)))
+                    s_list[s].append(((total_right / len(pr.poll.questions)) * 10000) / 100)
+                    print((str(s.lastName) + str(s_list[s])) + str(pr.date) + " " + str(
+                        (len(pr.poll.questions))) + " " + str(((total_right / len(pr.poll.questions)) * 10000) / 100))
+                for s in s_list.keys():
+                    print(str(s.lastName) + str(s_list[s]))
+
     # Finds identities of polls' in poll report file.
     def findPoll(self, pollKey, questionList):
         pollsInPollReport = []
