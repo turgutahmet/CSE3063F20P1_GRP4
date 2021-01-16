@@ -161,7 +161,7 @@ class PollAnalyzer:
             pollReport = PollReport(pollsInPollReport[counter], date, questionsAndGivenAnswersList[counter + 1])
             self.pollReports.append(pollReport)
 
-    # Creates new QuestionAndGivenAnswer object and retrun it.
+    # Creates new QuestionAndGivenAnswer object and return it.
     def createQuestionAndGivenAnswer(self, studentName, questionText, givenAnswer):
         # Find student in students list.
         student = self.findStudent(studentName)
