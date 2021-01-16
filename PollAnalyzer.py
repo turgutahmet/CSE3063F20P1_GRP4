@@ -173,7 +173,7 @@ class PollAnalyzer:
                     attAnsAndPer = {}
                     attAnsAndPer["Absent " + str(len(self.students) - attendancePoll) ] =  len(self.students) - attendancePoll
                     attAnsAndPer["Attended " + str(attendancePoll)] = attendancePoll
-                    plt.pie(attAnsAndPer.values(), labels=attAnsAndPer.keys(), autopct='%.1f%%')
+                    plt.pie(attAnsAndPer.values(), labels=attAnsAndPer.keys(), autopct='%.1f%%',wedgeprops={'linewidth': 1, 'linestyle': 'solid', 'antialiased': True})
                     export_pdf.savefig()
                     plt.close()
                 condition = 0
@@ -230,7 +230,7 @@ class PollAnalyzer:
                         fig = plt.figure(figsize=(15, 10))
                         middleDic[q.question.questionText] = ansAndPer
                         plt.title(q.question.questionText,fontsize = 10)
-                        plt.pie(ansAndPer.values(), labels=ansAndPer.keys(), colors=colors, autopct='%.1f%%')
+                        plt.pie(ansAndPer.values(), labels=ansAndPer.keys(), colors=colors, autopct='%.1f%%',wedgeprops={'linewidth': 1,'edgecolor':'black', 'linestyle': 'solid', 'antialiased': True})
                         export_pdf.savefig()
                         plt.close()
             generalDic[pr.poll.pollName] = middleDic
