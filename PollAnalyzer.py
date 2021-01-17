@@ -41,7 +41,8 @@ class PollAnalyzer:
         self.readPollReports()
         logger.info("Poll reports have been read.")
         self.updatePollReports()
-        analyzer = Analyzer(self.students, self.pollReports, logger)
+        analyzer = Analyzer(self.students, self.pollReports)
+        analyzer.startAnalyzing(logger)
         logger.info("Analyzing has been finished.")
 
     def readStudent(self):  # Reads all students in student list which stored in config.studentListDirectory path

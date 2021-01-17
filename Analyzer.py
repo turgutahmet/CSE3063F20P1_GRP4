@@ -1,15 +1,16 @@
 from PollOutput import *
 from matplotlib import pyplot as plt
-import numpy as np
 import matplotlib.backends.backend_pdf
 
 
 class Analyzer:
 
-    def __init__(self, students, pollReports, logger):
+    def __init__(self, students, pollReports):
         self.students = students
         self.pollReports = pollReports
         self.pollOutput = PollOutput()
+
+    def startAnalyzing(self, logger):
         self.attendance()
         logger.info("Attendances have been analyzed.")
         self.calculateSuccessRate()
