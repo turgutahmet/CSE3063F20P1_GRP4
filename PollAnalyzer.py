@@ -11,6 +11,8 @@ import xlrd as xlrd
 import csv
 import datetime as dt
 import re
+import logging
+import sys
 
 
 class PollAnalyzer:
@@ -22,11 +24,25 @@ class PollAnalyzer:
         self.config = Config()  # Stores paths.
 
     def startAnalyzer(self):
+        # Logger configuration
+        logging.basicConfig(filename='log.txt', filemode='a', format='%(asctime)s - %(levelname)s - %(message)s',
+                            datefmt='%d-%b-%y %H:%M:%S')
+        logger = logging.getLogger()
+        logger.setLevel(logging.INFO)
+
+        stdoutHandler = logging.StreamHandler(sys.stdout)
+
+        logger.addHandler(stdoutHandler)
+
         self.readStudent()
+        logger.info("Students have been read.")
         self.readAnswerKeys()
+        logger.info("Answer keys have been read.")
         self.readPollReports()
+        logger.info("Poll reports have been read.")
         self.updatePollReports()
-        analyzer = Analyzer(self.students, self.pollReports)
+        analyzer = Analyzer(self.students, self.pollReports, logger)
+        logger.info("Analyzing has been finished.")
 
     def readStudent(self):  # Reads all students in student list which stored in config.studentListDirectory path
         f = xlrd.open_workbook(self.config.studentListDirectory)

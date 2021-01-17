@@ -6,13 +6,16 @@ import matplotlib.backends.backend_pdf
 
 class Analyzer:
 
-    def __init__(self, students, pollReports):
+    def __init__(self, students, pollReports, logger):
         self.students = students
         self.pollReports = pollReports
         self.pollOutput = PollOutput()
         self.attendance()
+        logger.info("Attendances have been analyzed.")
         self.calculateSuccessRate()
+        logger.info("Students' success rates have been computed.")
         self.statisticsGraph()
+        logger.info("Questions' pie charts have been drawn.")
 
     def attendance(self):
         attendance = dict((i, []) for i in self.students)
