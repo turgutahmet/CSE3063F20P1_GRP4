@@ -39,7 +39,7 @@ class PollReport:
         for pollReportRow in self.pollReportRows:
             for questionAndGivenAnswer in pollReportRow.questionsAndGivenAnswers:
                 questionInPollReport = self.findQuestionInPollReport(questionAndGivenAnswer.question)
-                questionInPollReport.updateAnswer(questionAndGivenAnswer.givenAnswer)
+                questionInPollReport.updateAnswer(questionAndGivenAnswer.givenAnswer.split(";"))
 
     # Look fillQuestionsInPollReport list if there is match with passed argument returns it, otherwise create new QuestionInPollReport object and returns it.
     def findQuestionInPollReport(self, question):

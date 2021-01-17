@@ -37,7 +37,6 @@ class PollOutput:
         newsheet.write(0, j, 'number of questions')
         newsheet.write(0, j+1, 'success rate')
         newsheet.write(0, j+2, 'success percentage')
-        print(j)
         k=1
         for i in s_list.keys():
             newsheet.write(k,0,i.studentNumber)

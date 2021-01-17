@@ -10,4 +10,3 @@ class QuestionAndGivenAnswer:
     def checkQuestion(self):
         if self.question.correctAnswer in self.givenAnswer:
             self.isCorrect = True
-        self.question.updateAnswer(self.givenAnswer)

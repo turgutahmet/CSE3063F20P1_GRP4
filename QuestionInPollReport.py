@@ -7,7 +7,8 @@ class QuestionInPollReport:
         self.answers[givenAnswer] = 1
 
     def updateAnswer(self, givenAnswer):
-        if givenAnswer in self.answers:
-            self.answers[givenAnswer] += 1
-        else:
-            self.appendAnswer(givenAnswer)
+        for ga in givenAnswer:
+            if ga in self.answers:
+                self.answers[ga] += 1
+            else:
+                self.appendAnswer(ga)

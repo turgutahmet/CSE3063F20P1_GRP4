@@ -36,7 +36,7 @@ class PollAnalyzer:
     def readStudent(self):  # Reads all students in student list which stored in config.studentListDirectory path
         f = xlrd.open_workbook(self.config.studentListDirectory)
         sheet = f.sheet_by_index(0)
-        for i in range(13, sheet.nrows):
+        for i in range(0, sheet.nrows):
             try:
                 int(sheet.cell_value(i, 2))
                 newstudent = Student(sheet.cell_value(i, 2), sheet.cell_value(i, 4), sheet.cell_value(i, 7))
@@ -207,9 +207,7 @@ class PollAnalyzer:
         self.pollOutput.outputSum(s_total_list)
 
     def statisticsGraph(self):
-        generalDic = {}
         for pr in self.pollReports:
-            middleDic = {}
             if not "Attendance" in pr.poll.pollName:
                 pdfName = "./outputs/charts/" + str(pr.date) + " " + str(pr.poll.pollName) + ".pdf"
                 with matplotlib.backends.backend_pdf.PdfPages(pdfName) as export_pdf:
@@ -222,18 +220,16 @@ class PollAnalyzer:
                         for i in q.answers.values():
                             total += i
                         for ans in q.answers.keys():
-                            if q.question.correctAnswer == ans:
+                            if ans in q.question.correctAnswer:
                                 colors.append(green)
                             else:
                                 colors.append(red)
                             ansAndPer[ans] = int((q.answers[ans] / total) * 10000) / 100
                         fig = plt.figure(figsize=(15, 10))
-                        middleDic[q.question.questionText] = ansAndPer
                         plt.title(q.question.questionText,fontsize = 10)
                         plt.pie(ansAndPer.values(), labels=ansAndPer.keys(), colors=colors, autopct='%.1f%%',wedgeprops={'linewidth': 1,'edgecolor':'black', 'linestyle': 'solid', 'antialiased': True})
                         export_pdf.savefig()
                         plt.close()
-            generalDic[pr.poll.pollName] = middleDic
 
     # Finds identities of polls' in poll report file.
     def findPoll(self, pollKey, questionList):
