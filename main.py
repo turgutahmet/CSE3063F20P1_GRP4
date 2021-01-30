@@ -1,6 +1,8 @@
-from PollAnalyzer import PollAnalyzer
+from GUI import *
 
-pollAnalyzer = PollAnalyzer()
-
-# start analyzing
-pollAnalyzer.startAnalyzer()
+root = Tk()
+root.title("Poll Analyzer")
+root.geometry("300x400+200+90")
+root.configure(bg='white')
+app=GUI(root)
+root.mainloop()
