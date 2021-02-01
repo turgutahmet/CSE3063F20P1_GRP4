@@ -46,9 +46,7 @@ class PollAnalyzer:
         logger.info("Analyzing has been finished.")
 
     def readStudent(self):  # Reads all students in student list which stored in config.studentListDirectory path
-        filesInPath = [f for f in listdir(self.config.studentListDirectory) if
-                       isfile(join(self.config.studentListDirectory, f))]
-        f = xlrd.open_workbook(self.config.studentListDirectory+"/"+filesInPath[0])
+        f = xlrd.open_workbook(self.config.studentListDirectory)
         sheet = f.sheet_by_index(0)
         for i in range(0, sheet.nrows):
             try:
@@ -160,16 +158,18 @@ class PollAnalyzer:
         pollsInPollReport = []
         for key in range(0, pollKey):
             for poll in self.polls:
-                flag = True
+                counter = 0
                 for q in range(0, len(questionList)):
-                    if q > len(poll.questions) - 1:
-                        break
                     questionListKey = str(key + 1) + "." + str(q + 1)
-                    if not poll.questions[q].questionText == questionList[questionListKey]:
-                        flag = False
-                        break
-                # If that poll's all questions have matched with a poll's which is stored in polls list, questions set identity of that poll.
-                if flag:
+                    for pollQ in poll.questions:
+                        try:
+                            if pollQ.questionText.replace(" ", "") == questionList[questionListKey].replace(" ", ""):
+                                counter += 1
+                        except:
+                            continue
+                # If that poll's all questions have matched with a poll's which is stored in polls list, questions
+                # set identity of that poll.
+                if counter == len(poll.questions):
                     currentPoll = poll
                     pollsInPollReport.append(currentPoll)
         return pollsInPollReport
@@ -196,7 +196,6 @@ class PollAnalyzer:
 
     # Finds Student object in students list related to passed studentName argument and return it.
     def findStudent(self, studentName):
-        flag = False
         countOfNames = len(studentName)
         for student in self.students:
             name = str(student.firstName + student.lastName).upper()
@@ -207,18 +206,21 @@ class PollAnalyzer:
                     nameCounter += 1
                 else:
                     break
-
                 if nameCounter == countOfNames:
-                    flag = True
                     return student
         return
 
     # Find Question object in question list related with passed questionText argument and return it.
     def findQuestion(self, questionText):
         for question in self.questions:
-            if question.questionText == questionText:
+            if question.questionText.replace(" ", "") == questionText.replace(" ", ""):
                 return question
-        return
+        # It can be attendance question.
+        attendancePoll = Poll("Attendance Poll")
+        attendanceQuestion = self.createQuestion(questionText, "Yes;No")
+        attendancePoll.addQuestion(attendanceQuestion)
+        self.polls.append(attendancePoll)
+        return attendanceQuestion
 
     # Update all PollReport objects in pollReports list.
     def updatePollReports(self):
@@ -246,11 +248,25 @@ class PollAnalyzer:
         name = name.replace("8", "")
         name = name.replace("9", "")
         name = name.replace("0", "")
-        name = name.replace("@SOMEMAILCOM", "")
+        if "@" in name:
+            name = name.split("@")
+            name = name[0]
         return name
 
     # Reformat file which is passed path as argument.
     def reformatFile(self, path):
+        file = open(path, 'r', encoding="utf-8")
+        Lines = file.readlines()
+
+        for i in range(0, len(Lines)):
+            if "#" in Lines[i]:
+                break
+            Lines[i] = ""
+
+        file = open(path, 'w', encoding="utf-8")
+        file.writelines(Lines)
+        file.close()
+
         file1 = open(path, 'r', encoding="utf-8")
         Lines = file1.readlines()
         line = Lines[0]

@@ -8,5 +8,5 @@ class QuestionAndGivenAnswer:
         self.checkQuestion()
 
     def checkQuestion(self):
-        if self.question.correctAnswer in self.givenAnswer:
+        if self.givenAnswer in self.question.correctAnswer:
             self.isCorrect = True

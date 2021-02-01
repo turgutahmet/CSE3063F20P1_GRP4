@@ -9,6 +9,7 @@ class Analyzer:
         self.students = students
         self.pollReports = pollReports
         self.pollOutput = PollOutput()
+        self.config = Config()
 
     def startAnalyzing(self, logger):
         self.attendance()
@@ -45,7 +46,7 @@ class Analyzer:
                     for dates in attendance[stu]:
                         if dates == j.date:
                             attendancePoll += 1
-                pdfName = "./outputs/attendanceCharts/" + str(j.date) + "_attendance.pdf"
+                pdfName = self.config.attendanceChartsDirectory + str(j.date) + "_attendance.pdf"
                 with matplotlib.backends.backend_pdf.PdfPages(pdfName) as export_pdf:
                     attAnsAndPer = {}
                     attAnsAndPer["Absent " + str(len(self.students) - attendancePoll)] = len(
@@ -89,7 +90,7 @@ class Analyzer:
     def statisticsGraph(self):
         for pr in self.pollReports:
             if not "Attendance" in pr.poll.pollName:
-                pdfName = "./outputs/charts/" + str(pr.date) + " " + str(pr.poll.pollName) + ".pdf"
+                pdfName = self.config.pollChartsDirectory + str(pr.date) + " " + str(pr.poll.pollName) + ".pdf"
                 with matplotlib.backends.backend_pdf.PdfPages(pdfName) as export_pdf:
                     for q in pr.questionsInPollReport:
                         ansAndPer = {}

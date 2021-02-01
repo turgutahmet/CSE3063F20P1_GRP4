@@ -1,8 +1,11 @@
+from Config import *
 import xlwt
+import os
 
 
 class PollOutput:
     def __init__(self):
+        self.config = Config()
         pass
 
     def creatingAttendanceFile(self, attendance, date):
@@ -21,11 +24,11 @@ class PollOutput:
             newsheet.write(j, 3, 'attended ' + str(len(attendance[i])) + ' of ' + str(len(date)) + ' courses')
             newsheet.write(j, 4, str(round(len(attendance[i]) / len(date) * 100)) + '%')
             j += 1
-        wb.save("./outputs/" + 'Attendance.xls')
+        wb.save(self.config.attendanceReportsDirectory + 'Attendance.xls')
 
     def creatCalculateSuccessRate(self, PollName, numberOfQuestions, s_list):
         wb = xlwt.Workbook()
-        newsheet = wb.add_sheet(PollName)
+        newsheet = wb.add_sheet(PollName[:30])
         newsheet.write(0, 0, 'Student Number')
         newsheet.write(0, 1, 'First Name')
         newsheet.write(0, 2, 'Last Name')
@@ -38,30 +41,62 @@ class PollOutput:
         newsheet.write(0, j + 2, 'success percentage')
         k = 1
         for i in s_list.keys():
+            # Student's poll report output
+            wb_student = xlwt.Workbook()
+            newsheet_student = wb_student.add_sheet(PollName[:30])
+            newsheet_student.write(0, 0, 'Student Number')
+            newsheet_student.write(0, 1, 'First Name')
+            newsheet_student.write(0, 2, 'Last Name')
+            j = 3
+            for a in range(0, numberOfQuestions):
+                newsheet_student.write(0, j, 'Q' + str(a + 1))
+                j += 1
+            newsheet_student.write(0, j, 'number of questions')
+            newsheet_student.write(0, j + 1, 'success rate')
+            newsheet_student.write(0, j + 2, 'success percentage')
+            newsheet_student.write(1, 0, i.studentNumber)
+            newsheet_student.write(1, 1, i.firstName)
+            newsheet_student.write(1, 2, i.lastName)
+
             newsheet.write(k, 0, i.studentNumber)
             newsheet.write(k, 1, i.firstName)
             newsheet.write(k, 2, i.lastName)
             if len(s_list[i]) < numberOfQuestions:
                 for x in range(len(s_list[i]) - 2):
                     newsheet.write(k, 3 + x, s_list[i][x])
+                    newsheet_student.write(1, 3 + x, s_list[i][x])
                 for n in range(len(s_list[i]) - 2, numberOfQuestions):
-                    newsheet.write(k, 3 + n, '-')
+                    newsheet.write(k, 3 + n, '')
+                    newsheet_student.write(1, 3 + n, '')
                 newsheet.write(k, j, numberOfQuestions)
+                newsheet_student.write(1, j, numberOfQuestions)
                 if s_list[i][-1] == 0:
-                    newsheet.write(k, j + 1, '-')
-                    newsheet.write(k, j + 2, '-')
+                    newsheet.write(k, j + 1, '')
+                    newsheet.write(k, j + 2, '')
+                    newsheet_student.write(1, j + 1, '')
+                    newsheet_student.write(1, j + 2, '')
                 else:
                     newsheet.write(k, j + 1, s_list[i][-2])
                     newsheet.write(k, j + 2, s_list[i][-1])
+                    newsheet_student.write(1, j + 1, s_list[i][-2])
+                    newsheet_student.write(1, j + 2, s_list[i][-1])
             else:
                 for x in range(numberOfQuestions):
                     newsheet.write(k, 3 + x, s_list[i][x])
+                    newsheet_student.write(1, 3 + x, s_list[i][x])
                 newsheet.write(k, j, numberOfQuestions)
                 newsheet.write(k, j + 1, s_list[i][-2])
                 newsheet.write(k, j + 2, s_list[i][-1])
+                newsheet_student.write(1, j, numberOfQuestions)
+                newsheet_student.write(1, j + 1, s_list[i][-2])
+                newsheet_student.write(1, j + 2, s_list[i][-1])
+            studentDir = self.config.studentsPollReports + i.firstName + "_" + i.lastName + "_" + i.studentNumber + "/"
+            if not os.path.exists(studentDir):
+                os.makedirs(studentDir)
+            wb_student.save(studentDir + PollName + ".xls")
             k += 1
 
-        wb.save("./outputs/" + PollName + '.xls')
+        wb.save(self.config.outputPollReportsDirectory + PollName + '.xls')
 
     def outputSum(self, s_total_list):
         wb = xlwt.Workbook()
@@ -89,4 +124,4 @@ class PollOutput:
                 j += 1
             k += 1
 
-        wb.save("./outputs/" + "student_scores" + '.xls')
+        wb.save(self.config.generalStatisticsDirectory + "student_scores" + '.xls')
