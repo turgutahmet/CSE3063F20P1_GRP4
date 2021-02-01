@@ -1,11 +1,13 @@
 {
   "poll report directory": "./pollReports",
   "answer key directory": "./answerKeys",
+  "answer key txt directory": "./answerKeys_txt/",
   "student list directory": "./studentList",
   "attendance charts": "./outputs/attendanceCharts/",
   "poll charts": "./outputs/charts/",
   "output poll reports": "./outputs/pollReports/",
   "attendance reports": "./outputs/attendanceReport/",
   "general statistics": "./outputs/",
-  "student statistics": "./outputs/studentsPollReports/"
+  "student statistics": "./outputs/studentsPollReports/",
+  "anomalies directory": "./outputs/anomalies/"
 }

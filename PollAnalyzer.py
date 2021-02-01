@@ -7,6 +7,7 @@ from Analyzer import *
 from os import listdir
 from os.path import isfile, join
 from QuestionAndGivenAnswer import *
+from AnswerKeyConverter import *
 import xlrd as xlrd
 import csv
 import datetime as dt
@@ -46,7 +47,9 @@ class PollAnalyzer:
         logger.info("Analyzing has been finished.")
 
     def readStudent(self):  # Reads all students in student list which stored in config.studentListDirectory path
-        f = xlrd.open_workbook(self.config.studentListDirectory)
+        filesInPath = [f for f in listdir(self.config.studentListDirectory) if
+                       isfile(join(self.config.studentListDirectory, f))]
+        f = xlrd.open_workbook(self.config.studentListDirectory + "/" + filesInPath[0])
         sheet = f.sheet_by_index(0)
         for i in range(0, sheet.nrows):
             try:
@@ -57,6 +60,12 @@ class PollAnalyzer:
                 continue
 
     def readAnswerKeys(self):  # Reads all answer keys which stored in config.answerKeyDirectory path
+        filesInPath = [f for f in listdir(self.config.answerKeyTxtDirectory) if
+                       isfile(join(self.config.answerKeyTxtDirectory, f))]
+        converter = AnswerKeyConverter()
+        for file in filesInPath:
+            converter.convert(self.config.answerKeyTxtDirectory + file)
+
         filesInPath = [f for f in listdir(self.config.answerKeyDirectory) if
                        isfile(join(self.config.answerKeyDirectory, f))]
         for fileName in filesInPath:
@@ -103,14 +112,15 @@ class PollAnalyzer:
                 date = " "
                 # Read rows in that poll report file one by one.
                 date, pollKey = self.readPollReportRow(answerList, date, i, pollKey, prev, questionList,
-                                                       questionsAndGivenAnswersList, reader)
+                                                       questionsAndGivenAnswersList, reader, pollReportFile)
                 date = str(dt.datetime.strptime(date, "%b %d, %Y %H:%M:%S")).split()[0]
                 # Find each poll's identity in that poll report file.
                 pollsInPollReport = self.findPoll(pollKey, questionList)
             # Create and add new PollReport object into pollReports.
             self.addNewPollReport(date, pollsInPollReport, questionsAndGivenAnswersList)
 
-    def readPollReportRow(self, answerList, date, i, pollKey, prev, questionList, questionsAndGivenAnswersList, reader):
+    def readPollReportRow(self, answerList, date, i, pollKey, prev, questionList, questionsAndGivenAnswersList, reader,
+                          pollReportFile):
         for row in reader:
             date = row["Submitted Date/Time"]  # Find date of that poll report.
             questionKey = 1
@@ -145,7 +155,8 @@ class PollAnalyzer:
                                                                                questionText=questionList[
                                                                                    str(pollKey) + "." + str(
                                                                                        questionKey)],
-                                                                               givenAnswer=q)
+                                                                               givenAnswer=q,
+                                                                               pollReportFile=pollReportFile)
                     #   Append returned QuestionAndGivenAnswer object into questionsAndGivenAnswersList.
                     if not questionAndGivenAnswer is None:
                         questionsAndGivenAnswersList.setdefault(pollKey, []).append(questionAndGivenAnswer)
@@ -181,9 +192,14 @@ class PollAnalyzer:
             self.pollReports.append(pollReport)
 
     # Creates new QuestionAndGivenAnswer object and return it.
-    def createQuestionAndGivenAnswer(self, studentName, questionText, givenAnswer):
+    def createQuestionAndGivenAnswer(self, studentName, questionText, givenAnswer, pollReportFile):
         # Find student in students list.
         student = self.findStudent(studentName)
+
+        if student is None:
+            data = str(studentName) + " " + pollReportFile
+            with open(self.config.anomaliesDirectory + pollReportFile + ".json", 'w', encoding='utf-8') as f:
+                json.dump(data, f, ensure_ascii=False, indent=4)
 
         # Find question in questions list.
         question = self.findQuestion(questionText)
