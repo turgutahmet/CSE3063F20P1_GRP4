@@ -8,6 +8,12 @@ class Config:
         self.pollReportDirectory = data["poll report directory"]
         self.answerKeyDirectory = data["answer key directory"]
         self.studentListDirectory = data["student list directory"]
+        self.attendanceChartsDirectory = data["attendance charts"]
+        self.pollChartsDirectory = data["poll charts"]
+        self.outputPollReportsDirectory = data["output poll reports"]
+        self.attendanceReportsDirectory = data["attendance reports"]
+        self.generalStatisticsDirectory = data["general statistics"]
+        self.studentsPollReports = data["student statistics"]
 
     @staticmethod
     def readJson():

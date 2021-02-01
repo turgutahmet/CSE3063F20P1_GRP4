@@ -46,7 +46,9 @@ class PollAnalyzer:
         logger.info("Analyzing has been finished.")
 
     def readStudent(self):  # Reads all students in student list which stored in config.studentListDirectory path
-        f = xlrd.open_workbook(self.config.studentListDirectory)
+        filesInPath = [f for f in listdir(self.config.studentListDirectory) if
+                       isfile(join(self.config.studentListDirectory, f))]
+        f = xlrd.open_workbook(self.config.studentListDirectory+"/"+filesInPath[0])
         sheet = f.sheet_by_index(0)
         for i in range(0, sheet.nrows):
             try:

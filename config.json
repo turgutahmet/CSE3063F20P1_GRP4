@@ -1,5 +1,11 @@
 {
   "poll report directory": "./pollReports",
   "answer key directory": "./answerKeys",
-  "student list directory": "./studentList/CES3063_Fall2020_rptSinifListesi.XLS"
+  "student list directory": "./studentList",
+  "attendance charts": "./outputs/attendanceCharts/",
+  "poll charts": "./outputs/charts/",
+  "output poll reports": "./outputs/pollReports/",
+  "attendance reports": "./outputs/attendanceReport/",
+  "general statistics": "./outputs/",
+  "student statistics": "./outputs/studentsPollReports/"
 }
